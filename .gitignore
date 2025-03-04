@@ -1,0 +1,48 @@
+# Ignore credentials file
+setup/credentials.json
+
+# Ignore build and dependency directories
+/target/
+/.mvn/
+/.idea/
+/.vscode/
+/.settings/
+/.classpath
+/.project
+
+# Ignore logs and temporary files
+/logs/
+*.log
+*.tmp
+
+# Ignore environment-specific files
+.env
+*.env
+
+# Ignore Docker-related files (if any)
+Dockerfile
+docker-compose.yml
+
+# Ignore IDE-specific files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore compiled files
+*.class
+*.jar
+*.war
+*.ear
+
+# Ignore Maven wrapper files (optional, if you want to keep them in Git)
+# !mvnw
+# !mvnw.cmd
+
+# Ignore HELP.md file
+HELP.md
