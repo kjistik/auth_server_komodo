@@ -52,7 +52,7 @@ The present Spring Boot application is meant to act as an independent authentica
 
 2. Create `credentials.json` file on the /setup folder (see [Configuration](#configuration) for details).
 
-4. Run the `start` file from the /setup folder.
+4. Run the `start` file corresponding to your OS from the /setup folder.
 
 ## Without Docker
 1. Clone the repository:
@@ -74,7 +74,7 @@ The present Spring Boot application is meant to act as an independent authentica
 
 ## Running with Docker
 
-Run the `start` file from the /setup folder.
+Run the `start` file corresponding to your OS from the /setup folder.
 
 ## Running without Docker
  For every execution, always run the `loadEnv` file and then the compiled .jar executable in the same shell  session. 
