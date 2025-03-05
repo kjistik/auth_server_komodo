@@ -707,6 +707,7 @@
 						"{{domain}}"
 					],
 					"path": [
+						"auth",
 						"login"
 					]
 				}
@@ -2805,7 +2806,7 @@
 	"variable": [
 		{
 			"key": "domain",
-			"value": "http://localhost:9080",
+			"value": "http://localhost:8080/auth",
 			"type": "string"
 		},
 		{

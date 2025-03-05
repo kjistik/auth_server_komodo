@@ -13,7 +13,7 @@ import kjistik.auth_server_komodo.Utils.RequestEntities.RolesRequest;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/api/roles")
+@RequestMapping("/auth/api/roles")
 public class UserRoleController {
 
     @Autowired
