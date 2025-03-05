@@ -1,0 +1,31 @@
+server:
+  port: 9080
+
+logging:
+  level:
+    '[org.springframework.security]': DEBUG
+
+jwt:
+  secret-key: ${KOMODO_JWT_SECRET_KEY}
+  expiration-time: ${KOMODO_JWT_EXPIRATION_TIME}  # 1 day in milliseconds
+  verification-expiration-time: ${KOMODO_JWT_EMAIL_VERIFICATION_TIME}
+
+mailgun:
+  key: ${KOMODO_MAILGUN_KEY}
+  domain: ${KOMODO_MAILGUN_DOMAIN}
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+  web:
+    resources:
+      static-locations: classpath:/static/
+
+  r2dbc:
+    url: ${KOMODO_DATASOURCE_URL}
+    username: ${KOMODO_DATASOURCE_USER}
+    password: ${KOMODO_DATASOURCE_PASSWORD}
+
+  komodo:
+    domain-url: ${KOMODO_DOMAIN_URL}

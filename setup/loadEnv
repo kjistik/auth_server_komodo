@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Path to the JSON file
+CONFIG_FILE="credentials.json"
+
+# Debug: Print the current directory
+echo "Current directory: $(pwd)"
+
+# Check if the file exists
+if [[ ! -f "$CONFIG_FILE" ]]; then
+  echo "Error: $CONFIG_FILE not found!"
+  exit 1
+fi
+
+# Check if `jq` is installed
+if ! command -v jq &> /dev/null; then
+  echo "Error: 'jq' is not installed. Please install it using 'sudo apt install jq'."
+  exit 1
+fi
+
+# Debug: Print the contents of the JSON file
+echo "Contents of $CONFIG_FILE:"
+cat "$CONFIG_FILE"
+
+# Read the JSON file and export variables
+while IFS="=" read -r key value; do
+  # Debug: Print the raw key-value pair
+  echo "Raw key-value: $key=$value"
+
+  # Remove quotes and trim whitespace
+  key=$(echo "$key" | tr -d '"' | xargs)
+  value=$(echo "$value" | tr -d '"' | xargs)
+
+  # Debug: Print the cleaned key-value pair
+  echo "Cleaned key-value: $key=$value"
+
+  # Export the variable
+  export "$key=$value"
+  echo "Exported: $key=$value"
+done < <(jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" "$CONFIG_FILE")
+
+echo "Environment variables loaded from $CONFIG_FILE."

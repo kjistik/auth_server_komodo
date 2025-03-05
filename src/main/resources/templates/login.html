@@ -1,0 +1,99 @@
+<div class="container box">
+	<form id="loginForm" action="/login" method="post">
+		<div class="login box">
+			<h1>Ingresar</h1>
+			<input type="hidden" name="_csrf" value="${_csrf.token}" />
+			<div class="input">
+				<label for="username">Nombre de usuario: </label><input id="username" type="text" name="username" />
+			</div>
+			<div class="input">
+				<label for="password">Contraseña: </label><input type="password" id="password" name="password" />
+			</div>
+			<div class="customGPlusSignIn customBtn">
+				<span class="buttonText" onclick="document.getElementById('loginForm').submit();">Ingresar</span>
+			</div>
+		</div>
+	</form>
+	<div class="login box">
+		<h1>Ingresar con cuenta externa</h1>
+		<div id="gSignInWrapper">
+			<div class="customGPlusSignIn customBtn">
+				<span class="icon"></span>
+				<span class="buttonText">Ingresar con Google</span>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+	.customBtn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: white;
+		color: #757575;
+		border-radius: 5px;
+		border: 1px solid #dcdcdc;
+		padding: 10px 20px;
+		font-size: 14px;
+		font-weight: 500;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+		cursor: pointer;
+		width: fit-content;
+		width: 30vw;
+	}
+
+	.customBtn:hover {
+		box-shadow: 0 0 6px rgba(66, 133, 244, 0.5);
+		border-color: #4285f4;
+	}
+
+	.icon {
+		background: url('https://developers.google.com/identity/images/g-logo.png') transparent no-repeat;
+		background-size: cover;
+		height: 18px;
+		width: 18px;
+		margin-right: 8px;
+	}
+
+	.buttonText {
+		color: #757575;
+		font-family: Roboto, Arial, sans-serif;
+	}
+
+	.container {
+		width: 100vw;
+		height: 100vh;
+	}
+
+	.box {
+		background-color: antiquewhite;
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
+		flex-direction: column;
+	}
+
+	.input {
+		margin: 5px;
+		width: 35vw;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		flex-direction: row;
+	}
+
+	.login {
+		color: black;
+	}
+
+	label {
+		min-width: 80px;
+	}
+
+	body,
+	html {
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+</style>
