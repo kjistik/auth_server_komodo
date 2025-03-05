@@ -1,0 +1,1996 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Komodo-auth</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai-sublime.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+        hljs.configure({
+            tabReplace: '    ',
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <style>body {
+    position: relative;
+}
+
+h1 {
+    margin-top: 5px;
+}
+
+h1, h2, h3, h4 {
+    color: #2b2b2b;
+}
+
+h2:after {
+    content: ' ';
+}
+
+h5 {
+    font-weight: bold;
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+    display: none;
+    position: absolute;
+    margin-left: 8px;
+}
+
+h1:hover a, h2:hover a, h3:hover a, h4:hover a, h5:hover a, h6:hover a {
+    color: #a5a5a5;
+    display: initial;
+}
+
+.nav.nav-tabs > li > a {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.tab-content {
+    padding-top: 8px;
+}
+
+.table {
+    margin-bottom: 8px;
+}
+
+pre {
+    border-radius: 0px;
+    border: none;
+}
+
+pre code {
+    margin: -9.5px;
+}
+
+.request {
+    margin-top: 12px;
+    margin-bottom: 24px;
+}
+
+.response-text-sample {
+    padding: 0px !important;
+}
+
+.response-text-sample pre {
+    margin-bottom: 0px;
+}
+
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 250px;
+    width: 250px;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #2b2b2b;
+    padding-top: 20px;
+}
+
+#sidebar-wrapper ul {
+    width: 250px;
+}
+
+#sidebar-wrapper ul li {
+    margin-right: 10px;
+}
+
+#sidebar-wrapper ul li a:hover {
+    background: inherit;
+    text-decoration: none;
+}
+
+#sidebar-wrapper ul li a {
+    display: block;
+    color: #ECF0F1;
+    padding: 6px 15px;
+}
+
+#sidebar-wrapper ul li ul {
+    padding-left: 25px;
+}
+
+#sidebar-wrapper ul li ul li a {
+    padding: 1px 0px;
+}
+
+#sidebar-wrapper ul li a:hover,
+#sidebar-wrapper ul li a:focus {
+    color: #e0c46c;
+    border-right: solid 1px #e0c46c;
+}
+
+#sidebar-wrapper ul li.active > a {
+    color: #e0c46c;
+    border-right: solid 3px #e0c46c;
+}
+
+#sidebar-wrapper ul li:not(.active) ul {
+    display: none;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px 15px 15px 250px;
+}
+</style>
+</head>
+<body data-spy="scroll" data-target=".scrollspy">
+<div id="sidebar-wrapper">
+    <div class="scrollspy">
+    <ul id="main-menu" data-spy="affix" class="nav">
+        <li>
+            <a href="#doc-general-notes">General notes</a>
+        </li>
+        
+        <li>
+            <a href="#doc-api-detail">API detail</a>
+        </li>
+        
+        <li>
+            <a href="#request-register-user">Register user</a>
+        </li>
+        
+        <li>
+            <a href="#request-verify-email">Verify Email</a>
+        </li>
+        
+        <li>
+            <a href="#request-log-in">Log in</a>
+        </li>
+        
+        <li>
+            <a href="#request-update-password">Update password</a>
+        </li>
+        
+        <li>
+            <a href="#request-update-email">Update email</a>
+        </li>
+        
+        <li>
+            <a href="#request-update-name">Update name</a>
+        </li>
+        
+        <li>
+            <a href="#request-assign-roles">Assign roles</a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+</div>
+<div id="page-content-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>Komodo-auth</h1>
+
+                <h2 id="doc-general-notes">
+                    General notes
+                    <a href="#doc-general-notes"><i class="glyphicon glyphicon-link"></i></a>
+                </h2>
+
+                <p>This API is meant to generate <strong>JWT tokens</strong> to use in related applications. All authentication and user management related duties should be addressed in this API.</p>
+
+
+                
+
+                <h2 id="doc-api-detail">
+                    API detail
+                    <a href="#doc-api-detail"><i class="glyphicon glyphicon-link"></i></a>
+                </h2>
+
+                
+                
+                <div class="request">
+
+                    <h3 id="request-register-user">
+                        Register user
+                        <a href="#request-register-user"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div></div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-register-user-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-register-user-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-register-user-example-curl">
+                                <pre><code class="hljs curl">curl -X POST -d '{
+    "email": "{{email}}",
+    "givenName": "{{givenName}}",
+    "lastName": "{{lastName}}",
+    "userName": "{{username}}",
+    "password": "{{password}}"
+}' "{{domain}}/register"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-register-user-example-http">
+                                <pre><code class="hljs http">POST %7B%7Bdomain%7D%7D/register HTTP/1.1
+Host: 
+
+{
+    "email": "{{email}}",
+    "givenName": "{{givenName}}",
+    "lastName": "{{lastName}}",
+    "userName": "{{username}}",
+    "password": "{{password}}"
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-register-user-responses-32208c1a-66a0-44cd-8cf2-dc2500dab3eb" data-toggle="tab">
+                                    
+                                    Repeated username
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-register-user-responses-9a33ba36-e1e0-43c9-89c5-b241f549b855" data-toggle="tab">
+                                    
+                                    Success
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-register-user-responses-787063b2-6968-4f6b-8589-1688d70b7d3a" data-toggle="tab">
+                                    
+                                    Repeated email
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-register-user-responses-62815af1-fac1-4041-8488-44dd66645f1b" data-toggle="tab">
+                                    
+                                    Invalid Username
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-register-user-responses-0d1e8245-40ce-4c14-992f-33190325ebdd" data-toggle="tab">
+                                    
+                                    Invalid password
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-register-user-responses-8d8ecb34-4030-408a-a87e-38e01080077d" data-toggle="tab">
+                                    
+                                    Invalid email
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-register-user-responses-5d28e4e2-4ed5-4614-a7b4-22c97c8203fa" data-toggle="tab">
+                                    
+                                    Email not sent
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-register-user-responses-e00ef56c-ba82-4a59-b65e-8d1622aa1da7" data-toggle="tab">
+                                    
+                                    Database unavailable
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-register-user-responses-32208c1a-66a0-44cd-8cf2-dc2500dab3eb">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>47</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Username example is already in use"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-register-user-responses-9a33ba36-e1e0-43c9-89c5-b241f549b855">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>0</td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-register-user-responses-787063b2-6968-4f6b-8589-1688d70b7d3a">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>54</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Email example@email.com is already in use"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-register-user-responses-62815af1-fac1-4041-8488-44dd66645f1b">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>173</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "The username must comply with the following requirements: The username contains invalid characters. Only letters, numbers, underscores, and periods are allowed."
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-register-user-responses-0d1e8245-40ce-4c14-992f-33190325ebdd">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>225</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "The password must comply with the following requirements: Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \" character is not allowed."
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-register-user-responses-8d8ecb34-4030-408a-a87e-38e01080077d">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>194</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "The email must comply with the following requirements: The email address is invalid. It must contain an '@' symbol, a domain name, and a top-level domain (e.g., example@domain.com)."
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-register-user-responses-5d28e4e2-4ed5-4614-a7b4-22c97c8203fa">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Failed to send verification email to example@email.com The user has been successfully created. Log in with your credentials to trigger the verification email again"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-register-user-responses-e00ef56c-ba82-4a59-b65e-8d1622aa1da7">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>500 Internal Server Error</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>46</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Failed to obtain R2DBC Connection"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+                
+                <div class="request">
+
+                    <h3 id="request-verify-email">
+                        Verify Email
+                        <a href="#request-verify-email"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div></div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-verify-email-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-verify-email-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-verify-email-example-curl">
+                                <pre><code class="hljs curl">curl -X GET "{{domain}}/verify?token={{verificationToken}}"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-verify-email-example-http">
+                                <pre><code class="hljs http">GET %7B%7Bdomain%7D%7D/verify?token={{verificationToken}} HTTP/1.1
+Host: </code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-verify-email-responses-523a2307-e62b-4eb3-bfba-c0ddcd9a1043" data-toggle="tab">
+                                    
+                                    Response
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-verify-email-responses-523a2307-e62b-4eb3-bfba-c0ddcd9a1043">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+                
+                <div class="request">
+
+                    <h3 id="request-log-in">
+                        Log in
+                        <a href="#request-log-in"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div></div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-log-in-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-log-in-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-log-in-example-curl">
+                                <pre><code class="hljs curl">curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "username={{username}}&password={{password}}" "{{domain}}/login"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-log-in-example-http">
+                                <pre><code class="hljs http">POST %7B%7Bdomain%7D%7D/login HTTP/1.1
+Host: 
+Content-Type: application/x-www-form-urlencoded
+
+username={{username}}&password={{password}}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-log-in-responses-d9cd3af5-270f-423d-bbaa-4ef7e970371c" data-toggle="tab">
+                                    
+                                    Success
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-log-in-responses-d94aaff6-1d51-43d8-8796-bdcd23ffc5c2" data-toggle="tab">
+                                    
+                                    Failed to log in
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-log-in-responses-d9cd3af5-270f-423d-bbaa-4ef7e970371c">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">set-cookie</th><td>SESSION=b323a2dd-1d6d-4263-8473-435990cc9ed4; Path=/; HTTPOnly; SameSite=Lax</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>204</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJramlzdGlrIiwiaWF0IjoxNzQxMDQxODIxLCJyb2xlcyI6W10sImV4cCI6MTc0MTEyODIyMX0.SGiUZhyIIkaLvbJ0URCJUjZ4U9dzwtn4xatccfgFe2l3r-HmNOFOFAFfX_hvJMYK94cLl_s94UVnNFbA9GMnUQ"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-log-in-responses-d94aaff6-1d51-43d8-8796-bdcd23ffc5c2">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>500 Internal Server Error</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>54</td></tr>
+                                    
+                                    
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+                
+                <div class="request">
+
+                    <h3 id="request-update-password">
+                        Update password
+                        <a href="#request-update-password"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div></div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-update-password-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-update-password-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-update-password-example-curl">
+                                <pre><code class="hljs curl">curl -X PATCH -d '{
+    "password":"{{password}}"
+}' "{{domain}}/api/user/updatePassword"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-update-password-example-http">
+                                <pre><code class="hljs http">PATCH %7B%7Bdomain%7D%7D/api/user/updatePassword HTTP/1.1
+Host: 
+
+{
+    "password":"{{password}}"
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-update-password-responses-75646933-b86e-4459-8f97-3d00b0e1056f" data-toggle="tab">
+                                    
+                                    Success
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-password-responses-66ed1723-9379-454c-ac46-da52aee43812" data-toggle="tab">
+                                    
+                                    Invalid password
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-password-responses-503803c8-bd46-4a26-8b58-091073af8343" data-toggle="tab">
+                                    
+                                    Invalid password
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-password-responses-d9b7df12-0ddf-49d2-821a-ff64be79858a" data-toggle="tab">
+                                    
+                                    Invalid username
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-password-responses-22b16c5b-46f3-4bd3-b9fc-21c0485b0079" data-toggle="tab">
+                                    
+                                    Insufficient permissions
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-password-responses-f370792e-33dc-499b-90ef-744f8106bd8e" data-toggle="tab">
+                                    
+                                    Non authenticated
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-password-responses-972a13ec-ba6b-4612-9bc3-f9b6de029e09" data-toggle="tab">
+                                    
+                                    Expired JWT
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-update-password-responses-75646933-b86e-4459-8f97-3d00b0e1056f">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>0</td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-password-responses-66ed1723-9379-454c-ac46-da52aee43812">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>225</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "The password must comply with the following requirements: Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \" character is not allowed."
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-password-responses-503803c8-bd46-4a26-8b58-091073af8343">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>text/plain;charset=UTF-8</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>226</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "The password must comply with the following requirements: Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \" character is not allowed."
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-password-responses-d9b7df12-0ddf-49d2-821a-ff64be79858a">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>400 Bad Request</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>62</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "No user has been found with the username: kjistik"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-password-responses-22b16c5b-46f3-4bd3-b9fc-21c0485b0079">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>403 Forbidden</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>text/plain</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>13</td></tr>
+                                    
+                                    
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-password-responses-f370792e-33dc-499b-90ef-744f8106bd8e">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>35</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Missing or invalid JWT"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-password-responses-972a13ec-ba6b-4612-9bc3-f9b6de029e09">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>35</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Invalid or expired JWT"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+                
+                <div class="request">
+
+                    <h3 id="request-update-email">
+                        Update email
+                        <a href="#request-update-email"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div></div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-update-email-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-update-email-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-update-email-example-curl">
+                                <pre><code class="hljs curl">curl -X PATCH -d '{
+    "email": "{{email}}"
+}' "{{domain}}/api/user/updateEmail"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-update-email-example-http">
+                                <pre><code class="hljs http">PATCH %7B%7Bdomain%7D%7D/api/user/updateEmail HTTP/1.1
+Host: 
+
+{
+    "email": "{{email}}"
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-update-email-responses-d0aa9c90-636f-48a2-82c9-f872fb394037" data-toggle="tab">
+                                    
+                                    Invalid username
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-email-responses-fe70ebb9-ba0c-464e-88cc-a1920da98c64" data-toggle="tab">
+                                    
+                                    Invalid email
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-email-responses-9822b32b-9607-4807-bc56-2fde7dabb7c5" data-toggle="tab">
+                                    
+                                    Email not sent
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-email-responses-eb3fb93d-28f6-4b64-a90c-f4dce4baff8b" data-toggle="tab">
+                                    
+                                    Repeated email
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-email-responses-eb87baf6-b18f-45ff-b9ec-334e77b21faf" data-toggle="tab">
+                                    
+                                    Insufficient permissions
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-email-responses-64e84bde-d8e8-48fc-89ac-470836e397db" data-toggle="tab">
+                                    
+                                    Non authenticated
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-email-responses-89a74585-c897-4af3-b7b0-b2de15bbe64e" data-toggle="tab">
+                                    
+                                    Expired JWT
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-update-email-responses-d0aa9c90-636f-48a2-82c9-f872fb394037">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>400 Bad Request</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>62</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "No user has been found with the username: kjistik"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-email-responses-fe70ebb9-ba0c-464e-88cc-a1920da98c64">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>194</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "The email must comply with the following requirements: The email address is invalid. It must contain an '@' symbol, a domain name, and a top-level domain (e.g., example@domain.com)."
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-email-responses-9822b32b-9607-4807-bc56-2fde7dabb7c5">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Failed to send verification email to example@email.com The user has been successfully created. Log in with your credentials to trigger the verification email again"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-email-responses-eb3fb93d-28f6-4b64-a90c-f4dce4baff8b">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>54</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Email email@example.com is already in use"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-email-responses-eb87baf6-b18f-45ff-b9ec-334e77b21faf">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>403 Forbidden</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>text/plain</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>13</td></tr>
+                                    
+                                    
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-email-responses-64e84bde-d8e8-48fc-89ac-470836e397db">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>35</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Missing or invalid JWT"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-email-responses-89a74585-c897-4af3-b7b0-b2de15bbe64e">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>35</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Invalid or expired JWT"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+                
+                <div class="request">
+
+                    <h3 id="request-update-name">
+                        Update name
+                        <a href="#request-update-name"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div></div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-update-name-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-update-name-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-update-name-example-curl">
+                                <pre><code class="hljs curl">curl -X PATCH -d '{
+    "givenName":"{{givenName}}",
+    "lastName":"{{lastName}}",
+    "username":"{{targetUsername}}"
+}' "{{domain}}/api/support/updateName"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-update-name-example-http">
+                                <pre><code class="hljs http">PATCH %7B%7Bdomain%7D%7D/api/support/updateName HTTP/1.1
+Host: 
+
+{
+    "givenName":"{{givenName}}",
+    "lastName":"{{lastName}}",
+    "username":"{{targetUsername}}"
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-update-name-responses-a5c4939a-7174-42a2-a7ae-0d1d364b1c7c" data-toggle="tab">
+                                    
+                                    Success
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-name-responses-0f8be671-c4d6-4af1-a529-f5dd8d5a39cd" data-toggle="tab">
+                                    
+                                    Non existent user
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-name-responses-88fd0922-b610-4ae4-91d4-e58c9cea51b9" data-toggle="tab">
+                                    
+                                    Non authenticated
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-name-responses-6f1eb94c-d468-4e4f-a1e8-69ab3fabc2f4" data-toggle="tab">
+                                    
+                                    Insufficient permissions
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-update-name-responses-db26463c-f8f2-416d-9af7-785b1954fc46" data-toggle="tab">
+                                    
+                                    Expired JWT
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-update-name-responses-a5c4939a-7174-42a2-a7ae-0d1d364b1c7c">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>0</td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-name-responses-0f8be671-c4d6-4af1-a529-f5dd8d5a39cd">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>400 Bad Request</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>61</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "No user has been found with the username: targetUsername"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-name-responses-88fd0922-b610-4ae4-91d4-e58c9cea51b9">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>35</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Missing or invalid JWT"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-name-responses-6f1eb94c-d468-4e4f-a1e8-69ab3fabc2f4">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>403 Forbidden</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>text/plain</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>13</td></tr>
+                                    
+                                    
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-update-name-responses-db26463c-f8f2-416d-9af7-785b1954fc46">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>35</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Invalid or expired JWT"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+                
+                <div class="request">
+
+                    <h3 id="request-assign-roles">
+                        Assign roles
+                        <a href="#request-assign-roles"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div></div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-assign-roles-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-assign-roles-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-assign-roles-example-curl">
+                                <pre><code class="hljs curl">curl -X PATCH -d '{
+    "roles":{{roles}},
+    "username":"{{targetUsername}}"
+}' "{{domain}}/api/roles/assignRole"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-assign-roles-example-http">
+                                <pre><code class="hljs http">PATCH %7B%7Bdomain%7D%7D/api/roles/assignRole HTTP/1.1
+Host: 
+
+{
+    "roles":{{roles}},
+    "username":"{{targetUsername}}"
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-assign-roles-responses-a6a6bf4f-b942-4175-b3cf-a93dfb3c12a1" data-toggle="tab">
+                                    
+                                    Success
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-assign-roles-responses-eff91fde-7d12-4fd2-ac8a-34f211363c16" data-toggle="tab">
+                                    
+                                    Target user not verified
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-assign-roles-responses-b4f2051a-574e-40f4-90c1-0ad482c7b330" data-toggle="tab">
+                                    
+                                    Insufficient role
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-assign-roles-responses-da1550a7-80bb-48d5-a99f-650ad0230164" data-toggle="tab">
+                                    
+                                    Non existent role
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-assign-roles-responses-64adb14e-4d94-466c-83dd-f6c395394fa6" data-toggle="tab">
+                                    
+                                    Non authenticated
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-assign-roles-responses-071aab1e-38a6-4155-a744-fe7da3dda392" data-toggle="tab">
+                                    
+                                    Expired JWT
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-assign-roles-responses-a6a6bf4f-b942-4175-b3cf-a93dfb3c12a1">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>0</td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-assign-roles-responses-eff91fde-7d12-4fd2-ac8a-34f211363c16">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>102</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "User target is not verified. A verification email has been sent to your registered email"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-assign-roles-responses-b4f2051a-574e-40f4-90c1-0ad482c7b330">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>text/plain;charset=UTF-8</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>91</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Unable to assign the role OWNER. You must have at least the same role to do so"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-assign-roles-responses-da1550a7-80bb-48d5-a99f-650ad0230164">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>400 Bad Request</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>text/plain;charset=UTF-8</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>54</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "The following is not a valid role: TESTER"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-assign-roles-responses-64adb14e-4d94-466c-83dd-f6c395394fa6">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>35</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Missing or invalid JWT"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-assign-roles-responses-071aab1e-38a6-4155-a744-fe7da3dda392">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">content-length</th><td>35</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Invalid or expired JWT"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+
+
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("table:not(.table)").addClass('table table-bordered');
+    });
+</script>
+</body>
+</html>
