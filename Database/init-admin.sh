@@ -27,7 +27,7 @@ HASHED_PASSWORD=$(htpasswd -bnBC 10 "" "$ADMIN_PASSWORD" | tr -d ':\n')
 
 # Insert the admin user into the database and fetch the user ID
 ADMIN_USER_ID=$(psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" -Atq <<-EOSQL
-    INSERT INTO "user" (id, email, givenName, lastName, userName, password, verified)
+    INSERT INTO "user" (id, email, givenName, lastName, userName, password, confirmed)
     VALUES (
         uuid_generate_v4(), -- Generate a UUID for the id
         '$ADMIN_EMAIL',     -- Use the ADMIN_EMAIL environment variable
@@ -35,7 +35,7 @@ ADMIN_USER_ID=$(psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$P
         '$ADMIN_LASTNAME',  -- Use the ADMIN_LASTNAME environment variable
         '$ADMIN_USERNAME',  -- Use the ADMIN_USERNAME environment variable
         '$HASHED_PASSWORD', -- Use the hashed password
-        TRUE                -- Mark the user as verified
+        TRUE                -- Mark the user as confirmed
     )
     ON CONFLICT (email) DO NOTHING
     RETURNING id;

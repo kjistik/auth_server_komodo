@@ -17,8 +17,8 @@ ENV KOMODO_ADMIN_PASSWORD=
 RUN apk add --no-cache apache2-utils
 
 # Copy the setup.sql script and init-admin.sh script
-COPY setup.sql /docker-entrypoint-initdb.d/a.sql
-COPY init-admin.sh /docker-entrypoint-initdb.d/
+COPY ./Database/setup.sql /docker-entrypoint-initdb.d/a.sql
+COPY ./Database/init-admin.sh /docker-entrypoint-initdb.d/
 
 # Make the init-admin.sh script executable
 RUN chmod +x /docker-entrypoint-initdb.d/init-admin.sh

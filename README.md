@@ -8,11 +8,16 @@ The present Spring Boot application is meant to act as an independent authentica
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
+    - [With Docker](#with-docker)
+    - [Without Docker](#without-docker)
   - [Running the Application](#running-the-application)
+    - [Running with Docker](#running-with-docker)
+    - [Running without Docker](#running-without-docker)
 - [Configuration](#configuration)
 - [API Documentation](#api-documentation)
 - [License](#license)
 - [Author](#author)
+- [Credits](#credits)
 
 ## Features
 - User authentication and authorization.
@@ -30,13 +35,26 @@ The present Spring Boot application is meant to act as an independent authentica
 ## Getting Started
 
 ### Prerequisites
+- A Mailgun account 
+- Docker and the docker-compose plugin are highly recommended but not strictly needed. (If present, these are the only requirements)
 - Java 21 or higher
 - Maven 3.x or higher
 - PostgreSQL
-- Docker is highly recommended but not strictly needed
-- A Mailgun account 
 
-### Installation
+### Installation 
+
+## With Docker
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/kjistik/auth_server_komodo.git
+    ```
+
+2. Create `credentials.json` file on the /setup folder (see [Configuration](#configuration) for details).
+
+4. Run the `start` file from the /setup folder.
+
+## Without Docker
 1. Clone the repository:
    ```bash
    git clone https://github.com/kjistik/auth_server_komodo.git
@@ -54,6 +72,11 @@ The present Spring Boot application is meant to act as an independent authentica
     ```
 ### Running the Application
 
+## Running with Docker
+
+Run the `start` file from the /setup folder.
+
+## Running without Docker
  For every execution, always run the `loadEnv` file and then the compiled .jar executable in the same shell  session. 
 
 ## Configuration
@@ -64,6 +87,7 @@ The present Spring Boot application is meant to act as an independent authentica
   |-----------------------------------|-----------------------------------------------------------------------------|
   | `KOMODO_DATASOURCE_URL`           | The database URL.                                                          |
   | `KOMODO_DOMAIN_URL`               | The domain in which the application will run (can be a domain name or IP). |
+  | `KOMODO_DATASOURCE_NAME`          | The name of the database. Must match the one specified in `KOMODO_DATASOURCE_URL`  |
   | `KOMODO_DATASOURCE_USER`          | The database user.                                                         |
   | `KOMODO_DATASOURCE_PASSWORD`      | The database user password.                                                |
   | `KOMODO_MAILGUN_KEY`              | Your secret Mailgun key.                                                   |
@@ -71,6 +95,10 @@ The present Spring Boot application is meant to act as an independent authentica
   | `KOMODO_JWT_SECRET_KEY`           | Your JWT secret key.                                                       |
   | `KOMODO_JWT_EXPIRATION_TIME`      | The time (in milliseconds) that JWT tokens should be valid before expiring.|
   | `KOMODO_JWT_EMAIL_VERIFICATION_TIME` | The time the email verification link should be valid for.               |
+  | `KOMODO_ADMIN_PASSWORD`           | The password of the OWNER user.                                            |
+  | `KOMODO_ADMIN_EMAIL`              | The email of the OWNER user. It will always be assumed to exist.           |
+  | `KOMODO_ADMIN_GIVENNAME`          | The given name of the OWNER user.                                          |
+  | `KOMODO_ADMIN_LASTNAME`           | The last name of the OWNER user.                                           |
 
 ## API Documentation
   
@@ -85,3 +113,5 @@ The present Spring Boot application is meant to act as an independent authentica
   GitHub: [Kjistik](https://github.com/kjistik)  
   Email: [coronelmartinernesto@gmail.com](mailto:coronelmartinernesto@gmail.com)
 
+## Credits
+- The `wait-for-it.sh` script is used from [vishnubob/wait-for-it](https://github.com/vishnubob/wait-for-it), licensed under the MIT License.

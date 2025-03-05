@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source ./loadEnv
+
+cd ../
+
+docker-compose up

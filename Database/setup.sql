@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS "user" (
     lastName VARCHAR(100) NOT NULL,
     userName VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    verified BOOLEAN DEFAULT FALSE,
+    confirmed BOOLEAN DEFAULT FALSE,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modifiedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -51,8 +51,8 @@ CREATE TABLE IF NOT EXISTS "user_role" (
     PRIMARY KEY (user_id, role_id) -- Composite primary key to ensure uniqueness
 );
 
--- Create an index on the verified column for login performance optimization
-CREATE INDEX IF NOT EXISTS idx_user_verified ON "user"(verified);
+-- Create an index on the confirmed column for login performance optimization
+CREATE INDEX IF NOT EXISTS idx_user_confirmed ON "user"(confirmed);
 
 -- Drop existing triggers if they exist (in case of updates to the schema)
 -- This ensures that the trigger definitions can be updated without causing errors.
