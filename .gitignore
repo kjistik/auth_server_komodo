@@ -19,10 +19,6 @@ setup/credentials.json
 .env
 *.env
 
-# Ignore Docker-related files (if any)
-Dockerfile
-docker-compose.yml
-
 # Ignore IDE-specific files
 .idea/
 .vscode/
