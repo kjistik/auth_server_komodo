@@ -45,6 +45,21 @@ services:
     depends_on:
       - komodo-database
 
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d  # Mount Nginx configuration (add on server)
+      - ./nginx/certs:/etc/nginx/certs    # Mount SSL certificates (add on server)
+      - ./nginx/html:/usr/share/nginx/html  # Mount static files (optional)
+    networks:
+      - komodo-network
+    depends_on:
+      - komodo-backend
+
 volumes:
   komodo-db-data:
 
