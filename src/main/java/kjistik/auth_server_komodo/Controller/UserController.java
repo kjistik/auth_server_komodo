@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ServerWebExchange;
 
+import kjistik.auth_server_komodo.Services.User.AuthService;
 import kjistik.auth_server_komodo.Services.User.UserService;
 import kjistik.auth_server_komodo.Utils.RequestEntities.EmailChange;
+import kjistik.auth_server_komodo.Utils.RequestEntities.LoginRequest;
 import kjistik.auth_server_komodo.Utils.RequestEntities.NameChange;
 import kjistik.auth_server_komodo.Utils.RequestEntities.NewUser;
 import kjistik.auth_server_komodo.Utils.RequestEntities.PasswordChange;
@@ -23,6 +26,14 @@ import reactor.core.publisher.Mono;
 public class UserController {
     @Autowired
     UserService service;
+
+    @Autowired
+    AuthService authService;
+
+    @PostMapping("/login")
+    public Mono<Void> logIn(@RequestBody LoginRequest login, ServerWebExchange exchange) {
+        return authService.login(login, exchange);
+    }
 
     @PostMapping("/register")
     public Mono<Void> createUser(@RequestBody NewUser newUser) {
@@ -40,7 +51,7 @@ public class UserController {
     }
 
     @PatchMapping("/api/user/updateEmail")
-    public Mono<Void> updateEmail(@RequestBody EmailChange email, @AuthenticationPrincipal UserDetails user)  {
+    public Mono<Void> updateEmail(@RequestBody EmailChange email, @AuthenticationPrincipal UserDetails user) {
         return service.updateEmail(email.getEmail(), user.getUsername());
     }
 

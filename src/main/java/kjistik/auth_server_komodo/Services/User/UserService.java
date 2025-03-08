@@ -117,7 +117,7 @@ public class UserService implements UserServiceInt {
 
     @Override
     public Mono<Void> isEmailInUse(String email) {
-        
+
         return repo.isEmailInUse(email.toLowerCase())
                 .flatMap((used) -> {
                     if (used) {
@@ -154,7 +154,7 @@ public class UserService implements UserServiceInt {
 
     @Override
     public Mono<Void> sendVerificationEmail(String username) {
-        username=username.toLowerCase();
+        username = username.toLowerCase();
         return repo.findByUserName(username) // Fetch the user after creation
                 .flatMap(user -> {
                     // Send the verification email

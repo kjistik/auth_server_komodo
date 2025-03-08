@@ -24,5 +24,6 @@ public interface UserServiceInt {
 
     public Mono<Void> updatePassword(String password, String username);
 
-    Mono<Void> updateName(String givenName, String lastName, String username);
+    public Mono<Void> updateName(String givenName, String lastName, String username);
+
 }

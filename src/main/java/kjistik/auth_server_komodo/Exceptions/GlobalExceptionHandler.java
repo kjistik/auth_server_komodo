@@ -14,6 +14,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"error\": \"" + ex.getMessage() + "\"}");
     }
 
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<Object> handleInvalidCredentialsException(InvalidCredentialsException ex){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"error\": \"" + ex.getMessage() + "\"}");
+    }
+
     // Handle RepeatedUserNameException
     @ExceptionHandler(RepeatedUserNameException.class)
     public ResponseEntity<Object> handleRepeatedUserNameException(RepeatedUserNameException ex) {
