@@ -31,10 +31,10 @@ public class JwtAuthFilter implements WebFilter {
     @Autowired
     JwtUtils utils;
 
-    private static final String[] IGNORED_PATHS = { "/login",
-            "/error",
-            "/register",
-            "/verify" };
+    private static final String[] IGNORED_PATHS = { "/auth/login",
+            "/auth/error",
+            "/auth/register",
+            "/auth/verify" };
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {

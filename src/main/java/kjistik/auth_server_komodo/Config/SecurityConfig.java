@@ -44,15 +44,15 @@ public class SecurityConfig {
                 return http
                                 .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless APIs
                                 .authorizeExchange(exchanges -> exchanges
-                                                .pathMatchers("/api/user/**").hasRole("USER") // Restrict access to USER role
-                                                .pathMatchers("/api/admin/**").hasRole("ADMIN") // Restrict access to ADMIN role
-                                                .pathMatchers("/api/support/**", "/api/roles/**").hasRole("SUPPORT")
-                                                .pathMatchers("/api/owner/**").hasRole("OWNER")
-                                                .pathMatchers(    "/login", "/error", "/register", "/verify").permitAll() // Allow public access
+                                                .pathMatchers("/auth/api/user/**").hasRole("USER") // Restrict access to USER role
+                                                .pathMatchers("/auth/api/admin/**").hasRole("ADMIN") // Restrict access to ADMIN role
+                                                .pathMatchers("/auth/api/support/**", "/api/roles/**").hasRole("SUPPORT")
+                                                .pathMatchers("/auth/api/owner/**").hasRole("OWNER")
+                                                .pathMatchers("/auth/login", "/auth/error", "/auth/register", "/auth/verify").permitAll() // Allow public access
                                                 .anyExchange().authenticated() // Require authentication for all other endpoints
                                 )
                                 .formLogin(formLogin -> formLogin
-                                                .loginPage("/login") // Specify the login page
+                                                .loginPage("/auth/login") // Specify the login page
                                                 .authenticationSuccessHandler(authenticationHandler) // Use the reactive success handler
                                 )
                                 .addFilterAt(jwtAuthFilter, SecurityWebFiltersOrder.AUTHENTICATION) // Add JWT filter

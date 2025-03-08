@@ -52,9 +52,9 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d  # Mount Nginx configuration (add on server)
-      - ./nginx/certs:/etc/nginx/certs    # Mount SSL certificates (add on server)
-      - ./nginx/html:/usr/share/nginx/html  # Mount static files (optional)
+      - ./nginx/nginx-proxy/conf.d:/etc/nginx/conf.d  # Mount Nginx configuration (add on server)
+      - ./nginx/nginx-proxy/certs:/etc/nginx/certs    # Mount SSL certificates (add on server)
+      - ./nginx/nginx-proxy/html:/usr/share/nginx/html  # Mount static files (optional)
     networks:
       - komodo-network
     depends_on:
