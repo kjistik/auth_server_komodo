@@ -15,8 +15,6 @@ services:
       KOMODO_ADMIN_GIVENNAME: ${KOMODO_ADMIN_GIVENNAME}
       KOMODO_ADMIN_LASTNAME: ${KOMODO_ADMIN_LASTNAME}
       KOMODO_ADMIN_PASSWORD: ${KOMODO_ADMIN_PASSWORD}
-    ports:
-      - "5432:5432"
     volumes:
       - komodo-db-data:/var/lib/postgresql/data  # Persist DB data
     networks:
@@ -37,8 +35,6 @@ services:
       KOMODO_DATASOURCE_USER: ${KOMODO_DATASOURCE_USER}
       KOMODO_DATASOURCE_PASSWORD: ${KOMODO_DATASOURCE_PASSWORD}
       KOMODO_DOMAIN_URL: ${KOMODO_DOMAIN_URL}
-    ports:
-      - "8080:8080"
     networks:
       - komodo-network
     command: ["/wait-for-it.sh", "komodo-database:5432", "--", "java", "-jar", "/app/app.jar"]
