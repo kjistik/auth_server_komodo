@@ -35,11 +35,24 @@ services:
       KOMODO_DATASOURCE_USER: ${KOMODO_DATASOURCE_USER}
       KOMODO_DATASOURCE_PASSWORD: ${KOMODO_DATASOURCE_PASSWORD}
       KOMODO_DOMAIN_URL: ${KOMODO_DOMAIN_URL}
+      KOMODO_REDIS_HOST: redis  # Redis host (same as the service name)
+      KOMODO_REDIS_PORT: 6379   # Redis port
     networks:
       - komodo-network
     command: ["/wait-for-it.sh", "komodo-database:5432", "--", "java", "-jar", "/app/app.jar"]
     depends_on:
       - komodo-database
+      - redis  # Ensure Redis starts before the backend
+
+  redis:
+    image: redis:latest
+    container_name: komodo-redis
+    ports:
+      - "6379:6379"  # Expose Redis port (optional, only if you need external access)
+    volumes:
+      - redis-data:/data  # Persist Redis data
+    networks:
+      - komodo-network
 
   nginx:
     image: nginx:latest
@@ -58,7 +71,9 @@ services:
 
 volumes:
   komodo-db-data:
+  redis-data:  # Volume for Redis data persistence
 
 networks:
   komodo-network:
     driver: bridge
+    
