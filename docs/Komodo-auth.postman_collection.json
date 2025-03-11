@@ -25,11 +25,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{domain}}/register",
+					"raw": "{{domain}}/auth/register",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
+						"auth",
 						"register"
 					]
 				}
@@ -50,12 +51,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:9080/register",
+							"raw": "localhost:9080/auth/register",
 							"host": [
 								"localhost"
 							],
 							"port": "9080",
 							"path": [
+								"auth",
 								"register"
 							]
 						}
@@ -121,11 +123,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/register",
+							"raw": "{{domain}}/auth/register",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"register"
 							]
 						}
@@ -185,11 +188,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/register",
+							"raw": "{{domain}}/auth/register",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"register"
 							]
 						}
@@ -255,11 +259,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/register",
+							"raw": "{{domain}}/auth/register",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"register"
 							]
 						}
@@ -325,11 +330,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/register",
+							"raw": "{{domain}}/auth/register",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"register"
 							]
 						}
@@ -395,11 +401,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/register",
+							"raw": "{{domain}}/auth/register",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"register"
 							]
 						}
@@ -465,11 +472,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/register",
+							"raw": "{{domain}}/auth/register",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"register"
 							]
 						}
@@ -535,11 +543,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/register",
+							"raw": "{{domain}}/auth/register",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"register"
 							]
 						}
@@ -599,11 +608,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{domain}}/verify?token={{verificationToken}}",
+					"raw": "{{domain}}/auth/verify?token={{verificationToken}}",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
+						"auth",
 						"verify"
 					],
 					"query": [
@@ -621,11 +631,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{domain}}/verify?token={{verificationToken}}",
+							"raw": "{{domain}}/auth/verify?token={{verificationToken}}",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"verify"
 							],
 							"query": [
@@ -687,22 +698,16 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "username",
-							"value": "{{username}}",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "{{password}}",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"{{username}}\",\n    \"password\":\"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
-					"raw": "{{domain}}/login",
+					"raw": "{{domain}}/auth/login",
 					"host": [
 						"{{domain}}"
 					],
@@ -717,28 +722,29 @@
 					"name": "Success",
 					"originalRequest": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "username",
-									"value": "{{username}}",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "{{password}}",
-									"type": "text"
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"{{username}}\",\n    \"password\":\"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
-							"raw": "{{domain}}/login",
+							"raw": "{{domain}}/auth/login",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"login"
 							]
 						}
@@ -797,28 +803,29 @@
 					"name": "Failed to log in",
 					"originalRequest": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "username",
-									"value": "{{username}}",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "{{password}}",
-									"type": "text"
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"{{username}}\",\n    \"password\":\"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
-							"raw": "{{domain}}/login",
+							"raw": "{{domain}}/auth/login",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"login"
 							]
 						}
@@ -865,7 +872,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\"error\": \"404 NOT_FOUND \"No static resource login.\"\"}"
+					"body": "{\n    \"error\": \"Invalid credentials\"\n}"
 				}
 			]
 		},
@@ -894,11 +901,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{domain}}/api/user/updatePassword",
+					"raw": "{{domain}}/auth/api/user/updatePassword",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
+						"auth",
 						"api",
 						"user",
 						"updatePassword"
@@ -921,11 +929,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/user/updatePassword",
+							"raw": "{{domain}}/auth/api/user/updatePassword",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"user",
 								"updatePassword"
@@ -987,11 +996,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/user/updatePassword",
+							"raw": "{{domain}}/auth/api/user/updatePassword",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"user",
 								"updatePassword"
@@ -1045,76 +1055,6 @@
 					"body": "{\n    \"error\": \"The password must comply with the following requirements: Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \\\" character is not allowed.\"\n}"
 				},
 				{
-					"name": "Invalid password",
-					"originalRequest": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"password\":\"{{password}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/api/user/updatePassword",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"api",
-								"user",
-								"updatePassword"
-							]
-						}
-					},
-					"status": "Conflict",
-					"code": 409,
-					"_postman_previewlanguage": "plain",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "text/plain;charset=UTF-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "226"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, no-store, max-age=0, must-revalidate"
-						},
-						{
-							"key": "Pragma",
-							"value": "no-cache"
-						},
-						{
-							"key": "Expires",
-							"value": "0"
-						},
-						{
-							"key": "X-Content-Type-Options",
-							"value": "nosniff"
-						},
-						{
-							"key": "X-Frame-Options",
-							"value": "DENY"
-						},
-						{
-							"key": "X-XSS-Protection",
-							"value": "0"
-						},
-						{
-							"key": "Referrer-Policy",
-							"value": "no-referrer"
-						}
-					],
-					"cookie": [],
-					"body": "{\"error\": \"The password must comply with the following requirements: Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \\\" character is not allowed.\"}"
-				},
-				{
 					"name": "Invalid username",
 					"originalRequest": {
 						"method": "PATCH",
@@ -1129,11 +1069,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/user/updatePassword",
+							"raw": "{{domain}}/auth/api/user/updatePassword",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"user",
 								"updatePassword"
@@ -1201,11 +1142,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/user/updatePassword",
+							"raw": "{{domain}}/auth/api/user/updatePassword",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"user",
 								"updatePassword"
@@ -1271,11 +1213,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/user/updatePassword",
+							"raw": "{{domain}}/auth/api/user/updatePassword",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"user",
 								"updatePassword"
@@ -1341,11 +1284,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/user/updatePassword",
+							"raw": "{{domain}}/auth/api/user/updatePassword",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"user",
 								"updatePassword"
@@ -1450,11 +1394,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/user/updateEmail",
+							"raw": "{{domain}}/auth/api/user/updateEmail",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"user",
 								"updateEmail"
@@ -1522,11 +1467,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/user/updateEmail",
+							"raw": "{{domain}}/auth/api/user/updateEmail",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"user",
 								"updateEmail"
@@ -1594,11 +1540,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/user/updateEmail",
+							"raw": "{{domain}}/auth/api/user/updateEmail",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"user",
 								"updateEmail"
@@ -1666,11 +1613,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/user/updateEmail",
+							"raw": "{{domain}}/auth/api/user/updateEmail",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"user",
 								"updateEmail"
@@ -1738,11 +1686,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/user/updateEmail",
+							"raw": "{{domain}}/auth/api/user/updateEmail",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"user",
 								"updateEmail"
@@ -1808,11 +1757,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/user/updateEmail",
+							"raw": "{{domain}}/auth/api/user/updateEmail",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"user",
 								"updateEmail"
@@ -1878,11 +1828,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/user/updateEmail",
+							"raw": "{{domain}}/auth/api/user/updateEmail",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"user",
 								"updateEmail"
@@ -1960,11 +1911,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{domain}}/api/support/updateName",
+					"raw": "{{domain}}/auth/api/support/updateName",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
+						"auth",
 						"api",
 						"support",
 						"updateName"
@@ -1987,11 +1939,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/support/updateName",
+							"raw": "{{domain}}/auth/api/support/updateName",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"support",
 								"updateName"
@@ -2053,11 +2006,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/support/updateName",
+							"raw": "{{domain}}/auth/api/support/updateName",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"support",
 								"updateName"
@@ -2125,11 +2079,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/support/updateName",
+							"raw": "{{domain}}/auth/api/support/updateName",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"support",
 								"updateName"
@@ -2195,11 +2150,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/support/updateName",
+							"raw": "{{domain}}/auth/api/support/updateName",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"support",
 								"updateName"
@@ -2265,11 +2221,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/support/updateName",
+							"raw": "{{domain}}/auth/api/support/updateName",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"support",
 								"updateName"
@@ -2347,11 +2304,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{domain}}/api/roles/assignRole",
+					"raw": "{{domain}}/auth/api/roles/assignRole",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
+						"auth",
 						"api",
 						"roles",
 						"assignRole"
@@ -2374,11 +2332,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/roles/assignRole",
+							"raw": "{{domain}}/auth/api/roles/assignRole",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"roles",
 								"assignRole"
@@ -2440,11 +2399,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/roles/assignRole",
+							"raw": "{{domain}}/auth/api/roles/assignRole",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"roles",
 								"assignRole"
@@ -2510,11 +2470,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/roles/assignRole",
+							"raw": "{{domain}}/auth/api/roles/assignRole",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"roles",
 								"assignRole"
@@ -2580,11 +2541,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/roles/assignRole",
+							"raw": "{{domain}}/auth/api/roles/assignRole",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"roles",
 								"assignRole"
@@ -2650,11 +2612,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/roles/assignRole",
+							"raw": "{{domain}}/auth/api/roles/assignRole",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"roles",
 								"assignRole"
@@ -2720,11 +2683,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{domain}}/api/roles/assignRole",
+							"raw": "{{domain}}/auth/api/roles/assignRole",
 							"host": [
 								"{{domain}}"
 							],
 							"path": [
+								"auth",
 								"api",
 								"roles",
 								"assignRole"

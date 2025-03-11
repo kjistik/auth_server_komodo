@@ -233,10 +233,10 @@ pre code {
     "lastName": "{{lastName}}",
     "userName": "{{username}}",
     "password": "{{password}}"
-}' "{{domain}}/register"</code></pre>
+}' "{{domain}}/auth/register"</code></pre>
                             </div>
                             <div class="tab-pane" id="request-register-user-example-http">
-                                <pre><code class="hljs http">POST %7B%7Bdomain%7D%7D/register HTTP/1.1
+                                <pre><code class="hljs http">POST %7B%7Bdomain%7D%7D/auth/register HTTP/1.1
 Host: 
 
 {
@@ -255,7 +255,7 @@ Host:
                         <ul class="nav nav-tabs" role="tablist">
                             
                             <li role="presentation" class="active">
-                                <a href="#request-register-user-responses-7b09a5f8-e157-4d1b-a75b-e035d9adccbf" data-toggle="tab">
+                                <a href="#request-register-user-responses-522f9665-16ef-4ba8-820c-10a0043e781a" data-toggle="tab">
                                     
                                     Repeated username
                                     
@@ -263,7 +263,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-register-user-responses-5bc0208e-a5c6-4f25-92e1-12c89f716bd6" data-toggle="tab">
+                                <a href="#request-register-user-responses-a4c6d464-a35e-4977-93f4-769d7265e061" data-toggle="tab">
                                     
                                     Success
                                     
@@ -271,7 +271,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-register-user-responses-41955747-ca53-4613-aa52-46338d329abd" data-toggle="tab">
+                                <a href="#request-register-user-responses-aba4006f-717b-4b48-8358-76e165125625" data-toggle="tab">
                                     
                                     Repeated email
                                     
@@ -279,7 +279,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-register-user-responses-00ce9e8d-3065-4876-b064-f6e82ced9a4f" data-toggle="tab">
+                                <a href="#request-register-user-responses-dbe15cef-77aa-4a51-bf81-9ced0169b1e6" data-toggle="tab">
                                     
                                     Invalid Username
                                     
@@ -287,7 +287,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-register-user-responses-71b74b5a-3631-4ee6-af1d-0b82bc4bb580" data-toggle="tab">
+                                <a href="#request-register-user-responses-6d0b3df4-8bbb-448c-a4b5-fca22a010ca0" data-toggle="tab">
                                     
                                     Invalid password
                                     
@@ -295,7 +295,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-register-user-responses-ca450c1b-7c1c-4d93-af23-918dfd823b58" data-toggle="tab">
+                                <a href="#request-register-user-responses-31ac02aa-9db3-43f5-861a-04fea236e5b0" data-toggle="tab">
                                     
                                     Invalid email
                                     
@@ -303,7 +303,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-register-user-responses-b11eecb6-8ed9-4eb1-81c2-59cc1bf11788" data-toggle="tab">
+                                <a href="#request-register-user-responses-4c475dbe-922c-48a6-a86e-16be311ddcd7" data-toggle="tab">
                                     
                                     Email not sent
                                     
@@ -311,7 +311,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-register-user-responses-6d8dad75-2f4f-4ce9-a4bd-45fb7752426d" data-toggle="tab">
+                                <a href="#request-register-user-responses-62fd4cd6-7cd6-46de-9deb-c9081043b546" data-toggle="tab">
                                     
                                     Database unavailable
                                     
@@ -321,7 +321,7 @@ Host:
                         </ul>
                         <div class="tab-content">
                             
-                            <div class="tab-pane active" id="request-register-user-responses-7b09a5f8-e157-4d1b-a75b-e035d9adccbf">
+                            <div class="tab-pane active" id="request-register-user-responses-522f9665-16ef-4ba8-820c-10a0043e781a">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -355,7 +355,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-register-user-responses-5bc0208e-a5c6-4f25-92e1-12c89f716bd6">
+                            <div class="tab-pane" id="request-register-user-responses-a4c6d464-a35e-4977-93f4-769d7265e061">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
                                     
@@ -379,7 +379,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-register-user-responses-41955747-ca53-4613-aa52-46338d329abd">
+                            <div class="tab-pane" id="request-register-user-responses-aba4006f-717b-4b48-8358-76e165125625">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -413,7 +413,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-register-user-responses-00ce9e8d-3065-4876-b064-f6e82ced9a4f">
+                            <div class="tab-pane" id="request-register-user-responses-dbe15cef-77aa-4a51-bf81-9ced0169b1e6">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -447,7 +447,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-register-user-responses-71b74b5a-3631-4ee6-af1d-0b82bc4bb580">
+                            <div class="tab-pane" id="request-register-user-responses-6d0b3df4-8bbb-448c-a4b5-fca22a010ca0">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -481,7 +481,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-register-user-responses-ca450c1b-7c1c-4d93-af23-918dfd823b58">
+                            <div class="tab-pane" id="request-register-user-responses-31ac02aa-9db3-43f5-861a-04fea236e5b0">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -515,7 +515,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-register-user-responses-b11eecb6-8ed9-4eb1-81c2-59cc1bf11788">
+                            <div class="tab-pane" id="request-register-user-responses-4c475dbe-922c-48a6-a86e-16be311ddcd7">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -549,7 +549,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-register-user-responses-6d8dad75-2f4f-4ce9-a4bd-45fb7752426d">
+                            <div class="tab-pane" id="request-register-user-responses-62fd4cd6-7cd6-46de-9deb-c9081043b546">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>500 Internal Server Error</td></tr>
                                     
@@ -607,10 +607,10 @@ Host:
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="request-verify-email-example-curl">
-                                <pre><code class="hljs curl">curl -X GET "{{domain}}/verify?token={{verificationToken}}"</code></pre>
+                                <pre><code class="hljs curl">curl -X GET "{{domain}}/auth/verify?token={{verificationToken}}"</code></pre>
                             </div>
                             <div class="tab-pane" id="request-verify-email-example-http">
-                                <pre><code class="hljs http">GET %7B%7Bdomain%7D%7D/verify?token={{verificationToken}} HTTP/1.1
+                                <pre><code class="hljs http">GET %7B%7Bdomain%7D%7D/auth/verify?token={{verificationToken}} HTTP/1.1
 Host: </code></pre>
                             </div>
                         </div>
@@ -621,7 +621,7 @@ Host: </code></pre>
                         <ul class="nav nav-tabs" role="tablist">
                             
                             <li role="presentation" class="active">
-                                <a href="#request-verify-email-responses-2e6b61d9-ee05-41b7-8075-27f6df8944b8" data-toggle="tab">
+                                <a href="#request-verify-email-responses-c368d0d0-ff13-4d17-ab2a-a2ad985ba594" data-toggle="tab">
                                     
                                     Response
                                     
@@ -631,7 +631,7 @@ Host: </code></pre>
                         </ul>
                         <div class="tab-content">
                             
-                            <div class="tab-pane active" id="request-verify-email-responses-2e6b61d9-ee05-41b7-8075-27f6df8944b8">
+                            <div class="tab-pane active" id="request-verify-email-responses-c368d0d0-ff13-4d17-ab2a-a2ad985ba594">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
                                     
@@ -679,14 +679,19 @@ Host: </code></pre>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="request-log-in-example-curl">
-                                <pre><code class="hljs curl">curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "username={{username}}&password={{password}}" "{{domain}}/login"</code></pre>
+                                <pre><code class="hljs curl">curl -X POST -d '{
+    "username":"{{username}}",
+    "password":"{{password}}"
+}' "{{domain}}/auth/login"</code></pre>
                             </div>
                             <div class="tab-pane" id="request-log-in-example-http">
-                                <pre><code class="hljs http">POST %7B%7Bdomain%7D%7D/login HTTP/1.1
+                                <pre><code class="hljs http">POST %7B%7Bdomain%7D%7D/auth/login HTTP/1.1
 Host: 
-Content-Type: application/x-www-form-urlencoded
 
-username={{username}}&password={{password}}</code></pre>
+{
+    "username":"{{username}}",
+    "password":"{{password}}"
+}</code></pre>
                             </div>
                         </div>
                     </div>
@@ -696,7 +701,7 @@ username={{username}}&password={{password}}</code></pre>
                         <ul class="nav nav-tabs" role="tablist">
                             
                             <li role="presentation" class="active">
-                                <a href="#request-log-in-responses-c427aa3d-7e33-4ae3-ab0d-86c29b3d9200" data-toggle="tab">
+                                <a href="#request-log-in-responses-5cdf0ce6-e6be-4a72-a3d7-c2305ac24053" data-toggle="tab">
                                     
                                     Success
                                     
@@ -704,7 +709,7 @@ username={{username}}&password={{password}}</code></pre>
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-log-in-responses-966170db-94b1-452b-8bee-abd17bb40f17" data-toggle="tab">
+                                <a href="#request-log-in-responses-a7422aa0-c697-41bb-bf6e-4e0c84bf2786" data-toggle="tab">
                                     
                                     Failed to log in
                                     
@@ -714,7 +719,7 @@ username={{username}}&password={{password}}</code></pre>
                         </ul>
                         <div class="tab-content">
                             
-                            <div class="tab-pane active" id="request-log-in-responses-c427aa3d-7e33-4ae3-ab0d-86c29b3d9200">
+                            <div class="tab-pane active" id="request-log-in-responses-5cdf0ce6-e6be-4a72-a3d7-c2305ac24053">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
                                     
@@ -750,7 +755,7 @@ username={{username}}&password={{password}}</code></pre>
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-log-in-responses-966170db-94b1-452b-8bee-abd17bb40f17">
+                            <div class="tab-pane" id="request-log-in-responses-a7422aa0-c697-41bb-bf6e-4e0c84bf2786">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>500 Internal Server Error</td></tr>
                                     
@@ -773,6 +778,12 @@ username={{username}}&password={{password}}</code></pre>
                                     <tr><th style="width: 20%;">content-length</th><td>54</td></tr>
                                     
                                     
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Invalid credentials"
+}</code></pre>
+                                    </td></tr>
                                     
                                     
                                 </table>
@@ -804,10 +815,10 @@ username={{username}}&password={{password}}</code></pre>
                             <div class="tab-pane active" id="request-update-password-example-curl">
                                 <pre><code class="hljs curl">curl -X PATCH -d '{
     "password":"{{password}}"
-}' "{{domain}}/api/user/updatePassword"</code></pre>
+}' "{{domain}}/auth/api/user/updatePassword"</code></pre>
                             </div>
                             <div class="tab-pane" id="request-update-password-example-http">
-                                <pre><code class="hljs http">PATCH %7B%7Bdomain%7D%7D/api/user/updatePassword HTTP/1.1
+                                <pre><code class="hljs http">PATCH %7B%7Bdomain%7D%7D/auth/api/user/updatePassword HTTP/1.1
 Host: 
 
 {
@@ -822,7 +833,7 @@ Host:
                         <ul class="nav nav-tabs" role="tablist">
                             
                             <li role="presentation" class="active">
-                                <a href="#request-update-password-responses-7baa5862-a6d3-40a3-8c59-94ccd74c2b0b" data-toggle="tab">
+                                <a href="#request-update-password-responses-81d44e76-64ca-4ece-b10d-8498c304048f" data-toggle="tab">
                                     
                                     Success
                                     
@@ -830,7 +841,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-password-responses-ad922c78-6330-4148-9dd3-cf4d8da7afb9" data-toggle="tab">
+                                <a href="#request-update-password-responses-50b4ff2c-839b-411a-88f0-ef4a5412280d" data-toggle="tab">
                                     
                                     Invalid password
                                     
@@ -838,15 +849,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-password-responses-f756f1cf-af8d-4004-b81e-008b98eefeb6" data-toggle="tab">
-                                    
-                                    Invalid password
-                                    
-                                </a>
-                            </li>
-                            
-                            <li role="presentation">
-                                <a href="#request-update-password-responses-e2adf1ce-6b5e-4ce5-863d-446d3fe95e07" data-toggle="tab">
+                                <a href="#request-update-password-responses-1d9ae0b6-2a90-41fb-96b4-851b9f8e6249" data-toggle="tab">
                                     
                                     Invalid username
                                     
@@ -854,7 +857,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-password-responses-6e146b00-3b7c-4445-add6-cc8aae5024cd" data-toggle="tab">
+                                <a href="#request-update-password-responses-c70d9a94-8d2e-4b5d-97cd-ebb90fff8919" data-toggle="tab">
                                     
                                     Insufficient permissions
                                     
@@ -862,7 +865,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-password-responses-ddb35ee7-667c-4ba2-923a-fd6db860d69a" data-toggle="tab">
+                                <a href="#request-update-password-responses-fbd7cf18-62b8-417a-832e-f200868b06bd" data-toggle="tab">
                                     
                                     Non authenticated
                                     
@@ -870,7 +873,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-password-responses-af14a78f-aad2-4e1c-beec-9020a797ed59" data-toggle="tab">
+                                <a href="#request-update-password-responses-3987dbba-e38e-4494-992a-085261ba2efa" data-toggle="tab">
                                     
                                     Expired JWT
                                     
@@ -880,7 +883,7 @@ Host:
                         </ul>
                         <div class="tab-content">
                             
-                            <div class="tab-pane active" id="request-update-password-responses-7baa5862-a6d3-40a3-8c59-94ccd74c2b0b">
+                            <div class="tab-pane active" id="request-update-password-responses-81d44e76-64ca-4ece-b10d-8498c304048f">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
                                     
@@ -904,7 +907,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-password-responses-ad922c78-6330-4148-9dd3-cf4d8da7afb9">
+                            <div class="tab-pane" id="request-update-password-responses-50b4ff2c-839b-411a-88f0-ef4a5412280d">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -938,41 +941,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-password-responses-f756f1cf-af8d-4004-b81e-008b98eefeb6">
-                                <table class="table table-bordered">
-                                    <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
-                                    
-                                    <tr><th style="width: 20%;">Content-Type</th><td>text/plain;charset=UTF-8</td></tr>
-                                    
-                                    <tr><th style="width: 20%;">Content-Length</th><td>226</td></tr>
-                                    
-                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
-                                    
-                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
-                                    
-                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
-                                    
-                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
-                                    
-                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
-                                    
-                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
-                                    
-                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
-                                    
-                                    
-                                    
-                                    <tr><td class="response-text-sample" colspan="2">
-                                        <pre><code>{
-    "error": "The password must comply with the following requirements: Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \" character is not allowed."
-}</code></pre>
-                                    </td></tr>
-                                    
-                                    
-                                </table>
-                            </div>
-                            
-                            <div class="tab-pane" id="request-update-password-responses-e2adf1ce-6b5e-4ce5-863d-446d3fe95e07">
+                            <div class="tab-pane" id="request-update-password-responses-1d9ae0b6-2a90-41fb-96b4-851b9f8e6249">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>400 Bad Request</td></tr>
                                     
@@ -1006,7 +975,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-password-responses-6e146b00-3b7c-4445-add6-cc8aae5024cd">
+                            <div class="tab-pane" id="request-update-password-responses-c70d9a94-8d2e-4b5d-97cd-ebb90fff8919">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>403 Forbidden</td></tr>
                                     
@@ -1034,7 +1003,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-password-responses-ddb35ee7-667c-4ba2-923a-fd6db860d69a">
+                            <div class="tab-pane" id="request-update-password-responses-fbd7cf18-62b8-417a-832e-f200868b06bd">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1068,7 +1037,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-password-responses-af14a78f-aad2-4e1c-beec-9020a797ed59">
+                            <div class="tab-pane" id="request-update-password-responses-3987dbba-e38e-4494-992a-085261ba2efa">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1146,7 +1115,7 @@ Host:
                         <ul class="nav nav-tabs" role="tablist">
                             
                             <li role="presentation" class="active">
-                                <a href="#request-update-email-responses-10157138-3904-4376-882f-96b658bf4cae" data-toggle="tab">
+                                <a href="#request-update-email-responses-4f9c8062-0d75-404a-8ccc-6262200a2fe6" data-toggle="tab">
                                     
                                     Invalid username
                                     
@@ -1154,7 +1123,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-email-responses-b49bfec6-2897-4e48-9ab5-fa9a196265d6" data-toggle="tab">
+                                <a href="#request-update-email-responses-431339cc-4adb-4d84-ae57-7e5a9ec201f6" data-toggle="tab">
                                     
                                     Invalid email
                                     
@@ -1162,7 +1131,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-email-responses-c691d168-d1a9-4edf-ba4d-69187e68ca38" data-toggle="tab">
+                                <a href="#request-update-email-responses-ac35ea66-244a-4d31-8154-a14ed8235edd" data-toggle="tab">
                                     
                                     Email not sent
                                     
@@ -1170,7 +1139,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-email-responses-7dd5b79b-b037-44dc-a387-2b603c842486" data-toggle="tab">
+                                <a href="#request-update-email-responses-2b9de7ee-95ec-469b-b80d-5642f1e93264" data-toggle="tab">
                                     
                                     Repeated email
                                     
@@ -1178,7 +1147,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-email-responses-3f3f75a9-fbf0-4d8f-93a2-e2f1463550b3" data-toggle="tab">
+                                <a href="#request-update-email-responses-b60136e1-d6f0-42b7-9151-d4ab0b7bf57e" data-toggle="tab">
                                     
                                     Insufficient permissions
                                     
@@ -1186,7 +1155,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-email-responses-9025712d-7063-49c4-bcd1-c94ae0792a01" data-toggle="tab">
+                                <a href="#request-update-email-responses-b1220155-a9a9-48cf-bcaa-1218f5618061" data-toggle="tab">
                                     
                                     Non authenticated
                                     
@@ -1194,7 +1163,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-email-responses-1099960f-182f-4ae8-a05b-0cf4020b3659" data-toggle="tab">
+                                <a href="#request-update-email-responses-84c07d92-9d4e-4683-a92e-8655a5ad9646" data-toggle="tab">
                                     
                                     Expired JWT
                                     
@@ -1204,7 +1173,7 @@ Host:
                         </ul>
                         <div class="tab-content">
                             
-                            <div class="tab-pane active" id="request-update-email-responses-10157138-3904-4376-882f-96b658bf4cae">
+                            <div class="tab-pane active" id="request-update-email-responses-4f9c8062-0d75-404a-8ccc-6262200a2fe6">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>400 Bad Request</td></tr>
                                     
@@ -1238,7 +1207,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-email-responses-b49bfec6-2897-4e48-9ab5-fa9a196265d6">
+                            <div class="tab-pane" id="request-update-email-responses-431339cc-4adb-4d84-ae57-7e5a9ec201f6">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -1272,7 +1241,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-email-responses-c691d168-d1a9-4edf-ba4d-69187e68ca38">
+                            <div class="tab-pane" id="request-update-email-responses-ac35ea66-244a-4d31-8154-a14ed8235edd">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1306,7 +1275,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-email-responses-7dd5b79b-b037-44dc-a387-2b603c842486">
+                            <div class="tab-pane" id="request-update-email-responses-2b9de7ee-95ec-469b-b80d-5642f1e93264">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -1340,7 +1309,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-email-responses-3f3f75a9-fbf0-4d8f-93a2-e2f1463550b3">
+                            <div class="tab-pane" id="request-update-email-responses-b60136e1-d6f0-42b7-9151-d4ab0b7bf57e">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>403 Forbidden</td></tr>
                                     
@@ -1368,7 +1337,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-email-responses-9025712d-7063-49c4-bcd1-c94ae0792a01">
+                            <div class="tab-pane" id="request-update-email-responses-b1220155-a9a9-48cf-bcaa-1218f5618061">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1402,7 +1371,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-email-responses-1099960f-182f-4ae8-a05b-0cf4020b3659">
+                            <div class="tab-pane" id="request-update-email-responses-84c07d92-9d4e-4683-a92e-8655a5ad9646">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1464,10 +1433,10 @@ Host:
     "givenName":"{{givenName}}",
     "lastName":"{{lastName}}",
     "username":"{{targetUsername}}"
-}' "{{domain}}/api/support/updateName"</code></pre>
+}' "{{domain}}/auth/api/support/updateName"</code></pre>
                             </div>
                             <div class="tab-pane" id="request-update-name-example-http">
-                                <pre><code class="hljs http">PATCH %7B%7Bdomain%7D%7D/api/support/updateName HTTP/1.1
+                                <pre><code class="hljs http">PATCH %7B%7Bdomain%7D%7D/auth/api/support/updateName HTTP/1.1
 Host: 
 
 {
@@ -1484,7 +1453,7 @@ Host:
                         <ul class="nav nav-tabs" role="tablist">
                             
                             <li role="presentation" class="active">
-                                <a href="#request-update-name-responses-17e0af9b-784f-42aa-936a-e149c9f2427a" data-toggle="tab">
+                                <a href="#request-update-name-responses-67c77073-4017-47e0-aaa0-881617f85338" data-toggle="tab">
                                     
                                     Success
                                     
@@ -1492,7 +1461,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-name-responses-2b20be69-807f-4d3d-9317-bbf4a8202b93" data-toggle="tab">
+                                <a href="#request-update-name-responses-dca6ac47-4faa-4396-875d-ded1a3605916" data-toggle="tab">
                                     
                                     Non existent user
                                     
@@ -1500,7 +1469,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-name-responses-c5d82121-aeaa-480d-93fa-989d19630f06" data-toggle="tab">
+                                <a href="#request-update-name-responses-95b5d229-aa38-48a0-87de-e836de2cdf41" data-toggle="tab">
                                     
                                     Non authenticated
                                     
@@ -1508,7 +1477,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-name-responses-9a61d4be-c33e-4c0f-82c2-84e6a13f162a" data-toggle="tab">
+                                <a href="#request-update-name-responses-af3606af-397e-4db5-ba45-e3106a9f59e7" data-toggle="tab">
                                     
                                     Insufficient permissions
                                     
@@ -1516,7 +1485,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-name-responses-8a94db10-275f-4f41-90b5-86a62fdbfdaa" data-toggle="tab">
+                                <a href="#request-update-name-responses-6273a7db-ea38-4483-9567-dccd2809938f" data-toggle="tab">
                                     
                                     Expired JWT
                                     
@@ -1526,7 +1495,7 @@ Host:
                         </ul>
                         <div class="tab-content">
                             
-                            <div class="tab-pane active" id="request-update-name-responses-17e0af9b-784f-42aa-936a-e149c9f2427a">
+                            <div class="tab-pane active" id="request-update-name-responses-67c77073-4017-47e0-aaa0-881617f85338">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
                                     
@@ -1550,7 +1519,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-name-responses-2b20be69-807f-4d3d-9317-bbf4a8202b93">
+                            <div class="tab-pane" id="request-update-name-responses-dca6ac47-4faa-4396-875d-ded1a3605916">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>400 Bad Request</td></tr>
                                     
@@ -1584,7 +1553,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-name-responses-c5d82121-aeaa-480d-93fa-989d19630f06">
+                            <div class="tab-pane" id="request-update-name-responses-95b5d229-aa38-48a0-87de-e836de2cdf41">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1618,7 +1587,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-name-responses-9a61d4be-c33e-4c0f-82c2-84e6a13f162a">
+                            <div class="tab-pane" id="request-update-name-responses-af3606af-397e-4db5-ba45-e3106a9f59e7">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>403 Forbidden</td></tr>
                                     
@@ -1646,7 +1615,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-name-responses-8a94db10-275f-4f41-90b5-86a62fdbfdaa">
+                            <div class="tab-pane" id="request-update-name-responses-6273a7db-ea38-4483-9567-dccd2809938f">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1707,10 +1676,10 @@ Host:
                                 <pre><code class="hljs curl">curl -X PATCH -d '{
     "roles":{{roles}},
     "username":"{{targetUsername}}"
-}' "{{domain}}/api/roles/assignRole"</code></pre>
+}' "{{domain}}/auth/api/roles/assignRole"</code></pre>
                             </div>
                             <div class="tab-pane" id="request-assign-roles-example-http">
-                                <pre><code class="hljs http">PATCH %7B%7Bdomain%7D%7D/api/roles/assignRole HTTP/1.1
+                                <pre><code class="hljs http">PATCH %7B%7Bdomain%7D%7D/auth/api/roles/assignRole HTTP/1.1
 Host: 
 
 {
@@ -1726,7 +1695,7 @@ Host:
                         <ul class="nav nav-tabs" role="tablist">
                             
                             <li role="presentation" class="active">
-                                <a href="#request-assign-roles-responses-c20dbb14-9ad1-4d20-b49f-309f2de86a3a" data-toggle="tab">
+                                <a href="#request-assign-roles-responses-23bc7e84-cfc7-4b3c-9c1f-3c9b6712d36d" data-toggle="tab">
                                     
                                     Success
                                     
@@ -1734,7 +1703,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-assign-roles-responses-abfcb2ca-1550-4077-9cf5-3dee3b916d54" data-toggle="tab">
+                                <a href="#request-assign-roles-responses-ab9724d2-2265-45e2-b4c4-0123c172a7c3" data-toggle="tab">
                                     
                                     Target user not verified
                                     
@@ -1742,7 +1711,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-assign-roles-responses-b991a3f1-ac40-4158-9459-4c09390ae595" data-toggle="tab">
+                                <a href="#request-assign-roles-responses-dfd022c1-b19c-4f61-96b0-934fd3b795f6" data-toggle="tab">
                                     
                                     Insufficient role
                                     
@@ -1750,7 +1719,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-assign-roles-responses-ba995b57-68b6-4153-a038-75daa925053a" data-toggle="tab">
+                                <a href="#request-assign-roles-responses-c182a39d-5ea5-4b6b-ba89-e0e2f48a3a10" data-toggle="tab">
                                     
                                     Non existent role
                                     
@@ -1758,7 +1727,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-assign-roles-responses-a4c6f8f4-c103-4f66-afef-de052c8b961e" data-toggle="tab">
+                                <a href="#request-assign-roles-responses-9451da1b-f169-49f5-a9d1-2c66363d2685" data-toggle="tab">
                                     
                                     Non authenticated
                                     
@@ -1766,7 +1735,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-assign-roles-responses-43b0db69-1146-4ee8-9c81-12cec9873358" data-toggle="tab">
+                                <a href="#request-assign-roles-responses-ae9d361a-03bc-40f2-8d82-cbc7a9e29859" data-toggle="tab">
                                     
                                     Expired JWT
                                     
@@ -1776,7 +1745,7 @@ Host:
                         </ul>
                         <div class="tab-content">
                             
-                            <div class="tab-pane active" id="request-assign-roles-responses-c20dbb14-9ad1-4d20-b49f-309f2de86a3a">
+                            <div class="tab-pane active" id="request-assign-roles-responses-23bc7e84-cfc7-4b3c-9c1f-3c9b6712d36d">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
                                     
@@ -1800,7 +1769,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-assign-roles-responses-abfcb2ca-1550-4077-9cf5-3dee3b916d54">
+                            <div class="tab-pane" id="request-assign-roles-responses-ab9724d2-2265-45e2-b4c4-0123c172a7c3">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1834,7 +1803,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-assign-roles-responses-b991a3f1-ac40-4158-9459-4c09390ae595">
+                            <div class="tab-pane" id="request-assign-roles-responses-dfd022c1-b19c-4f61-96b0-934fd3b795f6">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1868,7 +1837,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-assign-roles-responses-ba995b57-68b6-4153-a038-75daa925053a">
+                            <div class="tab-pane" id="request-assign-roles-responses-c182a39d-5ea5-4b6b-ba89-e0e2f48a3a10">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>400 Bad Request</td></tr>
                                     
@@ -1902,7 +1871,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-assign-roles-responses-a4c6f8f4-c103-4f66-afef-de052c8b961e">
+                            <div class="tab-pane" id="request-assign-roles-responses-9451da1b-f169-49f5-a9d1-2c66363d2685">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1936,7 +1905,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-assign-roles-responses-43b0db69-1146-4ee8-9c81-12cec9873358">
+                            <div class="tab-pane" id="request-assign-roles-responses-ae9d361a-03bc-40f2-8d82-cbc7a9e29859">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
