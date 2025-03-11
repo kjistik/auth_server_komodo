@@ -1,6 +1,12 @@
 # Ignore credentials file
 setup/credentials.json
 
+# Ignore ssl certificates
+nginx/nginx-proxy/certs/* 
+
+#Ignore further changes to the default nginx config file
+nginx/nginx-proxy/conf.d/*
+
 # Ignore build and dependency directories
 /target/
 /.idea/
