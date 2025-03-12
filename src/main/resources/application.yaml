@@ -9,12 +9,17 @@ jwt:
   secret-key: ${KOMODO_JWT_SECRET_KEY}
   expiration-time: ${KOMODO_JWT_EXPIRATION_TIME}  # 1 day in milliseconds
   verification-expiration-time: ${KOMODO_JWT_EMAIL_VERIFICATION_TIME}
+  refresh-expiration-time: ${KOMODO_REFRESH_TOKEN_EXPIRATION_TIME}
 
 mailgun:
   key: ${KOMODO_MAILGUN_KEY}
   domain: ${KOMODO_MAILGUN_DOMAIN}
 
 spring:
+  data:
+    redis:
+      host: redis
+      port: 6379
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
