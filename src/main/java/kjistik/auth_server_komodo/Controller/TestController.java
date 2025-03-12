@@ -16,7 +16,11 @@ public class TestController {
     RefreshTokenService service;
 
     @PostMapping("/test")
-    Mono<Boolean> hasValidRefreshToken(@RequestBody UsernameRequest username) {
-        return service.hasValidRefreshToken(username.getUsername());
+    public Mono<Boolean> hasValidRefreshToken(@RequestBody UsernameRequest username) {
+        return service.hasValidRefreshToken(username.getUsername())
+                .doOnNext(bool -> {
+                    // Print the result (side effect)
+                    System.out.println(bool);
+                });
     }
 }
