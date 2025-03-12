@@ -22,9 +22,10 @@ public class RefreshTokenService {
     }
 
     // Check if a valid refresh token exists for the user
-    public Mono<Boolean> hasValidRefreshToken(String username) {
+    public Mono<String> hasValidRefreshToken(String username) {
         String key = "refresh_token:" + username;
-        return reactiveRedisTemplate.opsForValue().get(key).hasElement();
+        return reactiveRedisTemplate.opsForValue().get(key)
+                .switchIfEmpty(Mono.just(""));
     }
 
     // Delete a refresh token (e.g., during logout)
