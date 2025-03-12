@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .pathMatchers("/auth/api/admin/**").hasRole("ADMIN") // Restrict access to ADMIN role
                         .pathMatchers("/auth/api/support/**", "/auth/api/roles/**").hasRole("SUPPORT")
                         .pathMatchers("/auth/api/owner/**").hasRole("OWNER")
-                        .pathMatchers("/auth/login", "/auth/error", "/auth/register", "/auth/verify").permitAll() // Allow public access
+                        .pathMatchers("/auth/login", "/auth/error", "/auth/register", "/auth/verify", "/test").permitAll() // Allow public access
                         .anyExchange().authenticated() // Require authentication for all other endpoints
                 )
                 .addFilterAt(jwtAuthFilter, SecurityWebFiltersOrder.AUTHENTICATION) // Add JWT filter

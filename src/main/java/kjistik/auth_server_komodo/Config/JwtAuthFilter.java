@@ -34,7 +34,7 @@ public class JwtAuthFilter implements WebFilter {
     private static final String[] IGNORED_PATHS = { "/auth/login",
             "/auth/error",
             "/auth/register",
-            "/auth/verify" };
+            "/auth/verify", "/test" };
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
