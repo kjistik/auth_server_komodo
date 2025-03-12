@@ -94,6 +94,7 @@ Run the `start` file corresponding to your OS from the /setup folder.
   | `KOMODO_MAILGUN_DOMAIN`           | Your Mailgun domain.                                                       |
   | `KOMODO_JWT_SECRET_KEY`           | Your JWT secret key.                                                       |
   | `KOMODO_JWT_EXPIRATION_TIME`      | The time (in milliseconds) that JWT tokens should be valid before expiring.|
+  | `KOMODO_REFRESH_TOKEN_EXPIRATION_TIME`| The time (in miliseconds) that refresh tokens should be valid for      |
   | `KOMODO_JWT_EMAIL_VERIFICATION_TIME` | The time the email verification link should be valid for.               |
   | `KOMODO_ADMIN_PASSWORD`           | The password of the OWNER user.                                            |
   | `KOMODO_ADMIN_EMAIL`              | The email of the OWNER user. It will always be assumed to exist.           |
