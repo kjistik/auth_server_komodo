@@ -1,7 +1,7 @@
 package kjistik.auth_server_komodo.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +15,7 @@ public class TestController {
     @Autowired
     RefreshTokenService service;
 
-    @GetMapping("/test")
+    @PostMapping("/test")
     Mono<Boolean> hasValidRefreshToken(@RequestBody UsernameRequest username) {
         return service.hasValidRefreshToken(username.getUsername());
     }
