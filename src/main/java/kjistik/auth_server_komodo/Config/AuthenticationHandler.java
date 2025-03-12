@@ -39,18 +39,24 @@ public class AuthenticationHandler implements ServerAuthenticationSuccessHandler
         private Mono<Void> generateAndWriteToken(WebFilterExchange webFilterExchange, UserDetails user) {
                 // Extract roles from the authenticated user
                 List<String> roles = user.getAuthorities().stream()
-                                .map(grantedAuthority -> grantedAuthority.getAuthority())
-                                .collect(Collectors.toList());
-
+                        .map(grantedAuthority -> grantedAuthority.getAuthority())
+                        .collect(Collectors.toList());
+            
                 // Generate JWT token
-                String token = utils.generateJwtToken(user.getUsername(), roles);
-
+                Mono<String> tokenMono = utils.generateJwtToken(user.getUsername(), roles);
+            
                 // Write the token to the response
                 ServerWebExchange exchange = webFilterExchange.getExchange();
-                String responseBody = "{\"token\": \"" + token + "\"}";
-
-                return exchange.getResponse()
-                                .writeWith(Mono.just(exchange.getResponse().bufferFactory()
-                                                .wrap(responseBody.getBytes())));
-        }
+            
+                return tokenMono.flatMap(token -> {
+                    // Create response body with the actual token value
+                    String responseBody = "{\"token\": \"" + token + "\"}";
+            
+                    // Write the response body to the response
+                    return exchange.getResponse()
+                            .writeWith(Mono.just(exchange.getResponse().bufferFactory()
+                                    .wrap(responseBody.getBytes())));
+                });
+            }
+            
 }

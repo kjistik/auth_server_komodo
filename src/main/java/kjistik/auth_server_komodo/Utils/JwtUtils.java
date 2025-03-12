@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -15,10 +16,14 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import kjistik.auth_server_komodo.Config.JwtConfig;
+import kjistik.auth_server_komodo.Services.RefreshToken.RefreshTokenService;
+import reactor.core.publisher.Mono;
 
 @Component
 public class JwtUtils {
 
+    @Autowired
+    RefreshTokenService service;
     private final JwtConfig jwtConfig;
 
     public JwtUtils(JwtConfig jwtConfig) {
@@ -41,12 +46,27 @@ public class JwtUtils {
         }
     }
 
-    public String generateJwtToken(String username, List<String> roles) {
+    public Mono<String> generateJwtToken(String username, List<String> roles) {
+        // Delete old refresh token, store new refresh token, and generate a new JWT
+        // token
+        return service.deleteRefreshToken(username)
+                .then(service.storeRefreshToken(username, generateRefreshToken(username)))
+                .then(Mono.fromCallable(() -> {
+                    return Jwts.builder()
+                            .subject(username)
+                            .issuedAt(new Date())
+                            .claim("roles", roles)
+                            .expiration(new Date(System.currentTimeMillis() + jwtConfig.getExpirationTime()))
+                            .signWith(getSecretKey())
+                            .compact();
+                }));
+    }
+
+    public String generateRefreshToken(String username) {
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date())
-                .claim("roles", roles)
-                .expiration(new Date(System.currentTimeMillis() + jwtConfig.getExpirationTime()))
+                .expiration(new Date(System.currentTimeMillis() + jwtConfig.getRefreshExpirationTime()))
                 .signWith(getSecretKey())
                 .compact();
     }
