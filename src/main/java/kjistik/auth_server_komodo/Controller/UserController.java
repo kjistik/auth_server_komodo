@@ -1,6 +1,7 @@
 package kjistik.auth_server_komodo.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,10 +31,18 @@ public class UserController {
     @Autowired
     AuthService authService;
 
-    @PostMapping("/login")
-    public Mono<Void> logIn(@RequestBody LoginRequest login, ServerWebExchange exchange) {
-        return authService.login(login, exchange);
-    }
+   @PostMapping("/login")
+public Mono<Void> logIn(@RequestBody LoginRequest login, ServerWebExchange exchange) {
+    return authService.login(login, exchange)
+            .onErrorResume(e -> {
+                // Clear session cookie on error
+                ResponseCookie invalidCookie = ResponseCookie.from("SESSION_ID", "")
+                        .maxAge(0)
+                        .build();
+                exchange.getResponse().addCookie(invalidCookie);
+                return Mono.error(e);
+            });
+}
 
     @PostMapping("/register")
     public Mono<Void> createUser(@RequestBody NewUser newUser) {

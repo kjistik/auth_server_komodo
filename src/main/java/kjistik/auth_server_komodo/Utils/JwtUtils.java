@@ -17,6 +17,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import kjistik.auth_server_komodo.Config.JwtConfig;
 import kjistik.auth_server_komodo.Services.RefreshToken.RefreshTokenService;
+import kjistik.auth_server_komodo.Utils.JwtUtils.JwtResponse;
+import lombok.Getter;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -46,23 +48,20 @@ public class JwtUtils {
         }
     }
 
-    public Mono<String> generateJwtToken(String username, List<String> roles) {
-        // Delete old refresh token, store new refresh token, and generate a new JWT
-        // token
-        return service.deleteRefreshToken(username)
-                .doOnTerminate(() -> System.out.println("Deleting old refresh token for user: " + username))
-                .then(service.storeRefreshToken(username, generateRefreshToken(username))
-                        .doOnTerminate(() -> System.out.println("Storing new refresh token for user: " + username))
-                        .then(Mono.fromCallable(() -> {
-                            System.out.println("Generating JWT for user: " + username);
-                            return Jwts.builder()
-                                    .subject(username)
-                                    .issuedAt(new Date())
-                                    .claim("roles", roles)
-                                    .expiration(new Date(System.currentTimeMillis() + jwtConfig.getExpirationTime()))
-                                    .signWith(getSecretKey())
-                                    .compact();
-                        })));
+    // Return both JWT and session ID
+    public Mono<JwtResponse> generateJwtToken(String username, String session, List<String> roles) {
+        return service.storeRefreshToken(username, generateRefreshToken(username), session)
+                .flatMap(newSessionId -> {
+                    // Generate JWT with session ID in claims
+                    String token = Jwts.builder()
+                            .subject(username)
+                            .issuedAt(new Date())
+                            .claim("roles", roles)
+                            .expiration(new Date(System.currentTimeMillis() + jwtConfig.getExpirationTime()))
+                            .signWith(getSecretKey())
+                            .compact();
+                    return Mono.just(new JwtResponse(token, newSessionId));
+                });
     }
 
     public String generateRefreshToken(String username) {
@@ -102,4 +101,18 @@ public class JwtUtils {
             throw new RuntimeException("Invalid token: " + e.getMessage());
         }
     }
+
+    // Helper class to hold both JWT and session ID
+    @Getter
+    public static class JwtResponse {
+        private final String token;
+        private final String sessionId;
+
+        public JwtResponse(String token, String sessionId) {
+            this.token = token;
+            this.sessionId = sessionId;
+        }
+
+    }
+
 }

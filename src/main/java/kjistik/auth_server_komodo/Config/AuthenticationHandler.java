@@ -1,9 +1,11 @@
 package kjistik.auth_server_komodo.Config;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.server.WebFilterExchange;
@@ -26,37 +28,42 @@ public class AuthenticationHandler implements ServerAuthenticationSuccessHandler
 
         @Override
         public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
-                // Get the authenticated user details
                 UserDetails user = (UserDetails) authentication.getPrincipal();
                 String username = user.getUsername().toLowerCase();
 
-                // Check if the user is verified
                 return userService.isUserVerified(username)
-                                // If the user is verified, proceed with generating and writing the token
                                 .then(generateAndWriteToken(webFilterExchange, user));
         }
 
         private Mono<Void> generateAndWriteToken(WebFilterExchange webFilterExchange, UserDetails user) {
-                // Extract roles from the authenticated user
                 List<String> roles = user.getAuthorities().stream()
-                        .map(grantedAuthority -> grantedAuthority.getAuthority())
-                        .collect(Collectors.toList());
-            
-                // Generate JWT token
-                Mono<String> tokenMono = utils.generateJwtToken(user.getUsername(), roles);
-            
-                // Write the token to the response
-                ServerWebExchange exchange = webFilterExchange.getExchange();
-            
-                return tokenMono.flatMap(token -> {
-                    // Create response body with the actual token value
-                    String responseBody = "{\"token\": \"" + token + "\"}";
-            
-                    // Write the response body to the response
-                    return exchange.getResponse()
-                            .writeWith(Mono.just(exchange.getResponse().bufferFactory()
-                                    .wrap(responseBody.getBytes())));
-                });
-            }
-            
+                                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                                .collect(Collectors.toList());
+
+                // Generate session ID and JWT token together
+                return utils.generateJwtToken(user.getUsername(), null, roles)
+                                .flatMap(jwtResponse -> {
+                                        // Create cookie with session ID
+                                        ResponseCookie sessionCookie = ResponseCookie
+                                                        .from("SESSION_ID", jwtResponse.getSessionId())
+                                                        .httpOnly(true)
+                                                        .secure(true)
+                                                        .path("/")
+                                                        .maxAge(Duration.ofDays(30))
+                                                        .build();
+
+                                        // Create response body
+                                        String responseBody = String.format(
+                                                        "{\"token\": \"%s\"}",
+                                                        jwtResponse.getToken());
+
+                                        // Write response
+                                        ServerWebExchange exchange = webFilterExchange.getExchange();
+                                        exchange.getResponse().addCookie(sessionCookie);
+
+                                        return exchange.getResponse()
+                                                        .writeWith(Mono.just(exchange.getResponse().bufferFactory()
+                                                                        .wrap(responseBody.getBytes())));
+                                });
+        }
 }
