@@ -17,7 +17,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import kjistik.auth_server_komodo.Config.JwtConfig;
 import kjistik.auth_server_komodo.Services.RefreshToken.RefreshTokenService;
-import kjistik.auth_server_komodo.Utils.JwtUtils.JwtResponse;
 import lombok.Getter;
 import reactor.core.publisher.Mono;
 
