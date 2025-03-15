@@ -38,9 +38,12 @@ services:
       KOMODO_REFRESH_TOKEN_EXPIRATION_TIME: ${KOMODO_REFRESH_TOKEN_EXPIRATION_TIME}
       KOMODO_REDIS_HOST: redis  # Redis host (same as the service name)
       KOMODO_REDIS_PORT: 6379   # Redis port
+    ports:
+      - "8080:8080"  # Expose the application port
+      - "5005:5005"  # Expose the debug port
     networks:
       - komodo-network
-    command: ["/wait-for-it.sh", "komodo-database:5432", "--", "java", "-jar", "/app/app.jar"]
+    command: ["/wait-for-it.sh", "komodo-database:5432", "--", "java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "/app/app.jar"]
     depends_on:
       - komodo-database
       - redis  # Ensure Redis starts before the backend
@@ -75,4 +78,3 @@ volumes:
 networks:
   komodo-network:
     driver: bridge
-    
