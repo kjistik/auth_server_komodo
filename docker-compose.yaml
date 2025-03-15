@@ -40,10 +40,10 @@ services:
       KOMODO_REDIS_PORT: 6379   # Redis port
     ports:
       - "8080:8080"  # Expose the application port
-      - "5005:5005"  # Expose the debug port
+      - "5006:5006"  # Expose the debug port
     networks:
       - komodo-network
-    command: ["/wait-for-it.sh", "komodo-database:5432", "--", "java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "/app/app.jar"]
+    command: ["/wait-for-it.sh", "komodo-database:5432", "--", "java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006", "-jar", "/app/app.jar"]
     depends_on:
       - komodo-database
       - redis  # Ensure Redis starts before the backend
