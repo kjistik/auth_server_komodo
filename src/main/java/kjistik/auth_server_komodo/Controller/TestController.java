@@ -18,7 +18,7 @@ public class TestController {
 
     @PostMapping("/test")
     public Mono<String> getRefreshToken(@RequestBody UsernameRequest user,
-            @CookieValue(name = "session_id", required = true) String session) {
+            @CookieValue(name = "SESSION_ID", required = true) String session) {
         return service.getRefreshToken(user.getUsername(), session);
     }
 }
