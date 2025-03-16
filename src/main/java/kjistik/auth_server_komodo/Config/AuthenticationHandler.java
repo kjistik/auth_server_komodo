@@ -2,6 +2,7 @@ package kjistik.auth_server_komodo.Config;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,9 @@ public class AuthenticationHandler implements ServerAuthenticationSuccessHandler
                                 .map(grantedAuthority -> grantedAuthority.getAuthority())
                                 .collect(Collectors.toList());
 
+                String session = UUID.randomUUID().toString();
                 // Generate session ID and JWT token together
-                return utils.generateJwtToken(user.getUsername(), null, roles)
+                return utils.generateJwtToken(user.getUsername(), session, roles)
                                 .flatMap(jwtResponse -> {
                                         // Create cookie with session ID
                                         ResponseCookie sessionCookie = ResponseCookie
