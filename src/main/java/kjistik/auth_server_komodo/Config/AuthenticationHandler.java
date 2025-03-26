@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
 import kjistik.auth_server_komodo.Services.User.UserService;
+import kjistik.auth_server_komodo.Utils.DeviceFingerprintUtils;
 import kjistik.auth_server_komodo.Utils.JwtUtils;
 import reactor.core.publisher.Mono;
 
@@ -25,25 +26,29 @@ public class AuthenticationHandler implements ServerAuthenticationSuccessHandler
         JwtUtils utils;
 
         @Autowired
+        DeviceFingerprintUtils fingerprintUtils;
+
+        @Autowired
         UserService userService;
 
-        @Override
-        public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
+        public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication,
+                        String agent, String os, String resolution, String timezone) {
                 UserDetails user = (UserDetails) authentication.getPrincipal();
                 String username = user.getUsername().toLowerCase();
 
                 return userService.isUserVerified(username)
-                                .then(generateAndWriteToken(webFilterExchange, user));
+                                .then(generateAndWriteToken(webFilterExchange, user, agent, os, resolution, timezone));
         }
 
-        private Mono<Void> generateAndWriteToken(WebFilterExchange webFilterExchange, UserDetails user) {
+        private Mono<Void> generateAndWriteToken(WebFilterExchange webFilterExchange, UserDetails user, String agent,
+                        String os, String resolution, String timezone) {
                 List<String> roles = user.getAuthorities().stream()
                                 .map(grantedAuthority -> grantedAuthority.getAuthority())
                                 .collect(Collectors.toList());
 
                 String session = UUID.randomUUID().toString();
                 // Generate session ID and JWT token together
-                return utils.generateJwtToken(user.getUsername(), session, roles)
+                return utils.generateJwtToken(user.getUsername(), session, roles, agent, os, resolution, timezone)
                                 .flatMap(jwtResponse -> {
                                         // Create cookie with session ID
                                         ResponseCookie sessionCookie = ResponseCookie
@@ -67,5 +72,10 @@ public class AuthenticationHandler implements ServerAuthenticationSuccessHandler
                                                         .writeWith(Mono.just(exchange.getResponse().bufferFactory()
                                                                         .wrap(responseBody.getBytes())));
                                 });
+        }
+
+        @Override
+        public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
+                throw new UnsupportedOperationException("Unimplemented method 'onAuthenticationSuccess'");
         }
 }

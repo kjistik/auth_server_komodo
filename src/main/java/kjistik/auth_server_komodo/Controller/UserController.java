@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,18 +32,23 @@ public class UserController {
     @Autowired
     AuthService authService;
 
-   @PostMapping("/login")
-public Mono<Void> logIn(@RequestBody LoginRequest login, ServerWebExchange exchange) {
-    return authService.login(login, exchange)
-            .onErrorResume(e -> {
-                // Clear session cookie on error
-                ResponseCookie invalidCookie = ResponseCookie.from("SESSION_ID", "")
-                        .maxAge(0)
-                        .build();
-                exchange.getResponse().addCookie(invalidCookie);
-                return Mono.error(e);
-            });
-}
+    @PostMapping("/login")
+    public Mono<Void> logIn(@RequestBody LoginRequest login,
+            ServerWebExchange exchange,
+            @RequestHeader("X-OS") String os,
+            @RequestHeader("X-Timezone") String timezone,
+            @RequestHeader("X-Resolution") String resolution,
+            @RequestHeader("User-Agent") String agent) {
+        return authService.login(login, exchange, agent, os, resolution, timezone)
+                .onErrorResume(e -> {
+                    // Clear session cookie on error
+                    ResponseCookie invalidCookie = ResponseCookie.from("SESSION_ID", "")
+                            .maxAge(0)
+                            .build();
+                    exchange.getResponse().addCookie(invalidCookie);
+                    return Mono.error(e);
+                });
+    }
 
     @PostMapping("/register")
     public Mono<Void> createUser(@RequestBody NewUser newUser) {

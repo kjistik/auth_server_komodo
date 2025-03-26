@@ -25,6 +25,7 @@ public class JwtUtils {
 
     @Autowired
     RefreshTokenService service;
+
     private final JwtConfig jwtConfig;
 
     public JwtUtils(JwtConfig jwtConfig) {
@@ -48,19 +49,26 @@ public class JwtUtils {
     }
 
     // Return both JWT and session ID
-    public Mono<JwtResponse> generateJwtToken(String username, String session, List<String> roles) {
-        return service.storeRefreshToken(username, generateRefreshToken(username), session)
-                .flatMap(newSessionId -> {
-                    // Generate JWT with session ID in claims
-                    String token = Jwts.builder()
-                            .subject(username)
-                            .issuedAt(new Date())
-                            .claim("roles", roles)
-                            .expiration(new Date(System.currentTimeMillis() + jwtConfig.getExpirationTime()))
-                            .signWith(getSecretKey())
-                            .compact();
-                    return Mono.just(new JwtResponse(token, newSessionId));
-                });
+    public Mono<JwtResponse> generateJwtToken(String username, String session, List<String> roles, String agent,
+            String os, String resolution, String timezone) {
+        return DeviceFingerprintUtils.generateFingerprint(agent, timezone, os, resolution)
+                .flatMap(fingerprint -> service.storeRefreshToken(
+                        username,
+                        generateRefreshToken(username),
+                        fingerprint, // Now using the resolved String value
+                        session)
+                        .flatMap(newSessionId -> {
+                            // Generate JWT with session ID in claims
+                            String token = Jwts.builder()
+                                    .subject(username)
+                                    .issuedAt(new Date())
+                                    .claim("roles", roles)
+                                    .claim("fingerprint", fingerprint) // Include fingerprint in JWT
+                                    .expiration(new Date(System.currentTimeMillis() + jwtConfig.getExpirationTime()))
+                                    .signWith(getSecretKey())
+                                    .compact();
+                            return Mono.just(new JwtResponse(token, newSessionId));
+                        }));
     }
 
     public String generateRefreshToken(String username) {

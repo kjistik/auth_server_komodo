@@ -33,7 +33,8 @@ public class AuthService {
         this.authenticationHandler = authenticationHandler;
     }
 
-    public Mono<Void> login(LoginRequest loginRequest, ServerWebExchange exchange) {
+    public Mono<Void> login(LoginRequest loginRequest, ServerWebExchange exchange, String agent, String os,
+            String resolution, String timezone) {
         return customUserDetailsService.findByUsername(loginRequest.getUsername())
                 .flatMap(userDetails -> {
                     // Check if the password matches
