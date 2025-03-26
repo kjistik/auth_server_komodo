@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import kjistik.auth_server_komodo.Services.RefreshToken.RefreshTokenService;
+import kjistik.auth_server_komodo.Utils.DatabaseEntities.RefreshTokenValue;
 import kjistik.auth_server_komodo.Utils.RequestEntities.UsernameRequest;
 import reactor.core.publisher.Mono;
 
@@ -17,7 +18,7 @@ public class TestController {
     RefreshTokenService service;
 
     @PostMapping("/test")
-    public Mono<String> getRefreshToken(@RequestBody UsernameRequest user,
+    public Mono<RefreshTokenValue> getRefreshToken(@RequestBody UsernameRequest user,
             @CookieValue(name = "SESSION_ID", required = true) String session) {
         return service.getRefreshToken(user.getUsername(), session);
     }
