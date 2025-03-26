@@ -27,6 +27,7 @@ public class DeviceHeadersFilter implements WebFilter {
         if (request.getURI().getPath().equals("/auth/login")) {
             for (String header : REQUIRED_HEADERS) {
                 if (request.getHeaders().getFirst(header) == null) {
+                    System.out.println("Faltan headers");
                     exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);
                     return exchange.getResponse()
                             .writeWith(Mono.just(exchange.getResponse().bufferFactory()
