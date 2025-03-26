@@ -44,7 +44,8 @@ public class AuthService {
                                 userDetails, null, userDetails.getAuthorities());
                         // Trigger the authentication success handler
                         return authenticationHandler.onAuthenticationSuccess(
-                                new WebFilterExchange(exchange, chain -> Mono.empty()), authentication);
+                                new WebFilterExchange(exchange, chain -> Mono.empty()), authentication, agent, os,
+                                resolution, timezone);
                     } else {
                         return Mono.error(new InvalidCredentialsException("Invalid credentials"));
                     }
