@@ -4,9 +4,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.stereotype.Component;
 
 import reactor.core.publisher.Mono;
 
+@Component
 public class DeviceFingerprintUtils {
 
     public static Mono<String> generateFingerprint(String agent, String timezone, String os, String resolution) {
