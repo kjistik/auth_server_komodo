@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 import kjistik.auth_server_komodo.Security.CustomUserDetailsService;
+import kjistik.auth_server_komodo.Security.Filters.JwtAuthFilter;
 
 @Configuration
 @EnableWebFluxSecurity

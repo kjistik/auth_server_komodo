@@ -1,4 +1,4 @@
-package kjistik.auth_server_komodo.Config;
+package kjistik.auth_server_komodo.Security.Filters;
 
 import java.util.List;
 import java.util.stream.Collectors;
