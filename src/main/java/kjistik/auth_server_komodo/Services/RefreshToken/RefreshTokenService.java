@@ -12,9 +12,9 @@ import reactor.core.publisher.Mono;
 @Service
 public class RefreshTokenService {
 
-    private final ReactiveRedisTemplate<String, Object> reactiveRedisTemplate;
+    private final ReactiveRedisTemplate<String, RefreshTokenValue> reactiveRedisTemplate;
 
-    public RefreshTokenService(ReactiveRedisTemplate<String, Object> reactiveRedisTemplate) {
+    public RefreshTokenService(ReactiveRedisTemplate<String, RefreshTokenValue> reactiveRedisTemplate) {
         this.reactiveRedisTemplate = reactiveRedisTemplate;
     }
 
