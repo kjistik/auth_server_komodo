@@ -18,16 +18,16 @@ public class RefreshTokenService {
         this.reactiveRedisTemplate = reactiveRedisTemplate;
     }
 
-    public Mono<String> storeRefreshToken(String username, 
-                                        String refreshToken, 
-                                        String fingerprint, 
-                                        String session) {
+    public Mono<String> storeRefreshToken(String username,
+            String refreshToken,
+            String fingerprint,
+            String session) {
         Duration duration = Duration.of(30, ChronoUnit.DAYS);
         String key = "refresh_token:" + username + ":" + session;
-        
+
         // Create value object
         RefreshTokenValue value = new RefreshTokenValue(refreshToken, fingerprint);
-        
+
         return reactiveRedisTemplate.opsForValue()
                 .set(key, value, duration)
                 .thenReturn(session);
@@ -37,5 +37,11 @@ public class RefreshTokenService {
         String key = "refresh_token:" + username + ":" + sessionId;
         return reactiveRedisTemplate.opsForValue().get(key)
                 .cast(RefreshTokenValue.class);
+    }
+
+    public Mono<Boolean> deleteRefreshToken(String username, String sessionId) {
+        String key = username + ":" + sessionId; // Matches your key structure
+        return reactiveRedisTemplate.delete(key)
+                .map(deletedCount -> deletedCount > 0);
     }
 }

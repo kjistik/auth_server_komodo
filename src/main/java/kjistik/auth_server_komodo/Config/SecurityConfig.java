@@ -18,44 +18,49 @@ import kjistik.auth_server_komodo.Security.Filters.DeviceHeadersFilter; // New i
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
-    private final JwtAuthFilter jwtAuthFilter;
-    private final CustomUserDetailsService customUserDetailsService;
-    private final PasswordEncoder passwordEncoder;
-    private final DeviceHeadersFilter deviceHeadersFilter; // New dependency
+        private final JwtAuthFilter jwtAuthFilter;
+        private final CustomUserDetailsService customUserDetailsService;
+        private final PasswordEncoder passwordEncoder;
+        private final DeviceHeadersFilter deviceHeadersFilter; // New dependency
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter,
-            CustomUserDetailsService customUserDetailsService,
-            PasswordEncoder passwordEncoder,
-            DeviceHeadersFilter deviceHeadersFilter) { // Updated constructor
-        this.jwtAuthFilter = jwtAuthFilter;
-        this.customUserDetailsService = customUserDetailsService;
-        this.passwordEncoder = passwordEncoder;
-        this.deviceHeadersFilter = deviceHeadersFilter;
-    }
+        public SecurityConfig(JwtAuthFilter jwtAuthFilter,
+                        CustomUserDetailsService customUserDetailsService,
+                        PasswordEncoder passwordEncoder,
+                        DeviceHeadersFilter deviceHeadersFilter) { // Updated constructor
+                this.jwtAuthFilter = jwtAuthFilter;
+                this.customUserDetailsService = customUserDetailsService;
+                this.passwordEncoder = passwordEncoder;
+                this.deviceHeadersFilter = deviceHeadersFilter;
+        }
 
-    @Bean
-    public ReactiveAuthenticationManager authenticationManager() {
-        UserDetailsRepositoryReactiveAuthenticationManager manager = new UserDetailsRepositoryReactiveAuthenticationManager(
-                customUserDetailsService);
-        manager.setPasswordEncoder(passwordEncoder);
-        return manager;
-    }
+        @Bean
+        public ReactiveAuthenticationManager authenticationManager() {
+                UserDetailsRepositoryReactiveAuthenticationManager manager = new UserDetailsRepositoryReactiveAuthenticationManager(
+                                customUserDetailsService);
+                manager.setPasswordEncoder(passwordEncoder);
+                return manager;
+        }
 
-    @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        return http
-                .csrf(csrf -> csrf.disable())
-                .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/auth/api/user/**").hasRole("USER")
-                        .pathMatchers("/auth/api/admin/**").hasRole("ADMIN")
-                        .pathMatchers("/auth/api/support/**", "/auth/api/roles/**").hasRole("SUPPORT")
-                        .pathMatchers("/auth/api/owner/**").hasRole("OWNER")
-                        .pathMatchers("/auth/reissue", "/auth/login", "/auth/error", "/auth/register", "/auth/verify",
-                                "/test")
-                        .permitAll()
-                        .anyExchange().authenticated())
-                .addFilterBefore(deviceHeadersFilter, SecurityWebFiltersOrder.AUTHENTICATION) // Added before JWT filter
-                .addFilterAt(jwtAuthFilter, SecurityWebFiltersOrder.AUTHENTICATION)
-                .build();
-    }
+        @Bean
+        public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+                return http
+                                .csrf(csrf -> csrf.disable())
+                                .authorizeExchange(exchanges -> exchanges
+                                                .pathMatchers("/auth/api/user/**").hasRole("USER")
+                                                .pathMatchers("/auth/api/admin/**").hasRole("ADMIN")
+                                                .pathMatchers("/auth/api/support/**", "/auth/api/roles/**")
+                                                .hasRole("SUPPORT")
+                                                .pathMatchers("/auth/api/owner/**").hasRole("OWNER")
+                                                .pathMatchers("/auth/reissue", "/auth/login", "/auth/error",
+                                                                "/auth/register", "/auth/verify",
+                                                                "/test", "/auth/logout")
+                                                .permitAll()
+                                                .anyExchange().authenticated())
+                                .addFilterBefore(deviceHeadersFilter, SecurityWebFiltersOrder.AUTHENTICATION) // Added
+                                                                                                              // before
+                                                                                                              // JWT
+                                                                                                              // filter
+                                .addFilterAt(jwtAuthFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+                                .build();
+        }
 }

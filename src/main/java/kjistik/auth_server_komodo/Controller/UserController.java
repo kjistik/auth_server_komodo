@@ -5,6 +5,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -87,5 +88,11 @@ public class UserController {
     @PatchMapping("/api/support/updateName")
     public Mono<Void> updateName(@RequestBody NameChange name) {
         return service.updateName(name.getGivenName(), name.getLastName(), name.getUsername());
+    }
+
+    @DeleteMapping("/logout")
+    public Mono<Boolean> endSession(@CookieValue String sessionId, @AuthenticationPrincipal UserDetails user) {
+        return authService.endSession(user.getUsername(), sessionId);
+
     }
 }

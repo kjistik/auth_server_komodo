@@ -47,6 +47,10 @@ public class AuthService {
         this.authenticationHandler = authenticationHandler;
     }
 
+public Mono<Boolean> endSession(String username, String sessionId){
+    return refreshService.deleteRefreshToken(username, sessionId);
+}
+
     public Mono<Void> login(LoginRequest loginRequest, ServerWebExchange exchange, String agent, String os,
             String resolution, String timezone) {
         return customUserDetailsService.findByUsername(loginRequest.getUsername())
