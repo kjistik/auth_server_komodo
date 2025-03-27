@@ -40,7 +40,7 @@ public class RefreshTokenService {
     }
 
     public Mono<Boolean> deleteRefreshToken(String username, String sessionId) {
-        String key = username + ":" + sessionId; // Matches your key structure
+        String key = "refresh_token:" + username + ":" + sessionId; // Matches your key structure
         return reactiveRedisTemplate.delete(key)
                 .map(deletedCount -> deletedCount > 0);
     }
