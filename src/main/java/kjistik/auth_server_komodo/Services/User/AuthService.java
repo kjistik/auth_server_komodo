@@ -108,10 +108,12 @@ public class AuthService {
                                             return response;
                                         });
                             }
-                            return service.sendSuspiciousActivityEmail(username, agent, os).then(
-                                    Mono.error(new ResponseStatusException(
-                                            HttpStatus.FORBIDDEN,
-                                            "Device fingerprint mismatch")));
+                            return service.sendSuspiciousActivityEmail(username, agent, os)
+                                    .then(refreshService.deleteRefreshToken(username, sessionId))
+                                    .then(
+                                            Mono.error(new ResponseStatusException(
+                                                    HttpStatus.FORBIDDEN,
+                                                    "Device fingerprint mismatch")));
                         }));
     }
 }
