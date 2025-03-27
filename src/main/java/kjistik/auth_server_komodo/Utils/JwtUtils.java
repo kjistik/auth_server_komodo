@@ -65,7 +65,6 @@ public class JwtUtils {
                                     .subject(username)
                                     .issuedAt(new Date())
                                     .claim("roles", roles)
-                                    .claim("fingerprint", fingerprint) // Include fingerprint in JWT
                                     .expiration(new Date(System.currentTimeMillis() + jwtConfig.getExpirationTime()))
                                     .signWith(getSecretKey())
                                     .compact();
