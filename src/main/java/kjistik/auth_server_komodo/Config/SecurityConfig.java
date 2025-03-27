@@ -24,9 +24,9 @@ public class SecurityConfig {
     private final DeviceHeadersFilter deviceHeadersFilter; // New dependency
 
     public SecurityConfig(JwtAuthFilter jwtAuthFilter,
-                        CustomUserDetailsService customUserDetailsService,
-                        PasswordEncoder passwordEncoder,
-                        DeviceHeadersFilter deviceHeadersFilter) { // Updated constructor
+            CustomUserDetailsService customUserDetailsService,
+            PasswordEncoder passwordEncoder,
+            DeviceHeadersFilter deviceHeadersFilter) { // Updated constructor
         this.jwtAuthFilter = jwtAuthFilter;
         this.customUserDetailsService = customUserDetailsService;
         this.passwordEncoder = passwordEncoder;
@@ -35,8 +35,8 @@ public class SecurityConfig {
 
     @Bean
     public ReactiveAuthenticationManager authenticationManager() {
-        UserDetailsRepositoryReactiveAuthenticationManager manager = 
-            new UserDetailsRepositoryReactiveAuthenticationManager(customUserDetailsService);
+        UserDetailsRepositoryReactiveAuthenticationManager manager = new UserDetailsRepositoryReactiveAuthenticationManager(
+                customUserDetailsService);
         manager.setPasswordEncoder(passwordEncoder);
         return manager;
     }
@@ -44,17 +44,18 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
-            .csrf(csrf -> csrf.disable())
-            .authorizeExchange(exchanges -> exchanges
-                .pathMatchers("/auth/api/user/**").hasRole("USER")
-                .pathMatchers("/auth/api/admin/**").hasRole("ADMIN")
-                .pathMatchers("/auth/api/support/**", "/auth/api/roles/**").hasRole("SUPPORT")
-                .pathMatchers("/auth/api/owner/**").hasRole("OWNER")
-                .pathMatchers("/auth/login", "/auth/error", "/auth/register", "/auth/verify", "/test").permitAll()
-                .anyExchange().authenticated()
-            )
-            .addFilterBefore(deviceHeadersFilter, SecurityWebFiltersOrder.AUTHENTICATION) // Added before JWT filter
-            .addFilterAt(jwtAuthFilter, SecurityWebFiltersOrder.AUTHENTICATION)
-            .build();
+                .csrf(csrf -> csrf.disable())
+                .authorizeExchange(exchanges -> exchanges
+                        .pathMatchers("/auth/api/user/**").hasRole("USER")
+                        .pathMatchers("/auth/api/admin/**").hasRole("ADMIN")
+                        .pathMatchers("/auth/api/support/**", "/auth/api/roles/**").hasRole("SUPPORT")
+                        .pathMatchers("/auth/api/owner/**").hasRole("OWNER")
+                        .pathMatchers("/auth/issue", "/auth/login", "/auth/error", "/auth/register", "/auth/verify",
+                                "/test")
+                        .permitAll()
+                        .anyExchange().authenticated())
+                .addFilterBefore(deviceHeadersFilter, SecurityWebFiltersOrder.AUTHENTICATION) // Added before JWT filter
+                .addFilterAt(jwtAuthFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+                .build();
     }
 }

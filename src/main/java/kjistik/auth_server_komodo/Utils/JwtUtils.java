@@ -1,6 +1,8 @@
 package kjistik.auth_server_komodo.Utils;
 
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -87,6 +89,34 @@ public class JwtUtils {
                 .expiration(new Date(System.currentTimeMillis() + jwtConfig.getVerificationExpirationTime()))
                 .signWith(getSecretKey())
                 .compact();
+    }
+
+    public List<String> extractRolesFromToken(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .verifyWith(getSecretKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+            
+            // Extract roles claim and handle different possible formats
+            Object rolesClaim = claims.get("roles");
+            
+            if (rolesClaim instanceof List) {
+                // Handle case where roles are stored as List<String>
+                return ((List<?>) rolesClaim).stream()
+                        .filter(String.class::isInstance)
+                        .map(String.class::cast)
+                        .toList();
+            } else if (rolesClaim instanceof String) {
+                // Handle case where roles are stored as comma-separated string
+                return Arrays.asList(((String) rolesClaim).split(","));
+            }
+            
+            return Collections.emptyList();
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new JwtException("Failed to extract roles from token", e);
+        }
     }
 
     public UUID extractUserIdFromToken(String token) {
