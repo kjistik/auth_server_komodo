@@ -1,94 +1,56 @@
 package kjistik.auth_server_komodo.Exceptions;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.slf4j.*;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.*;
+import reactor.core.publisher.*;
+import java.time.Instant;
+import java.util.*;
 
 @RestControllerAdvice
-@ComponentScan
 public class GlobalExceptionHandler {
-    @ExceptionHandler(JwtAuthenticationException.class)
-    public ResponseEntity<Object> handleJwtException(JwtAuthenticationException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"error\": \"" + ex.getMessage() + "\"}");
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Map<Class<?>, ErrorSpec> ERROR_MAPPINGS = Map.of(
+        JwtAuthenticationException.class, new ErrorSpec(HttpStatus.UNAUTHORIZED, "INVALID_JWT", true),
+        ExpiredJWTException.class, new ErrorSpec(HttpStatus.UNAUTHORIZED, "TOKEN_EXPIRED", true),
+        MissingSessionCookieException.class, new ErrorSpec(HttpStatus.UNAUTHORIZED, "MISSING_SESSION", true),
+        InvalidFingerprintsException.class, new ErrorSpec(HttpStatus.FORBIDDEN, "DEVICE_MISMATCH", false),
+        InvalidCredentialsException.class, new ErrorSpec(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", true),
+        RepeatedUserNameException.class, new ErrorSpec(HttpStatus.CONFLICT, "USERNAME_EXISTS", false),
+        UserNotFoundException.class, new ErrorSpec(HttpStatus.NOT_FOUND, "USER_NOT_FOUND", false),
+        EmailNotSentException.class, new ErrorSpec(HttpStatus.SERVICE_UNAVAILABLE, "EMAIL_FAILURE", false)
+    );
+
+    record ErrorSpec(HttpStatus status, String code, boolean logWarning) {
+        void log(Exception ex, ServerWebExchange exg) {
+            String ip = exg.getRequest().getRemoteAddress() != null ? 
+                exg.getRequest().getRemoteAddress().getAddress().getHostAddress() : "unknown";
+            if (logWarning) log.warn("{} from {}: {}", code, ip, ex.getMessage());
+            else log.error("{} from {}: {}", code, ip, ex.getMessage());
+        }
     }
 
-    @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<Object> handleInvalidCredentialsException(InvalidCredentialsException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"error\": \"" + ex.getMessage() + "\"}");
-    }
+    @ExceptionHandler
+    public Mono<ResponseEntity<Map<String, Object>>> handle(Exception ex, ServerWebExchange exg) {
+        ErrorSpec spec = ERROR_MAPPINGS.getOrDefault(ex.getClass(), 
+            new ErrorSpec(HttpStatus.INTERNAL_SERVER_ERROR, "UNKNOWN_ERROR", false));
+        
+        spec.log(ex, exg);
 
-    // Handle RepeatedUserNameException
-    @ExceptionHandler(RepeatedUserNameException.class)
-    public ResponseEntity<Object> handleRepeatedUserNameException(RepeatedUserNameException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("{\"error\": \"" + ex.getMessage() + "\"}");
-    }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Content-Type-Options", "nosniff");
+        if (ex instanceof ExpiredJWTException) 
+            headers.add("WWW-Authenticate", "Bearer error=\"invalid_token\"");
+        if (ex instanceof MissingSessionCookieException) 
+            headers.add("Set-Cookie", "SESSION_ID=; Max-Age=0; Path=/; Secure; HttpOnly; SameSite=Strict");
 
-    @ExceptionHandler(RepeatedEmailException.class)
-    public ResponseEntity<Object> handleRepeatedEmailException(RepeatedEmailException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("{\"error\": \"" + ex.getMessage() + "\"}");
+        return Mono.just(ResponseEntity.status(spec.status())
+            .headers(headers)
+            .body(Map.of(
+                "error", ex.getMessage(),
+                "code", spec.code(),
+                "timestamp", Instant.now()
+            )));
     }
-
-    @ExceptionHandler(EmailNotSentException.class)
-    public ResponseEntity<Object> handleEmailNotSentException(EmailNotSentException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"error\": \"" + ex.getMessage() + "\"}");
-    }
-
-    @ExceptionHandler(InvalidPasswordException.class)
-    public ResponseEntity<Object> handleInvalidPasswordException(InvalidPasswordException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("{\"error\": \"" + ex.getMessage() + "\"}");
-    }
-
-    @ExceptionHandler(InvalidUsernameException.class)
-    public ResponseEntity<Object> handleInvalidUsernameException(InvalidUsernameException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("{\"error\": \"" + ex.getMessage() + "\"}");
-    }
-
-    @ExceptionHandler(InvalidEmailException.class)
-    public ResponseEntity<Object> handleInvalidEmailException(InvalidEmailException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("{\"error\": \"" + ex.getMessage() + "\"}");
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\": \"" + ex.getMessage() + "\"}");
-    }
-
-    @ExceptionHandler(InexistentRoleException.class)
-    public ResponseEntity<Object> handleInexistentRoleException(InexistentRoleException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\": \"" + ex.getMessage() + "\"}");
-    }
-
-    @ExceptionHandler(UnableToAssignRoleException.class)
-    public ResponseEntity<Object> handleUnableToAssignRoleException(UnableToAssignRoleException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"error\": \"" + ex.getMessage() + "\"}");
-    }
-
-    @ExceptionHandler(InvalidFingerprintsException.class)
-    public ResponseEntity<Object> handleInvalidFingerprintsException(InvalidFingerprintsException ex) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body("{\"error\": \"" + ex.getMessage() + "\"}");
-    }
-
-    @ExceptionHandler(ExpiredJWTException.class)
-    public ResponseEntity<Object> handleExpiredJWTException(ExpiredJWTException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .header("WWW-Authenticate", "Bearer error=\"invalid_token\", error_description=\"Token expired\"")
-                .body("{\"error\": \"" + ex.getMessage() + "\"}");
-    }
-
-    @ExceptionHandler(MissingSessionCookieException.class)
-    public ResponseEntity<Object> handleMissingSessionCookie(MissingSessionCookieException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .header("Set-Cookie", "SESSION_ID=; Max-Age=0; Path=/; Secure; HttpOnly; SameSite=Strict")
-                .body("""
-                        {
-                            "error": "Authentication required",
-                            "details": "%s",
-                            "code": "MISSING_SESSION_COOKIE"
-                        }
-                        """.formatted(ex.getMessage()));
-    }
-    
 }
