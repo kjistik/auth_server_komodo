@@ -50,7 +50,7 @@ public class SecurityConfig {
                         .pathMatchers("/auth/api/admin/**").hasRole("ADMIN")
                         .pathMatchers("/auth/api/support/**", "/auth/api/roles/**").hasRole("SUPPORT")
                         .pathMatchers("/auth/api/owner/**").hasRole("OWNER")
-                        .pathMatchers("/auth/issue", "/auth/login", "/auth/error", "/auth/register", "/auth/verify",
+                        .pathMatchers("/auth/reissue", "/auth/login", "/auth/error", "/auth/register", "/auth/verify",
                                 "/test")
                         .permitAll()
                         .anyExchange().authenticated())
