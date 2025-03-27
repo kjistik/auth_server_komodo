@@ -91,7 +91,8 @@ public class UserController {
     }
 
     @DeleteMapping("/logout")
-    public Mono<Boolean> endSession(@CookieValue String sessionId, @AuthenticationPrincipal UserDetails user) {
+    public Mono<Boolean> endSession(@CookieValue("SESSION_ID") String sessionId,
+            @AuthenticationPrincipal UserDetails user) {
         return authService.endSession(user.getUsername(), sessionId);
 
     }
