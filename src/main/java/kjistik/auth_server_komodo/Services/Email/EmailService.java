@@ -24,7 +24,6 @@ public class EmailService implements EmailServiceInt {
         this.domainConfig = domainConfig;
     }
 
-    
     @Override
     public Mono<Void> sendVerificationEmail(String toMail, String verificationLink) {
         String url = domainConfig.getDomainUrl().concat("/verify?token=");
@@ -62,5 +61,39 @@ public class EmailService implements EmailServiceInt {
         })
                 .subscribeOn(Schedulers.boundedElastic()) // Run blocking code on a separate thread
                 .then(); // Convert the Mono<MessageResponse> to Mono<Void>
+    }
+
+    @Override
+    public Mono<Void> sendSuspiciousActivityEmail(String userEmail, String os, String browser) {
+        return Mono.fromCallable(() -> {
+            MailgunMessagesApi mailgunMessagesApi = MailgunClient.config(config.getKey())
+                    .createApi(MailgunMessagesApi.class);
+
+            String htmlContent = "<html>"
+                    + "<body>"
+                    + "<p>Se ha detectado actividad sospechosa en su cuenta:</p>"
+                    + "<p>Es posible que una de sus sesiones abiertas esté comprometida.</p>"
+                    + "<p>Hubo un intento de ingreso desde " + os + " en un navegador " + browser + "</p>"
+                    + "<p>Para preservar la seguridad de su cuenta, su sesión fue cerrada y se requerirá un nuevo ingreso</p>"
+                    + "</body>"
+                    + "</html>";
+
+            Message message = Message.builder()
+                    .from("security@" + config.getDomain())
+                    .to(userEmail)
+                    .subject("Actividad sospechosa detectada")
+                    .html(htmlContent)
+                    .build();
+
+            MessageResponse response = mailgunMessagesApi.sendMessage(config.getDomain(), message);
+
+            if (response.getId() == null) {
+                throw new EmailNotSentException(userEmail);
+            }
+
+            return response;
+        })
+                .subscribeOn(Schedulers.boundedElastic())
+                .then();
     }
 }

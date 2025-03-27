@@ -4,4 +4,6 @@ import reactor.core.publisher.Mono;
 
 public interface EmailServiceInt {
     public Mono<Void> sendVerificationEmail(String toMail, String verificationLink);
+
+    public Mono<Void> sendSuspiciousActivityEmail(String userEmail, String os, String browser);
 }

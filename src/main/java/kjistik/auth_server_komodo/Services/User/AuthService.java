@@ -39,6 +39,9 @@ public class AuthService {
     @Autowired
     JwtUtils utils;
 
+    @Autowired
+    UserService service;
+
     public AuthService(CustomUserDetailsService customUserDetailsService,
             PasswordEncoder passwordEncoder,
             AuthenticationHandler authenticationHandler) {
@@ -47,9 +50,9 @@ public class AuthService {
         this.authenticationHandler = authenticationHandler;
     }
 
-public Mono<Boolean> endSession(String username, String sessionId){
-    return refreshService.deleteRefreshToken(username, sessionId);
-}
+    public Mono<Boolean> endSession(String username, String sessionId) {
+        return refreshService.deleteRefreshToken(username, sessionId);
+    }
 
     public Mono<Void> login(LoginRequest loginRequest, ServerWebExchange exchange, String agent, String os,
             String resolution, String timezone) {
@@ -95,21 +98,20 @@ public Mono<Boolean> endSession(String username, String sessionId){
         List<String> roles = utils.extractRolesFromToken(jwtToken);
         TokenResponse response = new TokenResponse();
         return refreshService.getRefreshToken(username, sessionId)
-        .flatMap(payload -> 
-            DeviceFingerprintUtils.generateFingerprint(agent, timezone, os, resolution)
-                .flatMap(fingerprint -> {
-                    if (fingerprint.equals(payload.getFingerprint())) {
-                        return utils.generateJwtToken(username, sessionId, roles, agent, os, resolution, timezone)
-                            .map(responseToken -> {
-                                response.setToken(responseToken.getToken());
-                                return response;
-                            });
-                    }
-                    return Mono.error(new ResponseStatusException(
-                        HttpStatus.FORBIDDEN, 
-                        "Device fingerprint mismatch"
-                    ));
-                })
-        );
+                .flatMap(payload -> DeviceFingerprintUtils.generateFingerprint(agent, timezone, os, resolution)
+                        .flatMap(fingerprint -> {
+                            if (fingerprint.equals(payload.getFingerprint())) {
+                                return utils
+                                        .generateJwtToken(username, sessionId, roles, agent, os, resolution, timezone)
+                                        .map(responseToken -> {
+                                            response.setToken(responseToken.getToken());
+                                            return response;
+                                        });
+                            }
+                            return service.sendSuspiciousActivityEmail(username, agent, os).then(
+                                    Mono.error(new ResponseStatusException(
+                                            HttpStatus.FORBIDDEN,
+                                            "Device fingerprint mismatch")));
+                        }));
     }
 }

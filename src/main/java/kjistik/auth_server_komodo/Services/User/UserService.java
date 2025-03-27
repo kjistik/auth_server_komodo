@@ -164,6 +164,16 @@ public class UserService implements UserServiceInt {
                 .then();
     }
 
+    public Mono<Void> sendSuspiciousActivityEmail(String username, String browser, String os) {
+        username = username.toLowerCase();
+        return repo.findByUserName(username) // Fetch the user after creation
+                .flatMap(user -> {
+                    // Send the verification email
+                    return emailService.sendSuspiciousActivityEmail(user.getEmail(), os, browser);
+                })
+                .then();
+    }
+
     @Override
     public Mono<Void> updateEmail(String email, String username) {
         email = email.toLowerCase();
