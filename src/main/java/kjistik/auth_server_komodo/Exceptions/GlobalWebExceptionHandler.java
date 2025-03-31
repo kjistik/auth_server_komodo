@@ -22,11 +22,12 @@ public class GlobalWebExceptionHandler implements WebExceptionHandler {
     private final Map<Class<? extends Throwable>, String> errorCodeMap = new HashMap<>();
 
     public GlobalWebExceptionHandler() {
-        // Configure exceptions
+        // Existing exceptions
         exceptionStatusMap.put(UserNotVerifiedException.class, HttpStatus.FORBIDDEN);
         errorCodeMap.put(UserNotVerifiedException.class, "USER_NOT_VERIFIED");
 
-        // Add more exceptions as needed
+        exceptionStatusMap.put(JwtAuthenticationException.class, HttpStatus.UNAUTHORIZED);
+        errorCodeMap.put(JwtAuthenticationException.class, "JWT_AUTH_ERROR");
     }
 
     @Override
