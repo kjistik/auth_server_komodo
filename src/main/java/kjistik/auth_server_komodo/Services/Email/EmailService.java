@@ -26,7 +26,7 @@ public class EmailService implements EmailServiceInt {
 
     @Override
     public Mono<Void> sendVerificationEmail(String toMail, String verificationLink) {
-        String url = domainConfig.getDomainUrl().concat("/verify?token=");
+        String url = domainConfig.getDomainUrl().concat("/auth/verify?token=");
         return Mono.fromCallable(() -> {
             System.out.println("Ahí tiro el correo, pa\n");
             // Create the Mailgun API client
