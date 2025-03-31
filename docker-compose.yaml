@@ -41,6 +41,8 @@ services:
     ports:
       - "8080:8080"  # Expose the application port
       - "5006:5006"  # Expose the debug port
+    volumes:
+      - ./logs:/app/logs  # Maps ./logs (host) to /app/logs (container)
     networks:
       - komodo-network
     command: ["/wait-for-it.sh", "komodo-database:5432", "--", "java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006", "-jar", "/app/app.jar"]
