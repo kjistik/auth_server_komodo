@@ -2,7 +2,6 @@ package kjistik.auth_server_komodo.Security.Filters;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
