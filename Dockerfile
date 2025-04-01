@@ -17,7 +17,7 @@ FROM openjdk:21-jdk-slim
 WORKDIR /app
 
 # Copy the JAR file built in the previous step
-COPY --from=build /app/target/auth_server-0.0.1-SNAPSHOT.jar /app/your-app.jar
+COPY --from=build /app/target/auth_server-1.1.0-RELEASE.jar /app/your-app.jar
 
 # Copy the wait-for-it script into the container
 COPY ./wait-for-it.sh /wait-for-it.sh
