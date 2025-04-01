@@ -22,6 +22,7 @@ import org.springframework.web.server.WebFilterChain;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
+import kjistik.auth_server_komodo.Exceptions.JwtAuthenticationException;
 import kjistik.auth_server_komodo.Utils.JwtUtils;
 import reactor.core.publisher.Mono;
 
@@ -51,7 +52,7 @@ public class JwtAuthFilter implements WebFilter {
 
         // Check if the Authorization header is missing or malformed
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return writeUnauthorizedResponse(exchange, "Missing or invalid JWT");
+            return  Mono.error(new JwtAuthenticationException("Missing or invalid Authorization header"));
         }
 
         String token = authHeader.substring(7);
@@ -80,19 +81,11 @@ public class JwtAuthFilter implements WebFilter {
             }
         } catch (JwtException e) {
             // Handle invalid or expired JWT
-            return writeUnauthorizedResponse(exchange, "Invalid or expired JWT");
+            return  Mono.error(new JwtAuthenticationException("JWT validation failed: " + e.getMessage(), e));
         }
 
         // If the token is valid, proceed with the filter chain
         return chain.filter(exchange);
     }
 
-    private Mono<Void> writeUnauthorizedResponse(ServerWebExchange exchange, String errorMessage) {
-        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-        exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
-        String responseBody = "{\"error\": \"" + errorMessage + "\"}";
-        return exchange.getResponse().writeWith(Mono.just(exchange.getResponse()
-                .bufferFactory()
-                .wrap(responseBody.getBytes())));
-    }
 }
