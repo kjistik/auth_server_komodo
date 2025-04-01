@@ -94,14 +94,16 @@ public class UserService implements UserServiceInt {
     }
 
     private Mono<Void> validatePassword(String password) {
+        // TODO: see what happened here when changing password. It makes no sense
         String invalidPasswordMessage = "Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \\\" character is not allowed.";
         String passwordRegex = "^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\\\\|,.<>\\/?])(?=.*\\d)(?!.*[\"]).{8,}$";
 
         if (!password.matches(passwordRegex)) {
             return Mono.error(new InvalidPasswordException(invalidPasswordMessage));
+        } else {
+            return Mono.empty(); // Validation passed
         }
 
-        return Mono.empty(); // Validation passed
     }
 
     @Override
