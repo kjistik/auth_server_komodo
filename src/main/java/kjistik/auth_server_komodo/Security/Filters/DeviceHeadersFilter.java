@@ -9,6 +9,7 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 
+import kjistik.auth_server_komodo.Exceptions.MissingDeviceHeaderException;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -20,21 +21,21 @@ public class DeviceHeadersFilter implements WebFilter {
             "X-OS",
             "X-Resolution");
 
-    @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        ServerHttpRequest request = exchange.getRequest();
+        return Mono.fromCallable(() -> {
+            ServerHttpRequest request = exchange.getRequest();
 
-        if (request.getURI().getPath().equals("/auth/login")) {
-            for (String header : REQUIRED_HEADERS) {
-                if (request.getHeaders().getFirst(header) == null) {
-                    System.out.println("Faltan headers");
-                    exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);
-                    return exchange.getResponse()
-                            .writeWith(Mono.just(exchange.getResponse().bufferFactory()
-                                    .wrap(("Missing header: " + header).getBytes())));
-                }
+            if (request.getURI().getPath().equals("/auth/login")) {
+                REQUIRED_HEADERS.forEach(header -> {
+                    if (request.getHeaders().getFirst(header) == null) {
+                        throw new MissingDeviceHeaderException(header);
+                    }
+                });
             }
-        }
-        return chain.filter(exchange);
+            return chain.filter(exchange);
+        })
+                .onErrorResume(MissingDeviceHeaderException.class, e -> Mono.error(e))
+                .flatMap(mono -> mono);
     }
+
 }

@@ -16,47 +16,50 @@ import java.util.Map;
 @Component
 @Order(-2)
 public class GlobalWebExceptionHandler implements WebExceptionHandler {
-    private static final Logger log = LoggerFactory.getLogger(GlobalWebExceptionHandler.class);
+        private static final Logger log = LoggerFactory.getLogger(GlobalWebExceptionHandler.class);
 
-    private final Map<Class<? extends Throwable>, HttpStatus> exceptionStatusMap = new HashMap<>();
-    private final Map<Class<? extends Throwable>, String> errorCodeMap = new HashMap<>();
+        private final Map<Class<? extends Throwable>, HttpStatus> exceptionStatusMap = new HashMap<>();
+        private final Map<Class<? extends Throwable>, String> errorCodeMap = new HashMap<>();
 
-    public GlobalWebExceptionHandler() {
-        // Existing exceptions
-        exceptionStatusMap.put(UserNotVerifiedException.class, HttpStatus.FORBIDDEN);
-        errorCodeMap.put(UserNotVerifiedException.class, "USER_NOT_VERIFIED");
+        public GlobalWebExceptionHandler() {
+                // Existing exceptions
+                exceptionStatusMap.put(UserNotVerifiedException.class, HttpStatus.FORBIDDEN);
+                errorCodeMap.put(UserNotVerifiedException.class, "USER_NOT_VERIFIED");
 
-        exceptionStatusMap.put(JwtAuthenticationException.class, HttpStatus.UNAUTHORIZED);
-        errorCodeMap.put(JwtAuthenticationException.class, "JWT_AUTH_ERROR");
-    }
+                exceptionStatusMap.put(JwtAuthenticationException.class, HttpStatus.UNAUTHORIZED);
+                errorCodeMap.put(JwtAuthenticationException.class, "JWT_AUTH_ERROR");
 
-    @Override
-    public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
-        HttpStatus status = exceptionStatusMap.getOrDefault(ex.getClass(), HttpStatus.INTERNAL_SERVER_ERROR);
-        String errorCode = errorCodeMap.getOrDefault(ex.getClass(), "INTERNAL_ERROR");
+                exceptionStatusMap.put(MissingDeviceHeaderException.class, HttpStatus.BAD_REQUEST);
+                errorCodeMap.put(MissingDeviceHeaderException.class, "MISSING_DEVICE_HEADER");
+        }
 
-        // Log the error
-        log.error("{}: {} - Path: {}",
-                errorCode,
-                ex.getMessage(),
-                exchange.getRequest().getPath(),
-                ex); // Include stack trace for errors
+        @Override
+        public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
+                HttpStatus status = exceptionStatusMap.getOrDefault(ex.getClass(), HttpStatus.INTERNAL_SERVER_ERROR);
+                String errorCode = errorCodeMap.getOrDefault(ex.getClass(), "INTERNAL_ERROR");
 
-        // Prepare response
-        exchange.getResponse().setStatusCode(status);
-        exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
-        exchange.getResponse().getHeaders().add("X-Content-Type-Options", "nosniff");
+                // Log the error
+                log.error("{}: {} - Path: {}",
+                                errorCode,
+                                ex.getMessage(),
+                                exchange.getRequest().getPath(),
+                                ex); // Include stack trace for errors
 
-        // Create consistent error format
-        String errorBody = String.format(
-                "{\"error\": \"%s\", \"code\": \"%s\", \"timestamp\": \"%s\"}",
-                ex.getMessage(),
-                errorCode,
-                Instant.now());
+                // Prepare response
+                exchange.getResponse().setStatusCode(status);
+                exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
+                exchange.getResponse().getHeaders().add("X-Content-Type-Options", "nosniff");
 
-        return exchange.getResponse()
-                .writeWith(Mono.just(exchange.getResponse()
-                        .bufferFactory()
-                        .wrap(errorBody.getBytes())));
-    }
+                // Create consistent error format
+                String errorBody = String.format(
+                                "{\"error\": \"%s\", \"code\": \"%s\", \"timestamp\": \"%s\"}",
+                                ex.getMessage(),
+                                errorCode,
+                                Instant.now());
+
+                return exchange.getResponse()
+                                .writeWith(Mono.just(exchange.getResponse()
+                                                .bufferFactory()
+                                                .wrap(errorBody.getBytes())));
+        }
 }
