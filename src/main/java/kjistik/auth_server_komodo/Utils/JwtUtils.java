@@ -43,17 +43,15 @@ public class JwtUtils {
     }
 
     public Jws<Claims> validateToken(String token) {
-    try {
-        return Jwts.parser()
-                .verifyWith(getSecretKey())
-                .build()
-                .parseSignedClaims(token);
-    } catch (ExpiredJwtException e) {
-        throw new ExpiredJWTException(); // Your custom exception
-    } catch (JwtException | IllegalArgumentException e) {
-        throw new JwtAuthenticationException("Invalid token", e); // Your custom exception
+        try {
+            return Jwts.parser()
+                    .verifyWith(getSecretKey())
+                    .build()
+                    .parseSignedClaims(token);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new JwtAuthenticationException("Invalid token", e); // Your custom exception
+        }
     }
-}
 
     // Return both JWT and session ID
     public Mono<JwtResponse> generateJwtToken(String username, String session, List<String> roles, String agent,
@@ -102,10 +100,10 @@ public class JwtUtils {
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
-            
+
             // Extract roles claim and handle different possible formats
             Object rolesClaim = claims.get("roles");
-            
+
             if (rolesClaim instanceof List) {
                 // Handle case where roles are stored as List<String>
                 return ((List<?>) rolesClaim).stream()
@@ -116,7 +114,7 @@ public class JwtUtils {
                 // Handle case where roles are stored as comma-separated string
                 return Arrays.asList(((String) rolesClaim).split(","));
             }
-            
+
             return Collections.emptyList();
         } catch (JwtException | IllegalArgumentException e) {
             throw new JwtException("Failed to extract roles from token", e);
