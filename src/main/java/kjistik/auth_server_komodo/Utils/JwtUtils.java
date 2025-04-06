@@ -13,11 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import kjistik.auth_server_komodo.Config.JwtConfig;
+import kjistik.auth_server_komodo.Exceptions.ExpiredJWTException;
+import kjistik.auth_server_komodo.Exceptions.JwtAuthenticationException;
 import kjistik.auth_server_komodo.Services.RefreshToken.RefreshTokenService;
 import lombok.Getter;
 import reactor.core.publisher.Mono;
@@ -40,15 +43,17 @@ public class JwtUtils {
     }
 
     public Jws<Claims> validateToken(String token) {
-        try {
-            return Jwts.parser()
-                    .verifyWith(getSecretKey()) // Validate signature
-                    .build()
-                    .parseSignedClaims(token);
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtException("token", e); // Invalid token
-        }
+    try {
+        return Jwts.parser()
+                .verifyWith(getSecretKey())
+                .build()
+                .parseSignedClaims(token);
+    } catch (ExpiredJwtException e) {
+        throw new ExpiredJWTException(); // Your custom exception
+    } catch (JwtException | IllegalArgumentException e) {
+        throw new JwtAuthenticationException("Invalid token", e); // Your custom exception
     }
+}
 
     // Return both JWT and session ID
     public Mono<JwtResponse> generateJwtToken(String username, String session, List<String> roles, String agent,
