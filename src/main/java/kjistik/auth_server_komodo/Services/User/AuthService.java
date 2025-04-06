@@ -85,7 +85,7 @@ public class AuthService {
         // 1. Validate token with grace period
         Claims claims;
         try {
-            claims = utils.validateToken(jwtToken).getPayload();
+            claims = utils.validateTokenToleratingExpired(jwtToken).getPayload();
 
             // Manual expiration check with grace period (1 week)
             if (claims.getExpiration().before(new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7)))) {
