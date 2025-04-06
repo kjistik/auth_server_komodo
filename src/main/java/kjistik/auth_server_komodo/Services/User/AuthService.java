@@ -15,18 +15,17 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import kjistik.auth_server_komodo.Config.AuthenticationHandler;
 import kjistik.auth_server_komodo.Exceptions.ExpiredJWTException;
 import kjistik.auth_server_komodo.Exceptions.InvalidCredentialsException;
 import kjistik.auth_server_komodo.Exceptions.InvalidFingerprintsException;
 import kjistik.auth_server_komodo.Security.CustomUserDetailsService;
 import kjistik.auth_server_komodo.Services.RefreshToken.RefreshTokenService;
+import kjistik.auth_server_komodo.Utils.DeviceFingerprintUtils;
 import kjistik.auth_server_komodo.Utils.JwtUtils;
 import kjistik.auth_server_komodo.Utils.RequestEntities.LoginRequest;
 import kjistik.auth_server_komodo.Utils.RequestEntities.TokenResponse;
 import reactor.core.publisher.Mono;
-import kjistik.auth_server_komodo.Utils.DeviceFingerprintUtils;
 
 @Service
 public class AuthService {
@@ -92,8 +91,8 @@ public class AuthService {
             if (claims.getExpiration().before(new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7)))) {
                 throw new ExpiredJWTException();
             }
-        } catch (JwtException e) {
-            return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token: " + e.getMessage()));
+        } catch (ExpiredJWTException e) {
+            return Mono.error(e);
         }
         // 2. Extract user info
         String username = claims.getSubject();
