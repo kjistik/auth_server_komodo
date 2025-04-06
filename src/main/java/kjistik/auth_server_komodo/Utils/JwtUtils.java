@@ -19,6 +19,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import kjistik.auth_server_komodo.Config.JwtConfig;
+import kjistik.auth_server_komodo.Exceptions.JwtAuthenticationException;
 import kjistik.auth_server_komodo.Services.RefreshToken.RefreshTokenService;
 import lombok.Getter;
 import reactor.core.publisher.Mono;
@@ -58,7 +59,7 @@ public class JwtUtils {
                     .build()
                     .parseSignedClaims(token);
         } catch (SecurityException | IllegalArgumentException e) {
-            throw new JwtException("token", e); // Invalid token
+            throw new JwtAuthenticationException("Missing or invalid token"); // Invalid token
         }
     }
 
