@@ -111,7 +111,7 @@ try {
     String username = claims.getSubject();
     log.debug("Proceeding with token reissue for user: {}", username);
     
-    List<String> roles = utils.extractRolesFromToken(jwtToken);
+    List<String> roles = utils.extractRolesFromExpiredToken(jwtToken);
     TokenResponse response = new TokenResponse();
     
     return refreshService.getRefreshToken(username, sessionId)

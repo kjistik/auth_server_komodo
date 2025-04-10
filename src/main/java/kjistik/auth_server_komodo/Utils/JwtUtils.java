@@ -178,4 +178,33 @@ public class JwtUtils {
 
     }
 
+    public List<String> extractRolesFromExpiredToken(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .verifyWith(getSecretKey())
+                    .clockSkewSeconds(Integer.MAX_VALUE)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+
+            // Extract roles claim and handle different possible formats
+            Object rolesClaim = claims.get("roles");
+
+            if (rolesClaim instanceof List) {
+                // Handle case where roles are stored as List<String>
+                return ((List<?>) rolesClaim).stream()
+                        .filter(String.class::isInstance)
+                        .map(String.class::cast)
+                        .toList();
+            } else if (rolesClaim instanceof String) {
+                // Handle case where roles are stored as comma-separated string
+                return Arrays.asList(((String) rolesClaim).split(","));
+            }
+
+            return Collections.emptyList();
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new JwtException("Failed to extract roles from token", e);
+        }
+    }
+
 }
