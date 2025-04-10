@@ -19,6 +19,7 @@ import kjistik.auth_server_komodo.Config.AuthenticationHandler;
 import kjistik.auth_server_komodo.Exceptions.ExpiredJWTException;
 import kjistik.auth_server_komodo.Exceptions.InvalidCredentialsException;
 import kjistik.auth_server_komodo.Exceptions.InvalidFingerprintsException;
+import kjistik.auth_server_komodo.Exceptions.JwtAuthenticationException;
 import kjistik.auth_server_komodo.Security.CustomUserDetailsService;
 import kjistik.auth_server_komodo.Services.RefreshToken.RefreshTokenService;
 import kjistik.auth_server_komodo.Utils.DeviceFingerprintUtils;
@@ -75,44 +76,47 @@ public class AuthService {
                 .switchIfEmpty(Mono.error(new InvalidCredentialsException("Invalid credentials")));
     }
 
-    public Mono<TokenResponse> reIssueToken(String agent, String os,
-            String resolution, String timezone, String sessionId, String jwtToken) {
+ public Mono<TokenResponse> reIssueToken(String agent, String os,
+        String resolution, String timezone, String sessionId, String jwtToken) {
 
-        if (sessionId == null || sessionId.isEmpty()) {
-            return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Missing session cookie"));
+    if (sessionId == null || sessionId.isEmpty()) {
+        return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Missing session cookie"));
+    }
+
+    try {
+        // 1. Validate token (passes if either valid or expired)
+        Claims claims = utils.validateTokenToleratingExpired(jwtToken).getPayload();
+        
+        // 2. SINGLE expiration check
+        Date gracePeriodCutoff = new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7));
+        if (claims.getExpiration().before(gracePeriodCutoff)) {
+            throw new ExpiredJWTException(); // >7 days expired
         }
-
-        // 1. Validate token with grace period
-        Claims claims;
-        try {
-            claims = utils.validateTokenToleratingExpired(jwtToken).getPayload();
-
-            // Manual expiration check with grace period (1 week)
-            if (claims.getExpiration().before(new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7)))) {
-                throw new ExpiredJWTException();
-            }
-        } catch (ExpiredJWTException e) {
-            return Mono.error(e);
-        }
-        // 2. Extract user info
+        
+        // 3. Proceed with reissue (valid OR expired ≤7 days)
         String username = claims.getSubject();
         List<String> roles = utils.extractRolesFromToken(jwtToken);
         TokenResponse response = new TokenResponse();
+        
         return refreshService.getRefreshToken(username, sessionId)
-                .flatMap(payload -> DeviceFingerprintUtils.generateFingerprint(agent, timezone, os, resolution)
-                        .flatMap(fingerprint -> {
-                            if (fingerprint.equals(payload.getFingerprint())) {
-                                return utils
-                                        .generateJwtToken(username, sessionId, roles, agent, os, resolution, timezone)
-                                        .map(responseToken -> {
-                                            response.setToken(responseToken.getToken());
-                                            return response;
-                                        });
-                            }
-                            return service.sendSuspiciousActivityEmail(username, agent, os)
-                                    .then(refreshService.deleteRefreshToken(username, sessionId))
-                                    .then(
-                                            Mono.error(new InvalidFingerprintsException()));
-                        }));
+            .flatMap(payload -> DeviceFingerprintUtils.generateFingerprint(agent, timezone, os, resolution)
+                .flatMap(fingerprint -> {
+                    if (fingerprint.equals(payload.getFingerprint())) {
+                        return utils.generateJwtToken(username, sessionId, roles, agent, os, resolution, timezone)
+                            .map(responseToken -> {
+                                response.setToken(responseToken.getToken());
+                                return response;
+                            });
+                    }
+                    return service.sendSuspiciousActivityEmail(username, agent, os)
+                        .then(refreshService.deleteRefreshToken(username, sessionId))
+                        .then(Mono.error(new InvalidFingerprintsException()));
+                }));
+                
+    } catch (JwtAuthenticationException e) {
+        return Mono.error(e);
+    } catch (ExpiredJWTException e) {
+        return Mono.error(e); // Will be handled by your GlobalExceptionHandler
     }
+}
 }
