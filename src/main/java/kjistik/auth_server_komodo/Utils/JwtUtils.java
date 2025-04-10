@@ -61,7 +61,7 @@ public class JwtUtils {
         try {
             log.debug("Validating token structure and signature");
             return Jwts.parser()
-                    .clockSkewSeconds(Long.MAX_VALUE)// Disables expiration checks
+                    .clockSkewSeconds(Integer.MAX_VALUE)// Disables expiration checks
                     .verifyWith(getSecretKey())
                     .build()
                     .parseSignedClaims(token);
