@@ -96,7 +96,7 @@ try {
     log.debug("Token validation passed for user: {}", claims.getSubject());
     
     // 2. SINGLE expiration check
-    Date gracePeriodCutoff = new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7));
+    Date gracePeriodCutoff = new Date(System.currentTimeMillis() - TimeUnit.SECONDS.toMillis(60));
     Date expiration = claims.getExpiration();
     
     log.debug("Token expiration check - Expires: {}, Grace cutoff: {}, Current: {}", 
