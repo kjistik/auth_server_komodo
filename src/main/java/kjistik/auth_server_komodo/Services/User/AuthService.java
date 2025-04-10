@@ -81,67 +81,70 @@ public class AuthService {
     }
 
     public Mono<TokenResponse> reIssueToken(String agent, String os,
-    String resolution, String timezone, String sessionId, String jwtToken) {
+            String resolution, String timezone, String sessionId, String jwtToken) {
 
-if (sessionId == null || sessionId.isEmpty()) {
-    log.warn("Reissue attempt with missing session cookie");
-    return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Missing session cookie"));
-}
+        if (sessionId == null || sessionId.isEmpty()) {
+            log.warn("Reissue attempt with missing session cookie");
+            return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Missing session cookie"));
+        }
 
-try {
-    log.debug("Starting token reissue validation for session: {}", sessionId);
-    
-    // 1. Validate token (passes if either valid or expired)
-    Claims claims = utils.validateTokenToleratingExpired(jwtToken).getPayload();
-    log.debug("Token validation passed for user: {}", claims.getSubject());
-    
-    // 2. SINGLE expiration check
-    Date gracePeriodCutoff = new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7));
-    Date expiration = claims.getExpiration();
-    
-    log.debug("Token expiration check - Expires: {}, Grace cutoff: {}, Current: {}", 
-        expiration, gracePeriodCutoff, new Date());
-    
-    if (expiration.before(gracePeriodCutoff)) {
-        log.warn("Token expired beyond grace period for user: {}", claims.getSubject());
-        throw new ExpiredJWTException();
+        try {
+            log.debug("Starting token reissue validation for session: {}", sessionId);
+
+            // 1. Validate token (passes if either valid or expired)
+            Claims claims = utils.validateTokenToleratingExpired(jwtToken).getPayload();
+            log.debug("Token validation passed for user: {}", claims.getSubject());
+
+            // 2. SINGLE expiration check
+            Date gracePeriodCutoff = new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7));
+            Date expiration = claims.getExpiration();
+
+            log.debug("Token expiration check - Expires: {}, Grace cutoff: {}, Current: {}",
+                    expiration, gracePeriodCutoff, new Date());
+
+            if (expiration.before(gracePeriodCutoff)) {
+                log.warn("Token expired beyond grace period for user: {}", claims.getSubject());
+                throw new ExpiredJWTException();
+            }
+
+            // 3. Proceed with reissue (valid OR expired ≤7 days)
+            String username = claims.getSubject();
+            log.debug("Proceeding with token reissue for user: {}", username);
+
+            List<String> roles = utils.extractRolesFromExpiredToken(jwtToken);
+            TokenResponse response = new TokenResponse();
+
+            return refreshService.getRefreshToken(username, sessionId)
+                    .doOnNext(payload -> log.debug("Refresh token found for user: {}", username))
+                    .flatMap(payload -> DeviceFingerprintUtils.generateFingerprint(agent, timezone, os, resolution)
+                            .doOnNext(fingerprint -> log.debug("Generated fingerprint for device check"))
+                            .flatMap(fingerprint -> {
+                                if (fingerprint.equals(payload.getFingerprint())) {
+                                    log.debug("Device fingerprint match for user: {}", username);
+                                    return utils
+                                            .generateJwtToken(username, sessionId, roles, agent, os, resolution,
+                                                    timezone)
+                                            .map(responseToken -> {
+                                                response.setToken(responseToken.getToken());
+                                                log.info("Successfully reissued token for user: {}", username);
+                                                return response;
+                                            });
+                                }
+                                log.warn("Device fingerprint mismatch for user: {}", username);
+                                return service.sendSuspiciousActivityEmail(username, agent, os)
+                                        .then(refreshService.deleteRefreshToken(username, sessionId))
+                                        .then(Mono.error(new InvalidFingerprintsException()));
+                            }));
+
+        } catch (JwtAuthenticationException e) {
+            log.warn("Invalid token in reissue attempt: {}", e.getMessage());
+            return Mono.error(e);
+        } catch (ExpiredJWTException e) {
+            log.warn("Token rejected - expired beyond grace period");
+            return Mono.error(e);
+        } catch (Exception e) {
+            log.error("Unexpected error during token reissue", e);
+            return Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Token reissue failed"));
+        }
     }
-    
-    // 3. Proceed with reissue (valid OR expired ≤7 days)
-    String username = claims.getSubject();
-    log.debug("Proceeding with token reissue for user: {}", username);
-    
-    List<String> roles = utils.extractRolesFromExpiredToken(jwtToken);
-    TokenResponse response = new TokenResponse();
-    
-    return refreshService.getRefreshToken(username, sessionId)
-        .doOnNext(payload -> log.debug("Refresh token found for user: {}", username))
-        .flatMap(payload -> DeviceFingerprintUtils.generateFingerprint(agent, timezone, os, resolution)
-            .doOnNext(fingerprint -> log.debug("Generated fingerprint for device check"))
-            .flatMap(fingerprint -> {
-                if (fingerprint.equals(payload.getFingerprint())) {
-                    log.debug("Device fingerprint match for user: {}", username);
-                    return utils.generateJwtToken(username, sessionId, roles, agent, os, resolution, timezone)
-                        .map(responseToken -> {
-                            response.setToken(responseToken.getToken());
-                            log.info("Successfully reissued token for user: {}", username);
-                            return response;
-                        });
-                }
-                log.warn("Device fingerprint mismatch for user: {}", username);
-                return service.sendSuspiciousActivityEmail(username, agent, os)
-                    .then(refreshService.deleteRefreshToken(username, sessionId))
-                    .then(Mono.error(new InvalidFingerprintsException()));
-            }));
-            
-} catch (JwtAuthenticationException e) {
-    log.warn("Invalid token in reissue attempt: {}", e.getMessage());
-    return Mono.error(e);
-} catch (ExpiredJWTException e) {
-    log.warn("Token rejected - expired beyond grace period");
-    return Mono.error(e);
-} catch (Exception e) {
-    log.error("Unexpected error during token reissue", e);
-    return Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Token reissue failed"));
 }
-}}

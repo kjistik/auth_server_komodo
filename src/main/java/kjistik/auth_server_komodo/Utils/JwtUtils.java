@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -52,6 +53,10 @@ public class JwtUtils {
                     .verifyWith(getSecretKey()) // Validate signature
                     .build()
                     .parseSignedClaims(token);
+
+        } catch (ExpiredJwtException e) {
+            // Convert to your custom exception if needed
+            throw new JwtAuthenticationException("Token expired", e);
         } catch (JwtException | IllegalArgumentException e) {
             throw new JwtException("token", e); // Invalid token
         }
