@@ -16,6 +16,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import kjistik.auth_server_komodo.Config.JwtConfig;
@@ -58,7 +59,7 @@ public class JwtUtils {
                     .verifyWith(getSecretKey()) // Validate signature
                     .build()
                     .parseSignedClaims(token);
-        } catch (SecurityException | IllegalArgumentException e) {
+        } catch (SecurityException | MalformedJwtException | IllegalArgumentException e) {
             throw new JwtAuthenticationException("Missing or invalid token"); // Invalid token
         }
     }
