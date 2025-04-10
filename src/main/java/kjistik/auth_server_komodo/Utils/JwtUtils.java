@@ -9,6 +9,8 @@ import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +29,8 @@ import reactor.core.publisher.Mono;
 
 @Component
 public class JwtUtils {
+
+    private static final Logger log = LoggerFactory.getLogger(JwtUtils.class);
 
     @Autowired
     RefreshTokenService service;
@@ -55,12 +59,20 @@ public class JwtUtils {
 
     public Jws<Claims> validateTokenToleratingExpired(String token) {
         try {
+            log.debug("Validating token structure and signature");
             return Jwts.parser()
-                    .verifyWith(getSecretKey()) // Validate signature
+                    .verifyWith(getSecretKey())
                     .build()
                     .parseSignedClaims(token);
-        } catch (SecurityException | MalformedJwtException | IllegalArgumentException e) {
-            throw new JwtAuthenticationException("Missing or invalid token"); // Invalid token
+        } catch (SecurityException e) {
+            log.warn("Invalid token signature: {}", e.getMessage());
+            throw new JwtAuthenticationException("Invalid token signature", e);
+        } catch (MalformedJwtException e) {
+            log.warn("Malformed token: {}", e.getMessage());
+            throw new JwtAuthenticationException("Malformed token", e);
+        } catch (IllegalArgumentException e) {
+            log.warn("Invalid token argument: {}", e.getMessage());
+            throw new JwtAuthenticationException("Invalid token format", e);
         }
     }
 
@@ -111,10 +123,10 @@ public class JwtUtils {
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
-            
+
             // Extract roles claim and handle different possible formats
             Object rolesClaim = claims.get("roles");
-            
+
             if (rolesClaim instanceof List) {
                 // Handle case where roles are stored as List<String>
                 return ((List<?>) rolesClaim).stream()
@@ -125,7 +137,7 @@ public class JwtUtils {
                 // Handle case where roles are stored as comma-separated string
                 return Arrays.asList(((String) rolesClaim).split(","));
             }
-            
+
             return Collections.emptyList();
         } catch (JwtException | IllegalArgumentException e) {
             throw new JwtException("Failed to extract roles from token", e);
