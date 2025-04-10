@@ -62,6 +62,7 @@ public class UserController {
             @RequestHeader("User-Agent") String agent,
             @RequestHeader("Authorization") String authHeader) {
         String jwtToken = authHeader.substring(7);
+        System.out.println("Still testing");
         return authService.reIssueToken(agent, os, resolution, timezone, sessionId, jwtToken);
     }
 
