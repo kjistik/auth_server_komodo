@@ -183,6 +183,14 @@ pre code {
             <a href="#request-assign-roles">Assign roles</a>
         </li>
         
+        <li>
+            <a href="#request-reissue-token">Reissue Token</a>
+        </li>
+        
+        <li>
+            <a href="#request-end-session">End Session</a>
+        </li>
+        
         
     </ul>
 </div>
@@ -255,7 +263,7 @@ Host:
                         <ul class="nav nav-tabs" role="tablist">
                             
                             <li role="presentation" class="active">
-                                <a href="#request-register-user-responses-522f9665-16ef-4ba8-820c-10a0043e781a" data-toggle="tab">
+                                <a href="#request-register-user-responses-0118518e-1b33-4eac-a72c-51266d360938" data-toggle="tab">
                                     
                                     Repeated username
                                     
@@ -263,7 +271,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-register-user-responses-a4c6d464-a35e-4977-93f4-769d7265e061" data-toggle="tab">
+                                <a href="#request-register-user-responses-0a3ba87f-3c34-4a35-a526-196714830109" data-toggle="tab">
                                     
                                     Success
                                     
@@ -271,7 +279,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-register-user-responses-aba4006f-717b-4b48-8358-76e165125625" data-toggle="tab">
+                                <a href="#request-register-user-responses-ac8c007f-ed04-4a17-9ca6-33d6bf894fd0" data-toggle="tab">
                                     
                                     Repeated email
                                     
@@ -279,7 +287,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-register-user-responses-dbe15cef-77aa-4a51-bf81-9ced0169b1e6" data-toggle="tab">
+                                <a href="#request-register-user-responses-09f6f1f8-4a8e-47f8-858e-6327ece95001" data-toggle="tab">
                                     
                                     Invalid Username
                                     
@@ -287,7 +295,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-register-user-responses-6d0b3df4-8bbb-448c-a4b5-fca22a010ca0" data-toggle="tab">
+                                <a href="#request-register-user-responses-00b2722c-03d6-433e-ae2f-093049602881" data-toggle="tab">
                                     
                                     Invalid password
                                     
@@ -295,7 +303,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-register-user-responses-31ac02aa-9db3-43f5-861a-04fea236e5b0" data-toggle="tab">
+                                <a href="#request-register-user-responses-68401807-4ee5-4ae9-a09b-2ae20d5d7278" data-toggle="tab">
                                     
                                     Invalid email
                                     
@@ -303,7 +311,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-register-user-responses-4c475dbe-922c-48a6-a86e-16be311ddcd7" data-toggle="tab">
+                                <a href="#request-register-user-responses-a17b9cf8-ab50-4bac-8344-600204a0390d" data-toggle="tab">
                                     
                                     Email not sent
                                     
@@ -311,7 +319,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-register-user-responses-62fd4cd6-7cd6-46de-9deb-c9081043b546" data-toggle="tab">
+                                <a href="#request-register-user-responses-c69bf4f9-6c31-4ba5-a24a-57a1a7b43d5d" data-toggle="tab">
                                     
                                     Database unavailable
                                     
@@ -321,7 +329,7 @@ Host:
                         </ul>
                         <div class="tab-content">
                             
-                            <div class="tab-pane active" id="request-register-user-responses-522f9665-16ef-4ba8-820c-10a0043e781a">
+                            <div class="tab-pane active" id="request-register-user-responses-0118518e-1b33-4eac-a72c-51266d360938">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -347,7 +355,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Username example is already in use"
+    "error": "Username {{username}} is already in use",
+    "code": "USERNAME_EXISTS",
+    "timestamp": "2025-04-01T04:25:50.687342388Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -355,7 +365,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-register-user-responses-a4c6d464-a35e-4977-93f4-769d7265e061">
+                            <div class="tab-pane" id="request-register-user-responses-0a3ba87f-3c34-4a35-a526-196714830109">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
                                     
@@ -379,7 +389,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-register-user-responses-aba4006f-717b-4b48-8358-76e165125625">
+                            <div class="tab-pane" id="request-register-user-responses-ac8c007f-ed04-4a17-9ca6-33d6bf894fd0">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -405,7 +415,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Email example@email.com is already in use"
+    "error": "Email {{email}} is already in use",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T04:29:09.621014834Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -413,7 +425,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-register-user-responses-dbe15cef-77aa-4a51-bf81-9ced0169b1e6">
+                            <div class="tab-pane" id="request-register-user-responses-09f6f1f8-4a8e-47f8-858e-6327ece95001">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -439,7 +451,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "The username must comply with the following requirements: The username contains invalid characters. Only letters, numbers, underscores, and periods are allowed."
+    "error": "The username must comply with the following requirements: The username contains invalid characters. Only letters, numbers, underscores, and periods are allowed.",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T04:30:24.405335102Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -447,7 +461,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-register-user-responses-6d0b3df4-8bbb-448c-a4b5-fca22a010ca0">
+                            <div class="tab-pane" id="request-register-user-responses-00b2722c-03d6-433e-ae2f-093049602881">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -473,7 +487,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "The password must comply with the following requirements: Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \" character is not allowed."
+    "error": "The password must comply with the following requirements: Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \\\" character is not allowed.",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T04:37:33.443772989Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -481,7 +497,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-register-user-responses-31ac02aa-9db3-43f5-861a-04fea236e5b0">
+                            <div class="tab-pane" id="request-register-user-responses-68401807-4ee5-4ae9-a09b-2ae20d5d7278">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -507,7 +523,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "The email must comply with the following requirements: The email address is invalid. It must contain an '@' symbol, a domain name, and a top-level domain (e.g., example@domain.com)."
+    "error": "The email must comply with the following requirements: The email address is invalid. It must contain an '@' symbol, a domain name, and a top-level domain (e.g., example@domain.com).",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T04:38:35.050745634Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -515,7 +533,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-register-user-responses-4c475dbe-922c-48a6-a86e-16be311ddcd7">
+                            <div class="tab-pane" id="request-register-user-responses-a17b9cf8-ab50-4bac-8344-600204a0390d">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -541,7 +559,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Failed to send verification email to example@email.com The user has been successfully created. Log in with your credentials to trigger the verification email again"
+    "error": "Failed to send verification email to example@email.com The user has been successfully created. Log in with your credentials to trigger the verification email again",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T04:38:35.050745634Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -549,7 +569,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-register-user-responses-62fd4cd6-7cd6-46de-9deb-c9081043b546">
+                            <div class="tab-pane" id="request-register-user-responses-c69bf4f9-6c31-4ba5-a24a-57a1a7b43d5d">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>500 Internal Server Error</td></tr>
                                     
@@ -575,7 +595,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Failed to obtain R2DBC Connection"
+    "error": "Failed to obtain R2DBC Connection",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T04:39:49.657324986Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -621,7 +643,7 @@ Host: </code></pre>
                         <ul class="nav nav-tabs" role="tablist">
                             
                             <li role="presentation" class="active">
-                                <a href="#request-verify-email-responses-c368d0d0-ff13-4d17-ab2a-a2ad985ba594" data-toggle="tab">
+                                <a href="#request-verify-email-responses-5c4264c9-892d-4db5-96b8-430b8270b9cd" data-toggle="tab">
                                     
                                     Response
                                     
@@ -631,7 +653,7 @@ Host: </code></pre>
                         </ul>
                         <div class="tab-content">
                             
-                            <div class="tab-pane active" id="request-verify-email-responses-c368d0d0-ff13-4d17-ab2a-a2ad985ba594">
+                            <div class="tab-pane active" id="request-verify-email-responses-5c4264c9-892d-4db5-96b8-430b8270b9cd">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
                                     
@@ -679,18 +701,21 @@ Host: </code></pre>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="request-log-in-example-curl">
-                                <pre><code class="hljs curl">curl -X POST -d '{
-    "username":"{{username}}",
-    "password":"{{password}}"
+                                <pre><code class="hljs curl">curl -X POST -H "X-Timezone: {{timezone}}" -H "X-OS: {{os}}" -H "X-Resolution: {{resolution}}" -d '{
+    "username" : "{{username}}",
+    "password":  "{{password}}"
 }' "{{domain}}/auth/login"</code></pre>
                             </div>
                             <div class="tab-pane" id="request-log-in-example-http">
                                 <pre><code class="hljs http">POST %7B%7Bdomain%7D%7D/auth/login HTTP/1.1
 Host: 
+X-Timezone: {{timezone}}
+X-OS: {{os}}
+X-Resolution: {{resolution}}
 
 {
-    "username":"{{username}}",
-    "password":"{{password}}"
+    "username" : "{{username}}",
+    "password":  "{{password}}"
 }</code></pre>
                             </div>
                         </div>
@@ -701,7 +726,7 @@ Host:
                         <ul class="nav nav-tabs" role="tablist">
                             
                             <li role="presentation" class="active">
-                                <a href="#request-log-in-responses-5cdf0ce6-e6be-4a72-a3d7-c2305ac24053" data-toggle="tab">
+                                <a href="#request-log-in-responses-a514ee2e-42a5-4af8-98e7-b7534caedbdf" data-toggle="tab">
                                     
                                     Success
                                     
@@ -709,9 +734,17 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-log-in-responses-a7422aa0-c697-41bb-bf6e-4e0c84bf2786" data-toggle="tab">
+                                <a href="#request-log-in-responses-14b73e9c-441a-4174-94de-56418c688b30" data-toggle="tab">
                                     
                                     Failed to log in
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-log-in-responses-6cfeb79f-95e5-4d99-a9b7-919350914628" data-toggle="tab">
+                                    
+                                    Missing headers
                                     
                                 </a>
                             </li>
@@ -719,7 +752,7 @@ Host:
                         </ul>
                         <div class="tab-content">
                             
-                            <div class="tab-pane active" id="request-log-in-responses-5cdf0ce6-e6be-4a72-a3d7-c2305ac24053">
+                            <div class="tab-pane active" id="request-log-in-responses-a514ee2e-42a5-4af8-98e7-b7534caedbdf">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
                                     
@@ -755,7 +788,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-log-in-responses-a7422aa0-c697-41bb-bf6e-4e0c84bf2786">
+                            <div class="tab-pane" id="request-log-in-responses-14b73e9c-441a-4174-94de-56418c688b30">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>500 Internal Server Error</td></tr>
                                     
@@ -781,7 +814,51 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Invalid credentials"
+    "error": "Invalid credentials",
+    "code": "INVALID_CREDENTIALS",
+    "timestamp": "2025-04-01T04:59:42.698469091Z"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-log-in-responses-6cfeb79f-95e5-4d99-a9b7-919350914628">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>400 Bad Request</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Server</th><td>nginx/1.27.4</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Tue, 01 Apr 2025 04:57:26 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>135</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>keep-alive</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Missing required device header: X-Timezone",
+    "code": "MISSING_DEVICE_HEADER",
+    "timestamp": "2025-04-01T04:57:26.176732460Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -833,7 +910,7 @@ Host:
                         <ul class="nav nav-tabs" role="tablist">
                             
                             <li role="presentation" class="active">
-                                <a href="#request-update-password-responses-81d44e76-64ca-4ece-b10d-8498c304048f" data-toggle="tab">
+                                <a href="#request-update-password-responses-5f58ecba-b8a1-4908-a873-f20e2aecb4b5" data-toggle="tab">
                                     
                                     Success
                                     
@@ -841,7 +918,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-password-responses-50b4ff2c-839b-411a-88f0-ef4a5412280d" data-toggle="tab">
+                                <a href="#request-update-password-responses-5e361a28-48c5-464f-b541-15a3afbe49d8" data-toggle="tab">
                                     
                                     Invalid password
                                     
@@ -849,7 +926,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-password-responses-1d9ae0b6-2a90-41fb-96b4-851b9f8e6249" data-toggle="tab">
+                                <a href="#request-update-password-responses-f3a7e157-40a9-4b65-94f0-9b67b171c00d" data-toggle="tab">
                                     
                                     Invalid username
                                     
@@ -857,7 +934,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-password-responses-c70d9a94-8d2e-4b5d-97cd-ebb90fff8919" data-toggle="tab">
+                                <a href="#request-update-password-responses-bdcb0e58-d8a7-419c-9f07-fe3c25946dca" data-toggle="tab">
                                     
                                     Insufficient permissions
                                     
@@ -865,7 +942,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-password-responses-fbd7cf18-62b8-417a-832e-f200868b06bd" data-toggle="tab">
+                                <a href="#request-update-password-responses-f43fd69f-06dd-4dfb-8497-a8439d0c3485" data-toggle="tab">
                                     
                                     Non authenticated
                                     
@@ -873,7 +950,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-password-responses-3987dbba-e38e-4494-992a-085261ba2efa" data-toggle="tab">
+                                <a href="#request-update-password-responses-5716e962-9201-4529-bb1d-0ce0dc86502d" data-toggle="tab">
                                     
                                     Expired JWT
                                     
@@ -883,7 +960,7 @@ Host:
                         </ul>
                         <div class="tab-content">
                             
-                            <div class="tab-pane active" id="request-update-password-responses-81d44e76-64ca-4ece-b10d-8498c304048f">
+                            <div class="tab-pane active" id="request-update-password-responses-5f58ecba-b8a1-4908-a873-f20e2aecb4b5">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
                                     
@@ -907,7 +984,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-password-responses-50b4ff2c-839b-411a-88f0-ef4a5412280d">
+                            <div class="tab-pane" id="request-update-password-responses-5e361a28-48c5-464f-b541-15a3afbe49d8">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -933,7 +1010,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "The password must comply with the following requirements: Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \" character is not allowed."
+    "error": "The password must comply with the following requirements: Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \\\" character is not allowed.",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T18:40:42.740736633Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -941,7 +1020,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-password-responses-1d9ae0b6-2a90-41fb-96b4-851b9f8e6249">
+                            <div class="tab-pane" id="request-update-password-responses-f3a7e157-40a9-4b65-94f0-9b67b171c00d">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>400 Bad Request</td></tr>
                                     
@@ -967,7 +1046,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "No user has been found with the username: kjistik"
+    "error": "No user has been found with the username: {{username}}",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T18:40:42.740736633Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -975,7 +1056,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-password-responses-c70d9a94-8d2e-4b5d-97cd-ebb90fff8919">
+                            <div class="tab-pane" id="request-update-password-responses-bdcb0e58-d8a7-419c-9f07-fe3c25946dca">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>403 Forbidden</td></tr>
                                     
@@ -1003,7 +1084,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-password-responses-fbd7cf18-62b8-417a-832e-f200868b06bd">
+                            <div class="tab-pane" id="request-update-password-responses-f43fd69f-06dd-4dfb-8497-a8439d0c3485">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1029,7 +1110,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Missing or invalid JWT"
+    "error": "Missing or invalid Authorization header",
+    "code": "JWT_AUTH_ERROR",
+    "timestamp": "2025-04-01T18:47:02.034101274Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1037,7 +1120,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-password-responses-3987dbba-e38e-4494-992a-085261ba2efa">
+                            <div class="tab-pane" id="request-update-password-responses-5716e962-9201-4529-bb1d-0ce0dc86502d">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1063,7 +1146,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Invalid or expired JWT"
+    "error": "Invalid or expired JWT",
+    "code": "JWT_AUTH_ERROR",
+    "timestamp": "2025-04-01T18:47:02.034101274Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1115,7 +1200,7 @@ Host:
                         <ul class="nav nav-tabs" role="tablist">
                             
                             <li role="presentation" class="active">
-                                <a href="#request-update-email-responses-4f9c8062-0d75-404a-8ccc-6262200a2fe6" data-toggle="tab">
+                                <a href="#request-update-email-responses-38f5074c-be6d-409f-8fe7-996630e49908" data-toggle="tab">
                                     
                                     Invalid username
                                     
@@ -1123,7 +1208,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-email-responses-431339cc-4adb-4d84-ae57-7e5a9ec201f6" data-toggle="tab">
+                                <a href="#request-update-email-responses-c59ca4b4-4b68-413a-a36e-cc74a4e4f09e" data-toggle="tab">
                                     
                                     Invalid email
                                     
@@ -1131,7 +1216,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-email-responses-ac35ea66-244a-4d31-8154-a14ed8235edd" data-toggle="tab">
+                                <a href="#request-update-email-responses-e238d6a3-818a-4fd1-b806-6fe29006bca8" data-toggle="tab">
                                     
                                     Email not sent
                                     
@@ -1139,7 +1224,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-email-responses-2b9de7ee-95ec-469b-b80d-5642f1e93264" data-toggle="tab">
+                                <a href="#request-update-email-responses-40114f43-a342-4f2e-a9fe-8e10dd9fc8c7" data-toggle="tab">
                                     
                                     Repeated email
                                     
@@ -1147,7 +1232,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-email-responses-b60136e1-d6f0-42b7-9151-d4ab0b7bf57e" data-toggle="tab">
+                                <a href="#request-update-email-responses-611716a7-1c5b-40d7-bb48-899f7fd5cea8" data-toggle="tab">
                                     
                                     Insufficient permissions
                                     
@@ -1155,7 +1240,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-email-responses-b1220155-a9a9-48cf-bcaa-1218f5618061" data-toggle="tab">
+                                <a href="#request-update-email-responses-0d0d3e97-942e-4efd-b2b9-87c5fd12a58a" data-toggle="tab">
                                     
                                     Non authenticated
                                     
@@ -1163,7 +1248,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-email-responses-84c07d92-9d4e-4683-a92e-8655a5ad9646" data-toggle="tab">
+                                <a href="#request-update-email-responses-d606b1c4-bae5-47ad-9b0e-ca0e6d94a4ff" data-toggle="tab">
                                     
                                     Expired JWT
                                     
@@ -1173,7 +1258,7 @@ Host:
                         </ul>
                         <div class="tab-content">
                             
-                            <div class="tab-pane active" id="request-update-email-responses-4f9c8062-0d75-404a-8ccc-6262200a2fe6">
+                            <div class="tab-pane active" id="request-update-email-responses-38f5074c-be6d-409f-8fe7-996630e49908">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>400 Bad Request</td></tr>
                                     
@@ -1199,7 +1284,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "No user has been found with the username: kjistik"
+    "error": "No user has been found with the username: {{username}}",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T18:40:42.740736633Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1207,7 +1294,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-email-responses-431339cc-4adb-4d84-ae57-7e5a9ec201f6">
+                            <div class="tab-pane" id="request-update-email-responses-c59ca4b4-4b68-413a-a36e-cc74a4e4f09e">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -1233,7 +1320,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "The email must comply with the following requirements: The email address is invalid. It must contain an '@' symbol, a domain name, and a top-level domain (e.g., example@domain.com)."
+    "error": "The email must comply with the following requirements: The email address is invalid. It must contain an '@' symbol, a domain name, and a top-level domain (e.g., example@domain.com).",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T18:40:42.740736633Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1241,7 +1330,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-email-responses-ac35ea66-244a-4d31-8154-a14ed8235edd">
+                            <div class="tab-pane" id="request-update-email-responses-e238d6a3-818a-4fd1-b806-6fe29006bca8">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1267,7 +1356,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Failed to send verification email to example@email.com The user has been successfully created. Log in with your credentials to trigger the verification email again"
+    "error": "Failed to send verification email to example@email.com The user has been successfully created. Log in with your credentials to trigger the verification email again",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T18:40:42.740736633Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1275,7 +1366,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-email-responses-2b9de7ee-95ec-469b-b80d-5642f1e93264">
+                            <div class="tab-pane" id="request-update-email-responses-40114f43-a342-4f2e-a9fe-8e10dd9fc8c7">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>409 Conflict</td></tr>
                                     
@@ -1301,7 +1392,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Email email@example.com is already in use"
+    "error": "Email email@example.com is already in use",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T18:40:42.740736633Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1309,7 +1402,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-email-responses-b60136e1-d6f0-42b7-9151-d4ab0b7bf57e">
+                            <div class="tab-pane" id="request-update-email-responses-611716a7-1c5b-40d7-bb48-899f7fd5cea8">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>403 Forbidden</td></tr>
                                     
@@ -1337,7 +1430,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-email-responses-b1220155-a9a9-48cf-bcaa-1218f5618061">
+                            <div class="tab-pane" id="request-update-email-responses-0d0d3e97-942e-4efd-b2b9-87c5fd12a58a">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1363,7 +1456,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Missing or invalid JWT"
+    "error": "Missing or invalid Authorization header",
+    "code": "JWT_AUTH_ERROR",
+    "timestamp": "2025-04-01T18:47:02.034101274Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1371,7 +1466,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-email-responses-84c07d92-9d4e-4683-a92e-8655a5ad9646">
+                            <div class="tab-pane" id="request-update-email-responses-d606b1c4-bae5-47ad-9b0e-ca0e6d94a4ff">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1397,7 +1492,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Invalid or expired JWT"
+    "error": "Invalid or expired JWT",
+    "code": "JWT_AUTH_ERROR",
+    "timestamp": "2025-04-01T18:47:02.034101274Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1453,7 +1550,7 @@ Host:
                         <ul class="nav nav-tabs" role="tablist">
                             
                             <li role="presentation" class="active">
-                                <a href="#request-update-name-responses-67c77073-4017-47e0-aaa0-881617f85338" data-toggle="tab">
+                                <a href="#request-update-name-responses-d1831ba8-48d7-4593-b5ad-87afb5319009" data-toggle="tab">
                                     
                                     Success
                                     
@@ -1461,7 +1558,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-name-responses-dca6ac47-4faa-4396-875d-ded1a3605916" data-toggle="tab">
+                                <a href="#request-update-name-responses-72b80fa0-87fa-471e-b14b-1e16695a480a" data-toggle="tab">
                                     
                                     Non existent user
                                     
@@ -1469,7 +1566,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-name-responses-95b5d229-aa38-48a0-87de-e836de2cdf41" data-toggle="tab">
+                                <a href="#request-update-name-responses-0bcae9ad-64f0-495e-8256-ccf5505aff8e" data-toggle="tab">
                                     
                                     Non authenticated
                                     
@@ -1477,7 +1574,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-name-responses-af3606af-397e-4db5-ba45-e3106a9f59e7" data-toggle="tab">
+                                <a href="#request-update-name-responses-c65d9d8b-afd0-451a-9598-bbd2f0f7851b" data-toggle="tab">
                                     
                                     Insufficient permissions
                                     
@@ -1485,7 +1582,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-update-name-responses-6273a7db-ea38-4483-9567-dccd2809938f" data-toggle="tab">
+                                <a href="#request-update-name-responses-4929f3f0-8002-4bcf-860e-30e75e35458c" data-toggle="tab">
                                     
                                     Expired JWT
                                     
@@ -1495,7 +1592,7 @@ Host:
                         </ul>
                         <div class="tab-content">
                             
-                            <div class="tab-pane active" id="request-update-name-responses-67c77073-4017-47e0-aaa0-881617f85338">
+                            <div class="tab-pane active" id="request-update-name-responses-d1831ba8-48d7-4593-b5ad-87afb5319009">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
                                     
@@ -1519,7 +1616,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-name-responses-dca6ac47-4faa-4396-875d-ded1a3605916">
+                            <div class="tab-pane" id="request-update-name-responses-72b80fa0-87fa-471e-b14b-1e16695a480a">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>400 Bad Request</td></tr>
                                     
@@ -1545,7 +1642,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "No user has been found with the username: targetUsername"
+    "error": "No user has been found with the username: targetUsername",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T18:40:42.740736633Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1553,7 +1652,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-name-responses-95b5d229-aa38-48a0-87de-e836de2cdf41">
+                            <div class="tab-pane" id="request-update-name-responses-0bcae9ad-64f0-495e-8256-ccf5505aff8e">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1579,7 +1678,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Missing or invalid JWT"
+    "error": "Missing or invalid Authorization header",
+    "code": "JWT_AUTH_ERROR",
+    "timestamp": "2025-04-01T18:47:02.034101274Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1587,7 +1688,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-name-responses-af3606af-397e-4db5-ba45-e3106a9f59e7">
+                            <div class="tab-pane" id="request-update-name-responses-c65d9d8b-afd0-451a-9598-bbd2f0f7851b">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>403 Forbidden</td></tr>
                                     
@@ -1615,7 +1716,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-update-name-responses-6273a7db-ea38-4483-9567-dccd2809938f">
+                            <div class="tab-pane" id="request-update-name-responses-4929f3f0-8002-4bcf-860e-30e75e35458c">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1641,7 +1742,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Invalid or expired JWT"
+    "error": "Invalid or expired JWT",
+    "code": "JWT_AUTH_ERROR",
+    "timestamp": "2025-04-01T18:47:02.034101274Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1695,7 +1798,7 @@ Host:
                         <ul class="nav nav-tabs" role="tablist">
                             
                             <li role="presentation" class="active">
-                                <a href="#request-assign-roles-responses-23bc7e84-cfc7-4b3c-9c1f-3c9b6712d36d" data-toggle="tab">
+                                <a href="#request-assign-roles-responses-0853b67f-4854-4b8e-ab36-947670afde67" data-toggle="tab">
                                     
                                     Success
                                     
@@ -1703,7 +1806,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-assign-roles-responses-ab9724d2-2265-45e2-b4c4-0123c172a7c3" data-toggle="tab">
+                                <a href="#request-assign-roles-responses-e4fc29dc-7b96-4575-bac2-14734e1a2a61" data-toggle="tab">
                                     
                                     Target user not verified
                                     
@@ -1711,7 +1814,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-assign-roles-responses-dfd022c1-b19c-4f61-96b0-934fd3b795f6" data-toggle="tab">
+                                <a href="#request-assign-roles-responses-99b5c96d-21d5-42da-a667-17aa32b9e32e" data-toggle="tab">
                                     
                                     Insufficient role
                                     
@@ -1719,7 +1822,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-assign-roles-responses-c182a39d-5ea5-4b6b-ba89-e0e2f48a3a10" data-toggle="tab">
+                                <a href="#request-assign-roles-responses-be515348-e2e2-466f-b4d6-a668a450d6b4" data-toggle="tab">
                                     
                                     Non existent role
                                     
@@ -1727,7 +1830,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-assign-roles-responses-9451da1b-f169-49f5-a9d1-2c66363d2685" data-toggle="tab">
+                                <a href="#request-assign-roles-responses-ec6c8aa4-e4cb-47a0-bf4d-bb70c82ede00" data-toggle="tab">
                                     
                                     Non authenticated
                                     
@@ -1735,7 +1838,7 @@ Host:
                             </li>
                             
                             <li role="presentation">
-                                <a href="#request-assign-roles-responses-ae9d361a-03bc-40f2-8d82-cbc7a9e29859" data-toggle="tab">
+                                <a href="#request-assign-roles-responses-df458e31-6c78-4f42-8953-e8076ea78bb9" data-toggle="tab">
                                     
                                     Expired JWT
                                     
@@ -1745,7 +1848,7 @@ Host:
                         </ul>
                         <div class="tab-content">
                             
-                            <div class="tab-pane active" id="request-assign-roles-responses-23bc7e84-cfc7-4b3c-9c1f-3c9b6712d36d">
+                            <div class="tab-pane active" id="request-assign-roles-responses-0853b67f-4854-4b8e-ab36-947670afde67">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
                                     
@@ -1769,7 +1872,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-assign-roles-responses-ab9724d2-2265-45e2-b4c4-0123c172a7c3">
+                            <div class="tab-pane" id="request-assign-roles-responses-e4fc29dc-7b96-4575-bac2-14734e1a2a61">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1795,7 +1898,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "User target is not verified. A verification email has been sent to your registered email"
+    "error": "User target is not verified. A verification email has been sent to your registered email",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T18:40:42.740736633Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1803,11 +1908,11 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-assign-roles-responses-dfd022c1-b19c-4f61-96b0-934fd3b795f6">
+                            <div class="tab-pane" id="request-assign-roles-responses-99b5c96d-21d5-42da-a667-17aa32b9e32e">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
-                                    <tr><th style="width: 20%;">Content-Type</th><td>text/plain;charset=UTF-8</td></tr>
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
                                     
                                     <tr><th style="width: 20%;">Content-Length</th><td>91</td></tr>
                                     
@@ -1829,7 +1934,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Unable to assign the role OWNER. You must have at least the same role to do so"
+    "error": "Unable to assign the role OWNER. You must have at least the same role to do so",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T18:40:42.740736633Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1837,11 +1944,11 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-assign-roles-responses-c182a39d-5ea5-4b6b-ba89-e0e2f48a3a10">
+                            <div class="tab-pane" id="request-assign-roles-responses-be515348-e2e2-466f-b4d6-a668a450d6b4">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>400 Bad Request</td></tr>
                                     
-                                    <tr><th style="width: 20%;">Content-Type</th><td>text/plain;charset=UTF-8</td></tr>
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
                                     
                                     <tr><th style="width: 20%;">Content-Length</th><td>54</td></tr>
                                     
@@ -1863,7 +1970,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "The following is not a valid role: TESTER"
+    "error": "The following is not a valid role: TESTER",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-01T18:40:42.740736633Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1871,7 +1980,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-assign-roles-responses-9451da1b-f169-49f5-a9d1-2c66363d2685">
+                            <div class="tab-pane" id="request-assign-roles-responses-ec6c8aa4-e4cb-47a0-bf4d-bb70c82ede00">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1897,7 +2006,9 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Missing or invalid JWT"
+    "error": "Missing or invalid Authorization header",
+    "code": "JWT_AUTH_ERROR",
+    "timestamp": "2025-04-01T18:47:02.034101274Z"
 }</code></pre>
                                     </td></tr>
                                     
@@ -1905,7 +2016,7 @@ Host:
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="request-assign-roles-responses-ae9d361a-03bc-40f2-8d82-cbc7a9e29859">
+                            <div class="tab-pane" id="request-assign-roles-responses-df458e31-6c78-4f42-8953-e8076ea78bb9">
                                 <table class="table table-bordered">
                                     <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
                                     
@@ -1931,7 +2042,580 @@ Host:
                                     
                                     <tr><td class="response-text-sample" colspan="2">
                                         <pre><code>{
-    "error": "Invalid or expired JWT"
+    "error": "Invalid or expired JWT",
+    "code": "JWT_AUTH_ERROR",
+    "timestamp": "2025-04-01T18:47:02.034101274Z"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+                
+                <div class="request">
+
+                    <h3 id="request-reissue-token">
+                        Reissue Token
+                        <a href="#request-reissue-token"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div></div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-reissue-token-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-reissue-token-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-reissue-token-example-curl">
+                                <pre><code class="hljs curl">curl -X POST -H "X-OS: {{os}}" -H "X-Timezone: {{timezone}}" -H "X-Resolution: {{resolution}}" "{{domain}}/auth/reissue"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-reissue-token-example-http">
+                                <pre><code class="hljs http">POST %7B%7Bdomain%7D%7D/auth/reissue HTTP/1.1
+Host: 
+X-OS: {{os}}
+X-Timezone: {{timezone}}
+X-Resolution: {{resolution}}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-reissue-token-responses-9b7f17b3-d145-41d1-a24c-faa175444896" data-toggle="tab">
+                                    
+                                    Success
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-reissue-token-responses-b6d46701-85ec-4c2d-b30e-4ac6f72dab1c" data-toggle="tab">
+                                    
+                                    Missing SessionId Cookie
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-reissue-token-responses-70a84e37-b804-4c07-9953-24b9805b2f4b" data-toggle="tab">
+                                    
+                                    Missing JWT
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-reissue-token-responses-5cbcd996-4a84-4b33-8182-89792ec94f0b" data-toggle="tab">
+                                    
+                                    Token expired beyond reissuing time frame
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-reissue-token-responses-2fab7397-0030-4e59-a0c9-c6b4357ec035" data-toggle="tab">
+                                    
+                                    Missing headers
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-reissue-token-responses-b0f5cf86-9df5-4b21-9a93-5661b20df7c4" data-toggle="tab">
+                                    
+                                    Invalid Device Fingerprints
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-reissue-token-responses-6e80641c-f7a8-4a85-b42e-ebb07bad21e7" data-toggle="tab">
+                                    
+                                    Session already closed
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-reissue-token-responses-9b7f17b3-d145-41d1-a24c-faa175444896">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Server</th><td>nginx/1.27.4</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Fri, 11 Apr 2025 00:00:49 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>246</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>keep-alive</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJramlzdGlrIiwiaWF0IjoxNzQ0MzI5NjQ5LCJyb2xlcyI6WyJVU0VSIiwiU1VQUE9SVCIsIkFETUlOIiwiT1dORVIiXSwiZXhwIjoxNzQ0MzI5Njc5fQ.aUcAFq9dWfyIhFTxN5EFGBIo8xp1LKGMXEp_mT151qfTINxhZCiYV-aYXqfs6npxlp_D9joUxwaG4mg0MjIwWQ"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-reissue-token-responses-b6d46701-85ec-4c2d-b30e-4ac6f72dab1c">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>500 Internal Server Error</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Server</th><td>nginx/1.27.4</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Sun, 06 Apr 2025 04:29:56 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>144</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>keep-alive</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "400 BAD_REQUEST \"Required cookie 'SESSION_ID' is not present.\"",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-06T04:29:56.465786493Z"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-reissue-token-responses-70a84e37-b804-4c07-9953-24b9805b2f4b">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>500 Internal Server Error</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Server</th><td>nginx/1.27.4</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Sun, 06 Apr 2025 20:43:54 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>147</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>keep-alive</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "400 BAD_REQUEST \"Required header 'Authorization' is not present.\"",
+    "code": "UNKNOWN_ERROR",
+    "timestamp": "2025-04-06T20:43:54.201196245Z"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-reissue-token-responses-5cbcd996-4a84-4b33-8182-89792ec94f0b">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Server</th><td>nginx/1.27.4</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Thu, 10 Apr 2025 23:30:05 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>113</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>keep-alive</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">WWW-Authenticate</th><td>Bearer error="expired_token"</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Token expired beyond grace period",
+    "code": "TOKEN_EXPIRED",
+    "timestamp": "2025-04-10T23:30:05.602272238Z"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-reissue-token-responses-2fab7397-0030-4e59-a0c9-c6b4357ec035">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Server</th><td>nginx/1.27.4</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Thu, 10 Apr 2025 23:35:47 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>113</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>keep-alive</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">WWW-Authenticate</th><td>Bearer error="expired_token"</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Token expired beyond grace period",
+    "code": "TOKEN_EXPIRED",
+    "timestamp": "2025-04-10T23:35:47.189087645Z"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-reissue-token-responses-b0f5cf86-9df5-4b21-9a93-5661b20df7c4">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>403 Forbidden</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Server</th><td>nginx/1.27.4</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Thu, 10 Apr 2025 23:36:55 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>150</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>keep-alive</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Security-Alert</th><td>true</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "The provided headers do not match with the stored device fingerprint",
+    "code": "DEVICE_MISMATCH",
+    "timestamp": "2025-04-10T23:36:55.678348319Z"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-reissue-token-responses-6e80641c-f7a8-4a85-b42e-ebb07bad21e7">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Server</th><td>nginx/1.27.4</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Thu, 10 Apr 2025 23:41:44 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>keep-alive</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+                
+                <div class="request">
+
+                    <h3 id="request-end-session">
+                        End Session
+                        <a href="#request-end-session"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div></div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-end-session-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-end-session-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-end-session-example-curl">
+                                <pre><code class="hljs curl">curl -X DELETE "{{domain}}/auth/logout"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-end-session-example-http">
+                                <pre><code class="hljs http">DELETE %7B%7Bdomain%7D%7D/auth/logout HTTP/1.1
+Host: </code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-end-session-responses-e4f07f02-e791-4f5d-a490-e008beb1615f" data-toggle="tab">
+                                    
+                                    Success
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-end-session-responses-9e2709cf-c20d-4d69-8953-008becaabb67" data-toggle="tab">
+                                    
+                                    Expired JWT
+                                    
+                                </a>
+                            </li>
+                            
+                            <li role="presentation">
+                                <a href="#request-end-session-responses-3ee77dc6-70f9-4529-97a1-e404ab83e487" data-toggle="tab">
+                                    
+                                    Invalid JWT
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-end-session-responses-e4f07f02-e791-4f5d-a490-e008beb1615f">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 OK</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Server</th><td>nginx/1.27.4</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Fri, 11 Apr 2025 00:05:36 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>4</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>keep-alive</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>true</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-end-session-responses-9e2709cf-c20d-4d69-8953-008becaabb67">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Server</th><td>nginx/1.27.4</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Thu, 10 Apr 2025 23:59:55 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>99</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>keep-alive</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "Token expired",
+    "code": "JWT_AUTH_ERROR",
+    "timestamp": "2025-04-10T23:59:55.855561696Z"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                            <div class="tab-pane" id="request-end-session-responses-3ee77dc6-70f9-4529-97a1-e404ab83e487">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>401 Unauthorized</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Server</th><td>nginx/1.27.4</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Fri, 11 Apr 2025 00:04:23 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Length</th><td>120</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>keep-alive</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Content-Type-Options</th><td>nosniff</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, no-store, max-age=0, must-revalidate</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Pragma</th><td>no-cache</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Expires</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Frame-Options</th><td>DENY</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-XSS-Protection</th><td>0</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Referrer-Policy</th><td>no-referrer</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "error": "JWT validation failed: Invalid JWT",
+    "code": "JWT_AUTH_ERROR",
+    "timestamp": "2025-04-11T00:04:23.095698086Z"
 }</code></pre>
                                     </td></tr>
                                     

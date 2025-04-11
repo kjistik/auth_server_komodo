@@ -43,7 +43,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"email@example.com\",\n    \"givenName\": \"name\",\n    \"lastName\": \"lastName\",\n    \"userName\": \"username\",\n    \"password\": \"pass_example*1\"\n}",
+							"raw": "{\n    \"email\": \"{{email}}\",\n    \"givenName\": \"{{givenName}}\",\n    \"lastName\": \"{{lastName}}\",\n    \"userName\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -51,11 +51,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:9080/auth/register",
+							"raw": "{{domain}}/auth/register",
 							"host": [
-								"localhost"
+								"{{domain}}"
 							],
-							"port": "9080",
 							"path": [
 								"auth",
 								"register"
@@ -106,7 +105,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Username example is already in use\"\n}"
+					"body": "{\n    \"error\": \"Username {{username}} is already in use\",\n    \"code\": \"USERNAME_EXISTS\",\n    \"timestamp\": \"2025-04-01T04:25:50.687342388Z\"\n}"
 				},
 				{
 					"name": "Success",
@@ -242,7 +241,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Email example@email.com is already in use\"\n}"
+					"body": "{\n    \"error\": \"Email {{email}} is already in use\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T04:29:09.621014834Z\"\n}"
 				},
 				{
 					"name": "Invalid Username",
@@ -313,7 +312,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"The username must comply with the following requirements: The username contains invalid characters. Only letters, numbers, underscores, and periods are allowed.\"\n}"
+					"body": "{\n    \"error\": \"The username must comply with the following requirements: The username contains invalid characters. Only letters, numbers, underscores, and periods are allowed.\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T04:30:24.405335102Z\"\n}"
 				},
 				{
 					"name": "Invalid password",
@@ -384,7 +383,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"The password must comply with the following requirements: Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \\\" character is not allowed.\"\n}"
+					"body": "{\n    \"error\": \"The password must comply with the following requirements: Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \\\\\\\" character is not allowed.\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T04:37:33.443772989Z\"\n}"
 				},
 				{
 					"name": "Invalid email",
@@ -455,7 +454,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"The email must comply with the following requirements: The email address is invalid. It must contain an '@' symbol, a domain name, and a top-level domain (e.g., example@domain.com).\"\n}"
+					"body": "{\n    \"error\": \"The email must comply with the following requirements: The email address is invalid. It must contain an '@' symbol, a domain name, and a top-level domain (e.g., example@domain.com).\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T04:38:35.050745634Z\"\n}"
 				},
 				{
 					"name": "Email not sent",
@@ -526,7 +525,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Failed to send verification email to example@email.com The user has been successfully created. Log in with your credentials to trigger the verification email again\"\n}"
+					"body": "{\n    \"error\": \"Failed to send verification email to example@email.com The user has been successfully created. Log in with your credentials to trigger the verification email again\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T04:38:35.050745634Z\"\n}"
 				},
 				{
 					"name": "Database unavailable",
@@ -595,7 +594,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Failed to obtain R2DBC Connection\"\n}"
+					"body": "{\n    \"error\": \"Failed to obtain R2DBC Connection\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T04:39:49.657324986Z\"\n}"
 				}
 			]
 		},
@@ -691,15 +690,43 @@
 		},
 		{
 			"name": "Log in",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"auth": {
 					"type": "noauth"
 				},
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "X-Timezone",
+						"value": "{{timezone}}",
+						"type": "text"
+					},
+					{
+						"key": "X-OS",
+						"value": "{{os}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Resolution",
+						"value": "{{resolution}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\":\"{{username}}\",\n    \"password\":\"{{password}}\"\n}",
+					"raw": "{\n    \"username\" : \"{{username}}\",\n    \"password\":  \"{{password}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -726,6 +753,21 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Timezone",
+								"value": "{{timezone}}",
+								"type": "text"
+							},
+							{
+								"key": "X-OS",
+								"value": "{{os}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Resolution",
+								"value": "{{resolution}}",
 								"type": "text"
 							}
 						],
@@ -872,7 +914,105 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Invalid credentials\"\n}"
+					"body": "{\n    \"error\": \"Invalid credentials\",\n    \"code\": \"INVALID_CREDENTIALS\",\n    \"timestamp\": \"2025-04-01T04:59:42.698469091Z\"\n}"
+				},
+				{
+					"name": "Missing headers",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Timezone",
+								"value": "{{timezone}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-OS",
+								"value": "{{os}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Resolution",
+								"value": "{{resolution}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"{{username}}\",\n    \"password\":\"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/auth/login",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.4"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 01 Apr 2025 04:57:26 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "135"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Missing required device header: X-Timezone\",\n    \"code\": \"MISSING_DEVICE_HEADER\",\n    \"timestamp\": \"2025-04-01T04:57:26.176732460Z\"\n}"
 				}
 			]
 		},
@@ -884,7 +1024,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "{{JWTtoken}}",
+							"value": "",
 							"type": "string"
 						}
 					]
@@ -1052,7 +1192,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"The password must comply with the following requirements: Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \\\" character is not allowed.\"\n}"
+					"body": "{\n    \"error\": \"The password must comply with the following requirements: Password must be at least 8 characters long, contain at least one uppercase letter, one special character, and one number. The \\\\\\\" character is not allowed.\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T18:40:42.740736633Z\"\n}"
 				},
 				{
 					"name": "Invalid username",
@@ -1125,7 +1265,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"No user has been found with the username: kjistik\"\n}"
+					"body": "{\n    \"error\": \"No user has been found with the username: {{username}}\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T18:40:42.740736633Z\"\n}"
 				},
 				{
 					"name": "Insufficient permissions",
@@ -1267,7 +1407,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Missing or invalid JWT\"\n}"
+					"body": "{\n    \"error\": \"Missing or invalid Authorization header\",\n    \"code\": \"JWT_AUTH_ERROR\",\n    \"timestamp\": \"2025-04-01T18:47:02.034101274Z\"\n}"
 				},
 				{
 					"name": "Expired JWT",
@@ -1338,7 +1478,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Invalid or expired JWT\"\n}"
+					"body": "{\n    \"error\": \"Invalid or expired JWT\",\n    \"code\": \"JWT_AUTH_ERROR\",\n    \"timestamp\": \"2025-04-01T18:47:02.034101274Z\"\n}"
 				}
 			]
 		},
@@ -1450,7 +1590,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"No user has been found with the username: kjistik\"\n}"
+					"body": "{\n    \"error\": \"No user has been found with the username: {{username}}\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T18:40:42.740736633Z\"\n}"
 				},
 				{
 					"name": "Invalid email",
@@ -1523,7 +1663,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"The email must comply with the following requirements: The email address is invalid. It must contain an '@' symbol, a domain name, and a top-level domain (e.g., example@domain.com).\"\n}"
+					"body": "{\n    \"error\": \"The email must comply with the following requirements: The email address is invalid. It must contain an '@' symbol, a domain name, and a top-level domain (e.g., example@domain.com).\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T18:40:42.740736633Z\"\n}"
 				},
 				{
 					"name": "Email not sent",
@@ -1596,7 +1736,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Failed to send verification email to example@email.com The user has been successfully created. Log in with your credentials to trigger the verification email again\"\n}"
+					"body": "{\n    \"error\": \"Failed to send verification email to example@email.com The user has been successfully created. Log in with your credentials to trigger the verification email again\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T18:40:42.740736633Z\"\n}"
 				},
 				{
 					"name": "Repeated email",
@@ -1669,7 +1809,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Email email@example.com is already in use\"\n}"
+					"body": "{\n    \"error\": \"Email email@example.com is already in use\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T18:40:42.740736633Z\"\n}"
 				},
 				{
 					"name": "Insufficient permissions",
@@ -1811,7 +1951,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Missing or invalid JWT\"\n}"
+					"body": "{\n    \"error\": \"Missing or invalid Authorization header\",\n    \"code\": \"JWT_AUTH_ERROR\",\n    \"timestamp\": \"2025-04-01T18:47:02.034101274Z\"\n}"
 				},
 				{
 					"name": "Expired JWT",
@@ -1882,7 +2022,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Invalid or expired JWT\"\n}"
+					"body": "{\n    \"error\": \"Invalid or expired JWT\",\n    \"code\": \"JWT_AUTH_ERROR\",\n    \"timestamp\": \"2025-04-01T18:47:02.034101274Z\"\n}"
 				}
 			]
 		},
@@ -2062,7 +2202,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"No user has been found with the username: targetUsername\"\n}"
+					"body": "{\n    \"error\": \"No user has been found with the username: targetUsername\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T18:40:42.740736633Z\"\n}"
 				},
 				{
 					"name": "Non authenticated",
@@ -2133,7 +2273,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Missing or invalid JWT\"\n}"
+					"body": "{\n    \"error\": \"Missing or invalid Authorization header\",\n    \"code\": \"JWT_AUTH_ERROR\",\n    \"timestamp\": \"2025-04-01T18:47:02.034101274Z\"\n}"
 				},
 				{
 					"name": "Insufficient permissions",
@@ -2275,7 +2415,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Invalid or expired JWT\"\n}"
+					"body": "{\n    \"error\": \"Invalid or expired JWT\",\n    \"code\": \"JWT_AUTH_ERROR\",\n    \"timestamp\": \"2025-04-01T18:47:02.034101274Z\"\n}"
 				}
 			]
 		},
@@ -2453,7 +2593,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"User target is not verified. A verification email has been sent to your registered email\"\n}"
+					"body": "{\n    \"error\": \"User target is not verified. A verification email has been sent to your registered email\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T18:40:42.740736633Z\"\n}"
 				},
 				{
 					"name": "Insufficient role",
@@ -2484,11 +2624,13 @@
 					},
 					"status": "Unauthorized",
 					"code": 401,
-					"_postman_previewlanguage": "plain",
+					"_postman_previewlanguage": "json",
 					"header": [
 						{
 							"key": "Content-Type",
-							"value": "text/plain;charset=UTF-8"
+							"value": "application/json",
+							"description": "",
+							"type": "text"
 						},
 						{
 							"key": "Content-Length",
@@ -2524,7 +2666,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\"error\": \"Unable to assign the role OWNER. You must have at least the same role to do so\"}"
+					"body": "{\n    \"error\": \"Unable to assign the role OWNER. You must have at least the same role to do so\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T18:40:42.740736633Z\"\n}"
 				},
 				{
 					"name": "Non existent role",
@@ -2555,11 +2697,13 @@
 					},
 					"status": "Bad Request",
 					"code": 400,
-					"_postman_previewlanguage": "plain",
+					"_postman_previewlanguage": "json",
 					"header": [
 						{
 							"key": "Content-Type",
-							"value": "text/plain;charset=UTF-8"
+							"value": "application/json",
+							"description": "",
+							"type": "text"
 						},
 						{
 							"key": "Content-Length",
@@ -2595,7 +2739,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\"error\": \"The following is not a valid role: TESTER\"}"
+					"body": "{\n    \"error\": \"The following is not a valid role: TESTER\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-01T18:40:42.740736633Z\"\n}"
 				},
 				{
 					"name": "Non authenticated",
@@ -2666,7 +2810,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Missing or invalid JWT\"\n}"
+					"body": "{\n    \"error\": \"Missing or invalid Authorization header\",\n    \"code\": \"JWT_AUTH_ERROR\",\n    \"timestamp\": \"2025-04-01T18:47:02.034101274Z\"\n}"
 				},
 				{
 					"name": "Expired JWT",
@@ -2737,7 +2881,936 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"error\": \"Invalid or expired JWT\"\n}"
+					"body": "{\n    \"error\": \"Invalid or expired JWT\",\n    \"code\": \"JWT_AUTH_ERROR\",\n    \"timestamp\": \"2025-04-01T18:47:02.034101274Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Reissue Token",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWTtoken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-OS",
+						"value": "{{os}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Timezone",
+						"value": "{{timezone}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Resolution",
+						"value": "{{resolution}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{domain}}/auth/reissue",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"auth",
+						"reissue"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OS",
+								"value": "{{os}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Timezone",
+								"value": "{{timezone}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Resolution",
+								"value": "{{resolution}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/auth/reissue",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"reissue"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.4"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 11 Apr 2025 00:00:49 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "246"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJramlzdGlrIiwiaWF0IjoxNzQ0MzI5NjQ5LCJyb2xlcyI6WyJVU0VSIiwiU1VQUE9SVCIsIkFETUlOIiwiT1dORVIiXSwiZXhwIjoxNzQ0MzI5Njc5fQ.aUcAFq9dWfyIhFTxN5EFGBIo8xp1LKGMXEp_mT151qfTINxhZCiYV-aYXqfs6npxlp_D9joUxwaG4mg0MjIwWQ\"\n}"
+				},
+				{
+					"name": "Missing SessionId Cookie",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OS",
+								"value": "{{os}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Timezone",
+								"value": "{{timezone}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Resolution",
+								"value": "{{resolution}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/auth/reissue",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"reissue"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.4"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 06 Apr 2025 04:29:56 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "144"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"400 BAD_REQUEST \\\"Required cookie 'SESSION_ID' is not present.\\\"\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-06T04:29:56.465786493Z\"\n}"
+				},
+				{
+					"name": "Missing JWT",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OS",
+								"value": "{{os}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Timezone",
+								"value": "{{timezone}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Resolution",
+								"value": "{{resolution}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/auth/reissue",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"reissue"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.4"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 06 Apr 2025 20:43:54 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "147"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"400 BAD_REQUEST \\\"Required header 'Authorization' is not present.\\\"\",\n    \"code\": \"UNKNOWN_ERROR\",\n    \"timestamp\": \"2025-04-06T20:43:54.201196245Z\"\n}"
+				},
+				{
+					"name": "Token expired beyond reissuing time frame",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OS",
+								"value": "{{os}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Timezone",
+								"value": "{{timezone}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Resolution",
+								"value": "{{resolution}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/auth/reissue",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"reissue"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.4"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 10 Apr 2025 23:30:05 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "113"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "WWW-Authenticate",
+							"value": "Bearer error=\"expired_token\""
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Token expired beyond grace period\",\n    \"code\": \"TOKEN_EXPIRED\",\n    \"timestamp\": \"2025-04-10T23:30:05.602272238Z\"\n}"
+				},
+				{
+					"name": "Missing headers",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OS",
+								"value": "{{os}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Timezone",
+								"value": "{{timezone}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Resolution",
+								"value": "{{resolution}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/auth/reissue",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"reissue"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.4"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 10 Apr 2025 23:35:47 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "113"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "WWW-Authenticate",
+							"value": "Bearer error=\"expired_token\""
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Token expired beyond grace period\",\n    \"code\": \"TOKEN_EXPIRED\",\n    \"timestamp\": \"2025-04-10T23:35:47.189087645Z\"\n}"
+				},
+				{
+					"name": "Invalid Device Fingerprints",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OS",
+								"value": "{{os}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Timezone",
+								"value": "{{timezone}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Resolution",
+								"value": "{{resolution}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/auth/reissue",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"reissue"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.4"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 10 Apr 2025 23:36:55 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "150"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "X-Security-Alert",
+							"value": "true"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"The provided headers do not match with the stored device fingerprint\",\n    \"code\": \"DEVICE_MISMATCH\",\n    \"timestamp\": \"2025-04-10T23:36:55.678348319Z\"\n}"
+				},
+				{
+					"name": "Session already closed",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-OS",
+								"value": "{{os}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Timezone",
+								"value": "{{timezone}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Resolution",
+								"value": "{{resolution}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/auth/reissue",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"reissue"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.4"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 10 Apr 2025 23:41:44 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "0"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						}
+					],
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "End Session",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWTtoken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/auth/logout",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/auth/logout",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.4"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 11 Apr 2025 00:05:36 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "4"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						}
+					],
+					"cookie": [],
+					"body": "true"
+				},
+				{
+					"name": "Expired JWT",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/auth/logout",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.4"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 10 Apr 2025 23:59:55 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "99"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Token expired\",\n    \"code\": \"JWT_AUTH_ERROR\",\n    \"timestamp\": \"2025-04-10T23:59:55.855561696Z\"\n}"
+				},
+				{
+					"name": "Invalid JWT",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/auth/logout",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.27.4"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 11 Apr 2025 00:04:23 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "120"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"JWT validation failed: Invalid JWT\",\n    \"code\": \"JWT_AUTH_ERROR\",\n    \"timestamp\": \"2025-04-11T00:04:23.095698086Z\"\n}"
 				}
 			]
 		}
@@ -2816,6 +3889,21 @@
 		{
 			"key": "roles",
 			"value": "[\"OWNER\", \"ADMIN\",\"SUPPORT\", \"USER\"]",
+			"type": "string"
+		},
+		{
+			"key": "timezone",
+			"value": "America/Argentina/Buenos_Aires",
+			"type": "string"
+		},
+		{
+			"key": "os",
+			"value": "Debian 12",
+			"type": "string"
+		},
+		{
+			"key": "resolution",
+			"value": "1920x1080",
 			"type": "string"
 		}
 	]
