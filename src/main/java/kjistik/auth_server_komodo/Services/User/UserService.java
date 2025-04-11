@@ -99,9 +99,10 @@ public class UserService implements UserServiceInt {
 
         if (!password.matches(passwordRegex)) {
             return Mono.error(new InvalidPasswordException(invalidPasswordMessage));
+        } else {
+            return Mono.empty(); // Validation passed
         }
 
-        return Mono.empty(); // Validation passed
     }
 
     @Override
@@ -160,6 +161,16 @@ public class UserService implements UserServiceInt {
                     // Send the verification email
                     return emailService.sendVerificationEmail(user.getEmail(),
                             utils.generateVerificationToken(user.getId()));
+                })
+                .then();
+    }
+
+    public Mono<Void> sendSuspiciousActivityEmail(String username, String browser, String os) {
+        username = username.toLowerCase();
+        return repo.findByUserName(username) // Fetch the user after creation
+                .flatMap(user -> {
+                    // Send the verification email
+                    return emailService.sendSuspiciousActivityEmail(user.getEmail(), os, browser);
                 })
                 .then();
     }

@@ -17,7 +17,7 @@ FROM openjdk:21-jdk-slim
 WORKDIR /app
 
 # Copy the JAR file built in the previous step
-COPY --from=build /app/target/auth_server-0.0.1-SNAPSHOT.jar your-app.jar
+COPY --from=build /app/target/auth_server-1.1.0-RELEASE.jar /app/your-app.jar
 
 # Copy the wait-for-it script into the container
 COPY ./wait-for-it.sh /wait-for-it.sh
@@ -36,5 +36,8 @@ ENV KOMODO_DATASOURCE_USER=${KOMODO_DATASOURCE_USER}
 ENV KOMODO_DATASOURCE_PASSWORD=${KOMODO_DATASOURCE_PASSWORD}
 ENV KOMODO_DOMAIN_URL=${KOMODO_DOMAIN_URL}
 
-# Command to run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "/app/your-app.jar"]
+# Expose the application and debug ports
+EXPOSE 8080 5006
+
+# Command to run the Spring Boot application with remote debugging enabled
+ENTRYPOINT ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006", "-jar", "/app/your-app.jar"]
