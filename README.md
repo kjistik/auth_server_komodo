@@ -74,7 +74,7 @@ The present Spring Boot application is meant to act as an independent authentica
 
 3. Create `credentials.json` file on the /setup folder (see [Configuration](#configuration) for details).
 
-4. Provide a Redis database (connection data should be added to credentials.json and support should be added in the src/main/java/kjistik/auth_server_komodo/Config/RedisConfig.java file)
+4. Provide a Redis database (connection data should be added to `credentials.json` and support should be added in the `src/main/java/kjistik/auth_server_komodo/Config/RedisConfig.java` file)
 
 5. Run the `loadEnv` file corresponding to your OS in a shell.
 
