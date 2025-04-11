@@ -20,17 +20,27 @@ The present Spring Boot application is meant to act as an independent authentica
 - [Credits](#credits)
 
 ## Features
+
+### Core security
 - User authentication and authorization.
-- JWT (JSON Web Token) support for secure communication.
 - Role-based access control (RBAC).
+- Device fingerprinting (browser/OS/resolution/timezone) for increased security.
+- Logout mechanism
+
+### User Management
 - Email verification for new users.
 - Integration with Mailgun for email services.
 
+### Technical Highlights
+- Reactive Spring WebFlux implementation
+- Stateless JWT architecture (Access and Refresh tokens)
+- Configurable token expiration policies
+- Grace period for token reissuance (7-day window)
+
 ## Pending Features
 
-- Logout mechanism.
 - User deactivation.
-- Refresh tokens for added security and ease of use.
+- Improved user management
 
 ## Getting Started
 
@@ -40,6 +50,7 @@ The present Spring Boot application is meant to act as an independent authentica
 - Java 21 or higher
 - Maven 3.x or higher
 - PostgreSQL
+- Redis
 
 ### Installation 
 
@@ -59,14 +70,15 @@ The present Spring Boot application is meant to act as an independent authentica
    ```bash
    git clone https://github.com/kjistik/auth_server_komodo.git
     ```
-
 2. Provide a PostgreSQL database and run the `/setup/setup.sql` script in it.
 
 3. Create `credentials.json` file on the /setup folder (see [Configuration](#configuration) for details).
 
-4. Run the `loadEnv` file corresponding to your OS in a shell.
+4. Provide a Redis database (connection data should be added to credentials.json and support should be added in the src/main/java/kjistik/auth_server_komodo/Config/RedisConfig.java file)
 
-5. Compile the application with maven.
+5. Run the `loadEnv` file corresponding to your OS in a shell.
+
+6. Compile the application with maven.
    ```bash
    mvn package
     ```
