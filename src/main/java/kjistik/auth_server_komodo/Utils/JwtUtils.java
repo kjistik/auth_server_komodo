@@ -58,7 +58,7 @@ public class JwtUtils {
             // Convert to your custom exception if needed
             throw new JwtAuthenticationException("Token expired", e);
         } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtException("token", e); // Invalid token
+            throw new JwtException("Invalid JWT", e); // Invalid token
         }
     }
 
