@@ -13,15 +13,15 @@ import io.jsonwebtoken.security.Keys;
 @Configuration
 public class SecretKeyProvider {
 
-    private final JwtConfig jwtProperties;
+    private final JwtConfig jwtConfig;
 
-    public SecretKeyProvider(JwtConfig jwtProperties) {
-        this.jwtProperties = jwtProperties;
+    public SecretKeyProvider(JwtConfig jwtConfig) {
+        this.jwtConfig = jwtConfig;
     }
 
     @Bean
     public SecretKey getSecretKey() {
-        byte[] keyBytes = Base64.getDecoder().decode(jwtProperties.getSecretKey());
+        byte[] keyBytes = Base64.getDecoder().decode(jwtConfig.getSecretKey());
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
