@@ -8,15 +8,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Configuration
-@ConfigurationProperties(prefix = "jwt")
 @Component
+@ConfigurationProperties(prefix = "jwt")
 @Getter
 @Setter
-public class JwtConfig {
-
+public class JwtConfig {  
     private String secretKey;
     private long expirationTime;
     private long verificationExpirationTime;
     private long refreshExpirationTime;
-
 }
+

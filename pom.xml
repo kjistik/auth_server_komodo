@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.4</version>
+        <version>3.4.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>kjistik</groupId>
     <artifactId>auth_server</artifactId>
-    <version>1.1.0-RELEASE</version>
+    <version>1.1.1-RELEASE</version>
     <name>auth_server_komodo</name>
     <description>Designed to be a central auth server in microservice architecture.</description>
     <properties>
@@ -46,9 +46,14 @@
         </dependency>
 
         <dependency>
+            <groupId>io.github.kjistik</groupId>
+            <artifactId>jwt-validator</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.16.0</version> <!-- or latest version -->
+            <artifactId>commons-codec</artifactId> <!-- or latest version -->
         </dependency>
 
         <!-- Spring WebFlux (Reactive Web) -->

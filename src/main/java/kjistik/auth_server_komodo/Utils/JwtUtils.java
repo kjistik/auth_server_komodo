@@ -1,7 +1,6 @@
 package kjistik.auth_server_komodo.Utils;
 
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -15,12 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import kjistik.auth_server_komodo.Config.JwtConfig;
 import kjistik.auth_server_komodo.Exceptions.JwtAuthenticationException;
@@ -38,28 +35,11 @@ public class JwtUtils {
 
     private final JwtConfig jwtConfig;
 
-    public JwtUtils(JwtConfig jwtConfig) {
+    private final SecretKey secretKey;
+
+    public JwtUtils(JwtConfig jwtConfig, SecretKey secretKey) {
         this.jwtConfig = jwtConfig;
-    }
-
-    private SecretKey getSecretKey() {
-        byte[] keyBytes = Base64.getDecoder().decode(jwtConfig.getSecretKey());
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-
-    public Jws<Claims> validateToken(String token) {
-        try {
-            return Jwts.parser()
-                    .verifyWith(getSecretKey()) // Validate signature
-                    .build()
-                    .parseSignedClaims(token);
-
-        } catch (ExpiredJwtException e) {
-            // Convert to your custom exception if needed
-            throw new JwtAuthenticationException("Token expired", e);
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtException("Invalid JWT", e); // Invalid token
-        }
+        this.secretKey = secretKey;
     }
 
     public Jws<Claims> validateTokenToleratingExpired(String token) {
@@ -67,7 +47,7 @@ public class JwtUtils {
             log.debug("Validating token structure and signature");
             return Jwts.parser()
                     .clockSkewSeconds(Integer.MAX_VALUE)// Disables expiration checks
-                    .verifyWith(getSecretKey())
+                    .verifyWith(secretKey)
                     .build()
                     .parseSignedClaims(token);
         } catch (SecurityException e) {
@@ -98,7 +78,7 @@ public class JwtUtils {
                                     .issuedAt(new Date())
                                     .claim("roles", roles)
                                     .expiration(new Date(System.currentTimeMillis() + jwtConfig.getExpirationTime()))
-                                    .signWith(getSecretKey())
+                                    .signWith(secretKey)
                                     .compact();
                             return Mono.just(new JwtResponse(token, newSessionId));
                         }));
@@ -109,7 +89,7 @@ public class JwtUtils {
                 .subject(username)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + jwtConfig.getRefreshExpirationTime()))
-                .signWith(getSecretKey())
+                .signWith(secretKey)
                 .compact();
     }
 
@@ -118,43 +98,44 @@ public class JwtUtils {
                 .subject(id.toString())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + jwtConfig.getVerificationExpirationTime()))
-                .signWith(getSecretKey())
+                .signWith(secretKey)
                 .compact();
     }
 
-    public List<String> extractRolesFromToken(String token) {
-        try {
-            Claims claims = Jwts.parser()
-                    .verifyWith(getSecretKey())
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
-
-            // Extract roles claim and handle different possible formats
-            Object rolesClaim = claims.get("roles");
-
-            if (rolesClaim instanceof List) {
-                // Handle case where roles are stored as List<String>
-                return ((List<?>) rolesClaim).stream()
-                        .filter(String.class::isInstance)
-                        .map(String.class::cast)
-                        .toList();
-            } else if (rolesClaim instanceof String) {
-                // Handle case where roles are stored as comma-separated string
-                return Arrays.asList(((String) rolesClaim).split(","));
-            }
-
-            return Collections.emptyList();
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtException("Failed to extract roles from token", e);
-        }
-    }
-
+    /*
+     * public List<String> extractRolesFromToken(String token) {
+     * try {
+     * Claims claims = Jwts.parser()
+     * .verifyWith(secretKey)
+     * .build()
+     * .parseSignedClaims(token)
+     * .getPayload();
+     * 
+     * // Extract roles claim and handle different possible formats
+     * Object rolesClaim = claims.get("roles");
+     * 
+     * if (rolesClaim instanceof List) {
+     * // Handle case where roles are stored as List<String>
+     * return ((List<?>) rolesClaim).stream()
+     * .filter(String.class::isInstance)
+     * .map(String.class::cast)
+     * .toList();
+     * } else if (rolesClaim instanceof String) {
+     * // Handle case where roles are stored as comma-separated string
+     * return Arrays.asList(((String) rolesClaim).split(","));
+     * }
+     * 
+     * return Collections.emptyList();
+     * } catch (JwtException | IllegalArgumentException e) {
+     * throw new JwtException("Failed to extract roles from token", e);
+     * }
+     * }
+     */
     public UUID extractUserIdFromToken(String token) {
         try {
             // Parse the token and extract the claims
             Claims claims = Jwts.parser()
-                    .verifyWith(getSecretKey()) // Verify the token's signature
+                    .verifyWith(secretKey) // Verify the token's signature
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
@@ -170,23 +151,10 @@ public class JwtUtils {
         }
     }
 
-    // Helper class to hold both JWT and session ID
-    @Getter
-    public static class JwtResponse {
-        private final String token;
-        private final String sessionId;
-
-        public JwtResponse(String token, String sessionId) {
-            this.token = token;
-            this.sessionId = sessionId;
-        }
-
-    }
-
     public List<String> extractRolesFromExpiredToken(String token) {
         try {
             Claims claims = Jwts.parser()
-                    .verifyWith(getSecretKey())
+                    .verifyWith(secretKey)
                     .clockSkewSeconds(Integer.MAX_VALUE)
                     .build()
                     .parseSignedClaims(token)
@@ -212,4 +180,15 @@ public class JwtUtils {
         }
     }
 
+    // Helper class to hold both JWT and session ID
+    @Getter
+    public static class JwtResponse {
+        private final String token;
+        private final String sessionId;
+
+        public JwtResponse(String token, String sessionId) {
+            this.token = token;
+            this.sessionId = sessionId;
+        }
+    }
 }
