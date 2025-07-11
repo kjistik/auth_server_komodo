@@ -1,42 +1,35 @@
 #!/bin/bash
+# Robust environment loader for keys
 
-# Path to the JSON file
 CONFIG_FILE="credentials.json"
 
-# Debug: Print the current directory
 echo "Current directory: $(pwd)"
+ls -la
 
-# Check if the file exists
 if [[ ! -f "$CONFIG_FILE" ]]; then
   echo "Error: $CONFIG_FILE not found!"
   exit 1
 fi
 
-# Check if `jq` is installed
 if ! command -v jq &> /dev/null; then
-  echo "Error: 'jq' is not installed. Please install it using 'sudo apt install jq'."
+  echo "Error: 'jq' is required. Install with: sudo apt install jq"
   exit 1
 fi
 
-# Debug: Print the contents of the JSON file
-echo "Contents of $CONFIG_FILE:"
-cat "$CONFIG_FILE"
+echo "Loading environment variables from $CONFIG_FILE"
 
-# Read the JSON file and export variables
-while IFS="=" read -r key value; do
-  # Debug: Print the raw key-value pair
-  echo "Raw key-value: $key=$value"
+# Use jq to output null-terminated strings for safety
+while IFS= read -r -d '' key && IFS= read -r -d '' value; do
+  # Remove potential carriage returns
+  value=${value//$'\r'/}
+  
+  echo "Exporting: $key"
+  export "$key"="$value"
+  
+  if [[ "$key" == *Key* ]]; then
+    echo "  Type: ${value:0:25}"
+    echo "  Length: ${#value} characters"
+  fi
+done < <(jq -j 'to_entries[] | .key, "\u0000", .value, "\u0000"' "$CONFIG_FILE")
 
-  # Remove quotes and trim whitespace
-  key=$(echo "$key" | tr -d '"' | xargs)
-  value=$(echo "$value" | tr -d '"' | xargs)
-
-  # Debug: Print the cleaned key-value pair
-  echo "Cleaned key-value: $key=$value"
-
-  # Export the variable
-  export "$key=$value"
-  echo "Exported: $key=$value"
-done < <(jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" "$CONFIG_FILE")
-
-echo "Environment variables loaded from $CONFIG_FILE."
+echo "Environment setup complete"
