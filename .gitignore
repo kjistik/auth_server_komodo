@@ -14,6 +14,8 @@ nginx/nginx-proxy/conf.d/*
 /.settings/
 /.classpath
 /.project
+/src/test
+/vault
 
 # Ignore logs and temporary files
 /logs/
