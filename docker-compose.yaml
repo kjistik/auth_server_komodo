@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   komodo-database:
@@ -16,66 +15,25 @@ services:
       KOMODO_ADMIN_LASTNAME: ${KOMODO_ADMIN_LASTNAME}
       KOMODO_ADMIN_PASSWORD: ${KOMODO_ADMIN_PASSWORD}
     volumes:
-      - komodo-db-data:/var/lib/postgresql/data  # Persist DB data
-    networks:
-      - komodo-network
-
-  komodo-backend:
-    build:
-      context: .
-      dockerfile: ./Dockerfile  # Path to your Spring application's Dockerfile
-    container_name: komodo-backend
-    environment:
-      KOMODO_JWT_SECRET_KEY: ${KOMODO_JWT_SECRET_KEY}
-      KOMODO_JWT_EXPIRATION_TIME: ${KOMODO_JWT_EXPIRATION_TIME}
-      KOMODO_JWT_EMAIL_VERIFICATION_TIME: ${KOMODO_JWT_EMAIL_VERIFICATION_TIME}
-      KOMODO_MAILGUN_KEY: ${KOMODO_MAILGUN_KEY}
-      KOMODO_MAILGUN_DOMAIN: ${KOMODO_MAILGUN_DOMAIN}
-      KOMODO_DATASOURCE_URL: ${KOMODO_DATASOURCE_URL}
-      KOMODO_DATASOURCE_USER: ${KOMODO_DATASOURCE_USER}
-      KOMODO_DATASOURCE_PASSWORD: ${KOMODO_DATASOURCE_PASSWORD}
-      KOMODO_DOMAIN_URL: ${KOMODO_DOMAIN_URL}
-      KOMODO_REFRESH_TOKEN_EXPIRATION_TIME: ${KOMODO_REFRESH_TOKEN_EXPIRATION_TIME}
-      KOMODO_REDIS_HOST: redis  # Redis host (same as the service name)
-      KOMODO_REDIS_PORT: 6379   # Redis port
+      - komodo-db-data:/var/lib/postgresql/data
     ports:
-      - "8080:8080"  # Expose the application port
-      - "5006:5006"  # Expose the debug port
-    volumes:
-      - ./logs:/app/logs  # Maps ./logs (host) to /app/logs (container)
+      - "5432:5432"  # Expose PostgreSQL port
     networks:
       - komodo-network
-    command: ["/wait-for-it.sh", "komodo-database:5432", "--", "java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006", "-jar", "/app/app.jar"]
-    depends_on:
-      - komodo-database
-      - redis  # Ensure Redis starts before the backend
 
   redis:
     image: redis:latest
     container_name: komodo-redis
     volumes:
-      - redis-data:/data  # Persist Redis data
-    networks:
-      - komodo-network
-
-  nginx:
-    image: nginx:latest
-    container_name: nginx-proxy
+      - redis-data:/data
     ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx/nginx-proxy/conf.d:/etc/nginx/conf.d  # Mount Nginx configuration (add on server)
-      - ./nginx/nginx-proxy/certs:/etc/nginx/certs    # Mount SSL certificates (add on server)
-      - ./nginx/nginx-proxy/html:/usr/share/nginx/html  # Mount static files (optional)
+      - "6379:6379"  # Expose Redis port
     networks:
       - komodo-network
-    depends_on:
-      - komodo-backend
 
 volumes:
   komodo-db-data:
-  redis-data:  # Volume for Redis data persistence
+  redis-data:
 
 networks:
   komodo-network:

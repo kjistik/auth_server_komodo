@@ -3,10 +3,10 @@ server:
 
 logging:
   level:
-     '[org.springframework.security]': DEBUG
-     '[kjistik.auth_server_komodo.Security]': DEBUG  # More verbose for security packages
-     '[kjistik.auth_server_komodo.Exceptions]': WARN
-     '[kjistik]': INFO  # Base package level
+    '[org.springframework.security]': DEBUG
+    '[kjistik.auth_server_komodo.Security]': DEBUG
+    '[kjistik.auth_server_komodo.Exceptions]': WARN
+    '[kjistik]': INFO
   file:
     name: logs/auth-server.log
     max-size: 10MB
@@ -20,46 +20,58 @@ logging:
       %clr(| %X{traceId:-} |){magenta}
       %msg%n%throwable
 
-jwt:
-  secret-key: ${KOMODO_JWT_SECRET_KEY}
-  expiration-time: ${KOMODO_JWT_EXPIRATION_TIME}  
-  verification-expiration-time: ${KOMODO_JWT_EMAIL_VERIFICATION_TIME}
-  refresh-expiration-time: ${KOMODO_REFRESH_TOKEN_EXPIRATION_TIME}
-
-mailgun:
-  key: ${KOMODO_MAILGUN_KEY}
-  domain: ${KOMODO_MAILGUN_DOMAIN}
-
 spring:
+  cloud:
+    vault:
+      uri: ${VAULT_ADDR:https://192.168.58.2:30000}
+      authentication: ${VAULT_AUTH_METHOD:APPROLE}
+      app-role:
+        role-id: ${VAULT_ROLE_ID:}
+        secret-id: ${VAULT_SECRET_ID:}
+      transit:
+        key-path: ${VAULT_TRANSIT_KEY_PATH:}
+        sign-path: ${VAULT_TRANSIT_SIGN_PATH:}
+      fail-fast: true
+
   data:
     redis:
-      host: redis
-      port: 6379
-  mvc:
-    pathmatch:
-      matching-strategy: ant-path-matcher
-  web:
-    resources:
-      static-locations: classpath:/static/
-  r2dbc:
-    url: ${KOMODO_DATASOURCE_URL}
-    username: ${KOMODO_DATASOURCE_USER}
-    password: ${KOMODO_DATASOURCE_PASSWORD}
-  komodo:
-    domain-url: ${KOMODO_DOMAIN_URL}
+      host: ${KOMODO_REDIS_HOST:redis}
+      port: ${KOMODO_REDIS_PORT:6379}
 
-# For production monitoring
+  r2dbc:
+    url: ${KOMODO_DATASOURCE_URL:r2dbc:postgresql://komodo-database:5432/komodo}
+    username: ${KOMODO_DATASOURCE_USER:kjistik}
+    password: ${KOMODO_DATASOURCE_PASSWORD:}
+
+  komodo:
+    domain-url: ${KOMODO_DOMAIN_URL:http://localhost:8080}
+
+jwt:
+  expiration-time: ${KOMODO_JWT_EXPIRATION_TIME:900000}
+  verification-expiration-time: ${KOMODO_JWT_EMAIL_VERIFICATION_TIME:10800000}
+  refresh-expiration-time: ${KOMODO_REFRESH_TOKEN_EXPIRATION_TIME:2592000000}
+
+mailgun:
+  key: ${KOMODO_MAILGUN_KEY:}
+  domain: ${KOMODO_MAILGUN_DOMAIN:}
+
+komodo_admin:
+  email: ${KOMODO_ADMIN_EMAIL:}
+  password: ${KOMODO_ADMIN_PASSWORD:}
+  given-name: ${KOMODO_ADMIN_GIVENNAME:}
+  last-name: ${KOMODO_ADMIN_LASTNAME:}
+
 management:
   endpoints:
     web:
       exposure:
         include: health,metrics,loggers
-      base-path: /management  # Secured separate path
+      base-path: /management
   endpoint:
     health:
       show-details: always
       show-components: always
     loggers:
-      access : READ_ONLY
+      access: READ_ONLY
     metrics:
       access: READ_ONLY
