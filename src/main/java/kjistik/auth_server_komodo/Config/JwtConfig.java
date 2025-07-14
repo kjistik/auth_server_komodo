@@ -13,7 +13,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class JwtConfig {  
-    private String secretKey;
     private long expirationTime;
     private long verificationExpirationTime;
     private long refreshExpirationTime;
