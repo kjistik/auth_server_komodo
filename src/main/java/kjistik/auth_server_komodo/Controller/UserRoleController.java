@@ -13,13 +13,13 @@ import kjistik.auth_server_komodo.Utils.RequestEntities.RolesRequest;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/auth/api/roles")
+@RequestMapping("/auth/api")
 public class UserRoleController {
 
     @Autowired
     UserRoleService service;
 
-    @PatchMapping("/assignRole")
+    @PatchMapping("/roles")
     Mono<Void> assignRoles(@RequestBody RolesRequest roles, @AuthenticationPrincipal UserDetails user) {
         return service.assignRole(roles.getUsername(), roles.getRoles(), user);
     }

@@ -66,7 +66,7 @@ public class UserController {
         return authService.reIssueToken(agent, os, resolution, timezone, sessionId, jwtToken);
     }
 
-    @PostMapping("/register")
+    @PostMapping("/api/user")
     public Mono<Void> createUser(@RequestBody NewUser newUser) {
         return service.createUser(newUser);
     }
@@ -76,17 +76,17 @@ public class UserController {
         return service.verifyUser(token);
     }
 
-    @PatchMapping("/api/user/updatePassword")
+    @PatchMapping("/api/user/password")
     public Mono<Void> updatePassword(@RequestBody PasswordChange password, @AuthenticationPrincipal UserDetails user) {
         return service.updatePassword(password.getPassword(), user.getUsername());
     }
 
-    @PatchMapping("/api/user/updateEmail")
+    @PatchMapping("/api/user/email")
     public Mono<Void> updateEmail(@RequestBody EmailChange email, @AuthenticationPrincipal UserDetails user) {
         return service.updateEmail(email.getEmail(), user.getUsername());
     }
 
-    @PatchMapping("/api/support/updateName")
+    @PatchMapping("/api/user/updateName")
     public Mono<Void> updateName(@RequestBody NameChange name) {
         return service.updateName(name.getGivenName(), name.getLastName(), name.getUsername());
     }
