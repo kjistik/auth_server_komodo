@@ -28,8 +28,8 @@ public class UserService implements UserServiceInt {
     @Autowired
     UserRepository repo;
     @Autowired
-    EmailService emailService;
-    JwtUtils utils;
+    EmailService emailService; 
+    private final JwtUtils utils; 
 
     public UserService(JwtUtils utils) {
         this.utils = utils;
@@ -44,21 +44,18 @@ public class UserService implements UserServiceInt {
         String lastName = newUser.getLastName().toLowerCase();
         String password = newUser.getPassword();
 
-        // Validate username, email, and password
         return validateUsername(userName)
                 .then(validateEmail(email))
                 .then(validatePassword(password))
                 .then(Mono.defer(() -> {
-                    // Encode the password
                     String encodedPassword = passwordEncoder.encode(password);
 
-                    // Create the user in the database
                     return repo.createUser(email, givenName, lastName, userName, encodedPassword)
-                            .then(sendVerificationEmail(userName))
-                            .then(); // Return Mono<Void> to indicate completion
+                    .flatMap(createdUser -> sendVerificationEmail(createdUser.getUserName()))
+                    .then(); 
                 }));
-    }
-
+            }
+            
     private Mono<Void> validateUsername(String username) {
         String invalidUsernameMessage = "The username contains invalid characters. Only letters, numbers, underscores, and periods are allowed.";
         String usernameRegex = "^[a-zA-Z0-9_.]+$";
@@ -72,7 +69,7 @@ public class UserService implements UserServiceInt {
                     if (usernameExists) {
                         return Mono.error(new RepeatedUserNameException(username));
                     }
-                    return Mono.empty(); // Validation passed
+                    return Mono.empty(); 
                 });
     }
 
@@ -89,7 +86,7 @@ public class UserService implements UserServiceInt {
                     if (emailExists) {
                         return Mono.error(new RepeatedEmailException(email));
                     }
-                    return Mono.empty(); // Validation passed
+                    return Mono.empty();
                 });
     }
 
@@ -100,7 +97,7 @@ public class UserService implements UserServiceInt {
         if (!password.matches(passwordRegex)) {
             return Mono.error(new InvalidPasswordException(invalidPasswordMessage));
         } else {
-            return Mono.empty(); // Validation passed
+            return Mono.empty(); 
         }
 
     }
@@ -154,22 +151,24 @@ public class UserService implements UserServiceInt {
     }
 
     @Override
-    public Mono<Void> sendVerificationEmail(String username) {
+    public Mono<Void> sendVerificationEmail(String username) { 
         username = username.toLowerCase();
-        return repo.findByUserName(username) // Fetch the user after creation
-                .flatMap(user -> {
-                    // Send the verification email
-                    return emailService.sendVerificationEmail(user.getEmail(),
-                            utils.generateVerificationToken(user.getId()));
-                })
-                .then();
+        return repo.findByUserName(username) 
+                .switchIfEmpty(Mono.error(new UserNotFoundException(username))) 
+                .flatMap(user ->
+                    utils.generateVerificationToken(user.getId()) 
+                        .flatMap(verificationToken ->
+                            emailService.sendVerificationEmail(user.getEmail(), verificationToken)
+                        )
+                )
+                .then(); 
     }
 
     public Mono<Void> sendSuspiciousActivityEmail(String username, String browser, String os) {
         username = username.toLowerCase();
-        return repo.findByUserName(username) // Fetch the user after creation
+        return repo.findByUserName(username) 
+                .switchIfEmpty(Mono.error(new UserNotFoundException(username))) 
                 .flatMap(user -> {
-                    // Send the verification email
                     return emailService.sendSuspiciousActivityEmail(user.getEmail(), os, browser);
                 })
                 .then();
@@ -183,7 +182,7 @@ public class UserService implements UserServiceInt {
                 .then(validateEmail(email))
                 .then(isEmailInUse(email))
                 .then(repo.updateEmail(email, username))
-                .then(sendVerificationEmail(username));
+                .then(sendVerificationEmail(username)); 
     }
 
     @Override

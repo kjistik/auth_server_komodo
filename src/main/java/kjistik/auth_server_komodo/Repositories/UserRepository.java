@@ -15,7 +15,7 @@ public interface UserRepository extends R2dbcRepository<User, UUID> {
     @Query("INSERT INTO \"user\" (email, givenname, lastname, username, password) values (:email, :givenName, :lastName, :userName, :password)")
     Mono<User> createUser(String email, String givenName, String lastName, String userName, String password);
 
-    @Query("SELECT * FROM \"user\" WHERE username=:username")
+    @Query("SELECT id, email, givenName, lastName, userName, password, confirmed, createdAt, modifiedAt FROM \"user\" WHERE userName = :username")
     Mono<User> findByUserName(String username);
 
     @Query("SELECT EXISTS(SELECT 1 FROM \"user\" where username=:userName)")
