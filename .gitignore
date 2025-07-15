@@ -15,7 +15,7 @@ nginx/nginx-proxy/conf.d/*
 /.classpath
 /.project
 /src/test
-/vault
+/setup/kubernetes
 
 # Ignore logs and temporary files
 /logs/
