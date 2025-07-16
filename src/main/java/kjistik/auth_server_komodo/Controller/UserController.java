@@ -1,7 +1,10 @@
 package kjistik.auth_server_komodo.Controller;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -22,7 +25,7 @@ import kjistik.auth_server_komodo.DTO.RequestEntities.NameChange;
 import kjistik.auth_server_komodo.DTO.RequestEntities.NewUser;
 import kjistik.auth_server_komodo.DTO.RequestEntities.PasswordChange;
 import kjistik.auth_server_komodo.DTO.RequestEntities.TokenResponse;
-import kjistik.auth_server_komodo.Models.User;
+import kjistik.auth_server_komodo.DTO.RequestEntities.UserResponse;
 import kjistik.auth_server_komodo.Services.User.AuthService;
 import kjistik.auth_server_komodo.Services.User.UserService;
 import reactor.core.publisher.Mono;
@@ -35,6 +38,9 @@ public class UserController {
 
     @Autowired
     AuthService authService;
+
+    @Autowired
+    String domainUrl;
 
     @PostMapping("/login")
     public Mono<Void> logIn(@RequestBody LoginRequest login,
@@ -68,8 +74,11 @@ public class UserController {
     }
 
     @PostMapping("/api/user")
-    public Mono<User> createUser(@RequestBody NewUser newUser) {
-        return service.createUser(newUser);
+    public Mono<ResponseEntity<UserResponse>> createUser(@RequestBody NewUser newUser) {
+        return service.createUser(newUser)
+                .flatMap(userResponse -> Mono
+                        .just(ResponseEntity.created(URI.create(domainUrl + "/api/user/" + userResponse.getUsername()))
+                                .body(userResponse)));
     }
 
     @GetMapping("/verify")
