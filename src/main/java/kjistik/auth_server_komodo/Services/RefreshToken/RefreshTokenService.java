@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import kjistik.auth_server_komodo.Utils.DatabaseEntities.RefreshTokenValue;
+import kjistik.auth_server_komodo.DTO.DatabaseEntities.RefreshTokenValue;
 import reactor.core.publisher.Mono;
 
 @Service

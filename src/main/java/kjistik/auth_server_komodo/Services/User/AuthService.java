@@ -18,6 +18,8 @@ import org.springframework.web.server.ServerWebExchange;
 
 import io.jsonwebtoken.Claims;
 import kjistik.auth_server_komodo.Config.AuthenticationHandler;
+import kjistik.auth_server_komodo.DTO.RequestEntities.LoginRequest;
+import kjistik.auth_server_komodo.DTO.RequestEntities.TokenResponse;
 import kjistik.auth_server_komodo.Exceptions.ExpiredJWTException;
 import kjistik.auth_server_komodo.Exceptions.InvalidCredentialsException;
 import kjistik.auth_server_komodo.Exceptions.InvalidFingerprintsException;
@@ -26,8 +28,6 @@ import kjistik.auth_server_komodo.Security.CustomUserDetailsService;
 import kjistik.auth_server_komodo.Services.RefreshToken.RefreshTokenService;
 import kjistik.auth_server_komodo.Utils.DeviceFingerprintUtils;
 import kjistik.auth_server_komodo.Utils.JwtUtils;
-import kjistik.auth_server_komodo.Utils.RequestEntities.LoginRequest;
-import kjistik.auth_server_komodo.Utils.RequestEntities.TokenResponse;
 import reactor.core.publisher.Mono;
 
 @Service

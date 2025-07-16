@@ -1,6 +1,7 @@
 package kjistik.auth_server_komodo.Config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,7 +10,7 @@ public class KomodoConfig {
 
     private String domainUrl;
 
-    // Getter and setter
+    @Bean
     public String getDomainUrl() {
         return domainUrl;
     }

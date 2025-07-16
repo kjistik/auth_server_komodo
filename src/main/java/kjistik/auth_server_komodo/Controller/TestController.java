@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import kjistik.auth_server_komodo.DTO.DatabaseEntities.RefreshTokenValue;
+import kjistik.auth_server_komodo.DTO.RequestEntities.UsernameRequest;
 import kjistik.auth_server_komodo.Services.RefreshToken.RefreshTokenService;
-import kjistik.auth_server_komodo.Utils.DatabaseEntities.RefreshTokenValue;
-import kjistik.auth_server_komodo.Utils.RequestEntities.UsernameRequest;
 import reactor.core.publisher.Mono;
 
 @RestController

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import kjistik.auth_server_komodo.DTO.DatabaseEntities.VerificationData;
 import kjistik.auth_server_komodo.DTO.RequestEntities.NewUser;
+import kjistik.auth_server_komodo.DTO.RequestEntities.UserResponse;
 import kjistik.auth_server_komodo.Exceptions.InvalidEmailException;
 import kjistik.auth_server_komodo.Exceptions.InvalidPasswordException;
 import kjistik.auth_server_komodo.Exceptions.InvalidUsernameException;
@@ -15,7 +16,6 @@ import kjistik.auth_server_komodo.Exceptions.RepeatedEmailException;
 import kjistik.auth_server_komodo.Exceptions.RepeatedUserNameException;
 import kjistik.auth_server_komodo.Exceptions.UserNotFoundException;
 import kjistik.auth_server_komodo.Exceptions.UserNotVerifiedException;
-import kjistik.auth_server_komodo.Models.User;
 import kjistik.auth_server_komodo.Repositories.UserRepository;
 import kjistik.auth_server_komodo.Services.Email.EmailService;
 import kjistik.auth_server_komodo.Utils.JwtUtils;
@@ -37,7 +37,7 @@ public class UserService implements UserServiceInt {
     }
 
     @Override
-    public Mono<User> createUser(NewUser newUser) {
+    public Mono<UserResponse> createUser(NewUser newUser) {
         // Normalize input
         String userName = newUser.getUserName().toLowerCase();
         String email = newUser.getEmail().toLowerCase();
@@ -53,7 +53,7 @@ public class UserService implements UserServiceInt {
 
                     return repo.createUser(email, givenName, lastName, userName, encodedPassword)
                             .flatMap(createdUser -> sendVerificationEmail(createdUser.getUserName())
-                                    .then(Mono.just(createdUser)));
+                                    .then(Mono.just(new UserResponse(userName, email, givenName, lastName))));
                 }));
     }
 
@@ -195,7 +195,5 @@ public class UserService implements UserServiceInt {
         return userExists(username)
                 .then(repo.updateName(givenName, lastName, username));
     }
-
-
 
 }

@@ -2,12 +2,12 @@ package kjistik.auth_server_komodo.Services.User;
 
 import kjistik.auth_server_komodo.DTO.DatabaseEntities.VerificationData;
 import kjistik.auth_server_komodo.DTO.RequestEntities.NewUser;
-import kjistik.auth_server_komodo.Models.User;
+import kjistik.auth_server_komodo.DTO.RequestEntities.UserResponse;
 import reactor.core.publisher.Mono;
 
 public interface UserServiceInt {
 
-    public Mono<User> createUser(NewUser newUser);
+    public Mono<UserResponse> createUser(NewUser newUser);
 
     public Mono<Void> userExists(String username);
 

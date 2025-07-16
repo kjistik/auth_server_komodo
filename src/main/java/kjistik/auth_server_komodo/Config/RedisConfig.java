@@ -8,7 +8,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import kjistik.auth_server_komodo.Utils.DatabaseEntities.RefreshTokenValue;
+import kjistik.auth_server_komodo.DTO.DatabaseEntities.RefreshTokenValue;
 
 @Configuration
 public class RedisConfig {
