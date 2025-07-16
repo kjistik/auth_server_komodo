@@ -6,13 +6,13 @@ import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.stereotype.Repository;
 
+import kjistik.auth_server_komodo.DTO.DatabaseEntities.VerificationData;
 import kjistik.auth_server_komodo.Models.User;
-import kjistik.auth_server_komodo.Utils.DatabaseEntities.VerificationData;
 import reactor.core.publisher.Mono;
 
 @Repository
 public interface UserRepository extends R2dbcRepository<User, UUID> {
-    @Query("INSERT INTO \"user\" (email, givenname, lastname, username, password) values (:email, :givenName, :lastName, :userName, :password)")
+    @Query("INSERT INTO \"user\" (email, givenname, lastname, username, password) values (:email, :givenName, :lastName, :userName, :password) RETURNING *")
     Mono<User> createUser(String email, String givenName, String lastName, String userName, String password);
 
     @Query("SELECT id, email, givenName, lastName, userName, password, confirmed, createdAt, modifiedAt FROM \"user\" WHERE userName = :username")

@@ -1,4 +1,4 @@
-package kjistik.auth_server_komodo.Utils.DatabaseEntities;
+package kjistik.auth_server_komodo.DTO.DatabaseEntities;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

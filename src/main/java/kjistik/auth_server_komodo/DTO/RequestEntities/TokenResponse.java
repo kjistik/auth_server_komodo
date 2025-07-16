@@ -1,4 +1,4 @@
-package kjistik.auth_server_komodo.Utils.RequestEntities;
+package kjistik.auth_server_komodo.DTO.RequestEntities;
 
 import lombok.Getter;
 import lombok.Setter;

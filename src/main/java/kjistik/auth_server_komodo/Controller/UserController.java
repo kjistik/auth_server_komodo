@@ -16,14 +16,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
 
+import kjistik.auth_server_komodo.DTO.RequestEntities.EmailChange;
+import kjistik.auth_server_komodo.DTO.RequestEntities.LoginRequest;
+import kjistik.auth_server_komodo.DTO.RequestEntities.NameChange;
+import kjistik.auth_server_komodo.DTO.RequestEntities.NewUser;
+import kjistik.auth_server_komodo.DTO.RequestEntities.PasswordChange;
+import kjistik.auth_server_komodo.DTO.RequestEntities.TokenResponse;
+import kjistik.auth_server_komodo.Models.User;
 import kjistik.auth_server_komodo.Services.User.AuthService;
 import kjistik.auth_server_komodo.Services.User.UserService;
-import kjistik.auth_server_komodo.Utils.RequestEntities.EmailChange;
-import kjistik.auth_server_komodo.Utils.RequestEntities.LoginRequest;
-import kjistik.auth_server_komodo.Utils.RequestEntities.NameChange;
-import kjistik.auth_server_komodo.Utils.RequestEntities.NewUser;
-import kjistik.auth_server_komodo.Utils.RequestEntities.PasswordChange;
-import kjistik.auth_server_komodo.Utils.RequestEntities.TokenResponse;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -67,7 +68,7 @@ public class UserController {
     }
 
     @PostMapping("/api/user")
-    public Mono<Void> createUser(@RequestBody NewUser newUser) {
+    public Mono<User> createUser(@RequestBody NewUser newUser) {
         return service.createUser(newUser);
     }
 
