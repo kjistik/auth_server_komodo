@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,6 +23,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import kjistik.Validator.JwtValidator;
 import kjistik.auth_server_komodo.Exceptions.JwtAuthenticationException;
+import kjistik.auth_server_komodo.Utils.IgnoredEndpoint;
 import kjistik.auth_server_komodo.Utils.JwtUtils;
 import reactor.core.publisher.Mono;
 
@@ -33,22 +35,28 @@ public class JwtAuthFilter implements WebFilter {
 
     JwtValidator validator;
 
-    public JwtAuthFilter(JwtValidator validator){
-        this.validator=validator;
+    public JwtAuthFilter(JwtValidator validator) {
+        this.validator = validator;
     }
 
-    private static final String[] IGNORED_PATHS = { "/auth/login",
-            "/auth/error",
-            "/auth/register",
-            "/auth/verify", "/test", "/auth/reissue" };
+    private final List<IgnoredEndpoint> IGNORED_ENDPOINTS = List.of(
+            new IgnoredEndpoint("/auth/error", null),
+            new IgnoredEndpoint("/auth/api/user", HttpMethod.POST.name()),
+            new IgnoredEndpoint("/auth/verify", null),
+            new IgnoredEndpoint("/test", null),
+            new IgnoredEndpoint("/auth/reissue", null),
+            new IgnoredEndpoint("/auth/login", HttpMethod.POST.name()));
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         // Check if the request path should be ignored
         String path = exchange.getRequest().getPath().value();
-        for (String ignoredPath : IGNORED_PATHS) {
-            if (ignoredPath.equals(path)) {
-                return chain.filter(exchange);
+        String method = exchange.getRequest().getMethod().name();
+        for (IgnoredEndpoint ignored : IGNORED_ENDPOINTS) {
+            if (ignored.getPath().equals(path)) {
+                if (ignored.getMethod() == null || ignored.getMethod().equals(method)) {
+                    return chain.filter(exchange);
+                }
             }
         }
 

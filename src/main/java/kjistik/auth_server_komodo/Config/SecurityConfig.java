@@ -2,6 +2,7 @@ package kjistik.auth_server_komodo.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -46,6 +47,7 @@ public class SecurityConfig {
                 return http
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeExchange(exchanges -> exchanges
+                                                .pathMatchers(HttpMethod.POST, "/auth/api/user").permitAll()
                                                 .pathMatchers("/auth/api/user/**").hasRole("USER")
                                                 .pathMatchers("/auth/api/admin/**").hasRole("ADMIN")
                                                 .pathMatchers("/auth/api/support/**", "/auth/api/roles/**")
