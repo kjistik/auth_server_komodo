@@ -16,7 +16,7 @@ nginx/nginx-proxy/conf.d/*
 /.project
 /src/test
 /setup/kubernetes
-
+/src/main/resources/vault-truststore.jks
 # Ignore logs and temporary files
 /logs/
 *.log
